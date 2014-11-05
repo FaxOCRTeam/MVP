@@ -1,13 +1,13 @@
-package imageProcessor;
+package processor;
 
 import java.awt.Image;
 import java.io.InputStream;
 import java.util.List;
 
-import configReader.ConfigReader;
-import configReader.model.ConfigField;
-import fieldMatcher.FieldMatcher;
-import fieldMatcher.model.Field;
+import api.ConfigReader;
+import api.FieldMatcher;
+import dataModel.ConfigField;
+import dataModel.Field;
 
 public class ImageProcessor {
 	public List<Field> process(InputStream configStream, InputStream imageStream){
