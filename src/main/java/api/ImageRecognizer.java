@@ -1,11 +1,7 @@
 package api;
 
-import dataModel.Image;
+import java.awt.Image;
 
-public class ImageRecognizer {
-	String getString(Image segment){
-		String result;
-		result = "";
-		return result;
-	}
+public interface ImageRecognizer {
+	String getString(Image segment);
 }
