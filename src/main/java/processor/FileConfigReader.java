@@ -1,4 +1,4 @@
-package configReader;
+package processor;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,7 +8,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-import configReader.model.ConfigField;
+import api.ConfigReader;
+import dataModel.ConfigField;
 
 public class FileConfigReader implements ConfigReader {
 

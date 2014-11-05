@@ -1,9 +1,9 @@
-package configReader;
+package api;
 
 import java.io.InputStream;
 import java.util.List;
 
-import configReader.model.ConfigField;
+import dataModel.ConfigField;
 
 public interface ConfigReader {
 	List<ConfigField> loadingConfiguration(InputStream stream);

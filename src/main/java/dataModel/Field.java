@@ -1,8 +1,6 @@
-package fieldMatcher.model;
+package dataModel;
 
 import java.awt.image.BufferedImage;
-
-import configReader.model.ConfigField;
 
 public class Field {
 	BufferedImage Image;
