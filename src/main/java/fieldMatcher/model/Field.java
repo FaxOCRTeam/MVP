@@ -1,20 +1,20 @@
 package fieldMatcher.model;
 
-import java.awt.Image;
+import java.awt.image.BufferedImage;
 
 import configReader.model.ConfigField;
 
 public class Field {
-	Image Image;
+	BufferedImage Image;
 	String field;
 	String content;
 	ConfigField config;
 
-	public Image getImage() {
+	public BufferedImage getImage() {
 		return Image;
 	}
 
-	public void setImage(Image image) {
+	public void setImage(BufferedImage image) {
 		Image = image;
 	}
 
