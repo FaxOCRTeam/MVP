@@ -1,4 +1,4 @@
-package ImageRecognizer;
+package api;
 
 import java.awt.Image;
 

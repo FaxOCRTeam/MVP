@@ -1,9 +1,11 @@
-package ContentProcessor;
+package processor;
 
 import java.util.List;
 
-import fieldMatcher.model.Field;
-import ImageRecognizer.*;
+import api.ImageRecognizer;
+import api.TesseractImageRecognizer;
+import dataModel.Field;
+import api.ImageRecognizer.*;
 
 public class ContentProcessor {
 	

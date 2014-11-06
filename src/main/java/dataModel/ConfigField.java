@@ -1,4 +1,4 @@
-package configReader.model;
+package dataModel;
 
 public class ConfigField {
 	int[] startingPoint;
