@@ -1,5 +1,9 @@
 package api;
 
+import java.util.List;
+
+import dataModel.Field;
+
 public interface DBWriter {
-	<T> void writeToDB(T t);
+	void writeToDB(List<Field> fields);
 }
