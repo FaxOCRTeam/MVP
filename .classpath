@@ -12,7 +12,8 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/lib/javacpp.jar"/>
-	<classpathentry kind="lib" path="D:/lib/javacv.jar"/>
+	<classpathentry kind="lib" path="lib/javacpp.jar"/>
+	<classpathentry kind="lib" path="lib/javacv.jar"/>
+	<classpathentry kind="lib" path="lib/opencv.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
