@@ -1,7 +1,9 @@
 package api;
 
-import java.awt.Image;
+import java.awt.image.BufferedImage;
+
+import net.sourceforge.tess4j.TesseractException;
 
 public interface ImageRecognizer {
-	String getString(Image segment);
+	String getString(BufferedImage segment) throws TesseractException;
 }
