@@ -11,7 +11,13 @@ import static org.bytedeco.javacpp.opencv_imgproc.CV_THRESH_BINARY;
 import static org.bytedeco.javacpp.opencv_imgproc.cvCvtColor;
 import static org.bytedeco.javacpp.opencv_imgproc.cvThreshold;
 
+import java.io.InputStream;
+import java.util.List;
+
 import org.bytedeco.javacpp.opencv_core.IplImage;
+
+import processor.FileConfigReader;
+import dataModel.ConfigField;
 
 public class FileImageReader {
 	private IplImage originImage;
@@ -31,7 +37,7 @@ public class FileImageReader {
 	}
 
 	
-	public void loadImage(String fileFullPath){
+	public  void loadImage(String fileFullPath){
 		
 		//Load to Color
 		 originImage = cvLoadImage(fileFullPath, CV_LOAD_IMAGE_COLOR);
@@ -46,5 +52,13 @@ public class FileImageReader {
      	 binaryImage = cvCreateImage(cvGetSize(grayImage), IPL_DEPTH_8U, 1);
 		 cvThreshold(grayImage, binaryImage, 100, 255, CV_THRESH_BINARY);
 	     cvShowImage("binary", binaryImage);
+	}
+	
+	
+	public static void main(String[] args) {
+		
+		FileImageReader n = new FileImageReader();
+		n.loadImage("test.jpg");
+		
 	}
 }
