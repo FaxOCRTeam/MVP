@@ -1,5 +1,10 @@
 package processor;
+
+
+import java.io.InputStream;
+
 import org.bytedeco.javacpp.opencv_core.IplImage;
+
 import api.*;
 
 public class ConfigManager {
@@ -14,12 +19,15 @@ public class ConfigManager {
 		 
 	 // TODO ::  Read File image (Class FileImageReader)
 	   
-	 String filePath ="";
-	 FileImageReader imageReader = new FileImageReader();
-	 imageReader.loadImage(filePath);
-	 manager.originImage = imageReader.getOriginImage();
-		 
-		 
+//	 String filePath ="";
+//	 FileImageReader imageReader = new FileImageReader();
+//	 imageReader.loadImage(filePath);
+//	 manager.originImage = imageReader.getOriginImage();
+	 ImageProcessor imageProcessor = new ImageProcessor();
+	 InputStream configStream = ConfigManager.class.getClassLoader().getResourceAsStream("ImageSegment.config");
+	 imageProcessor.process(configStream, "unnamed.jpg");
+	// imageProcessor.process(configStream, "F:\\ScanImage.jpg");
+	 
 	 // TODO ::	 Process Image (Class ImageProcessor)
 	
 		 

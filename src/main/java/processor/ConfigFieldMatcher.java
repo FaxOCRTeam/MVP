@@ -1,10 +1,14 @@
 package processor;
 
-import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.bytedeco.javacpp.opencv_core.*;
+import static org.bytedeco.javacpp.opencv_core.cvCreateImage;
+import static org.bytedeco.javacpp.opencv_core.cvGetSize;
+import static org.bytedeco.javacpp.opencv_core.cvSetImageROI;
+import static org.bytedeco.javacpp.opencv_core.cvRect;
+
 import org.bytedeco.javacv.CanvasFrame;
 
 import dataModel.ConfigField;
@@ -17,14 +21,10 @@ public class ConfigFieldMatcher implements FieldMatcher {
 	public List<Field> imageSegmentation(IplImage workingImage,
 			List<ConfigField> configField) {
 		// TODO Auto-generated method stub
-		List<Field> imageResult = new ArrayList<Field>();
-		List<ConfigField> result = new ArrayList<ConfigField>();
-		// result = FileConfigReader.loadingConfiguration(stream); //From
-		// FileConfigReader.java;
+	//	List<Field> imageResult = new ArrayList<Field>();
 
-	//	IplImage image = null; // From the ImageReader;
-		IplImage ori = org.bytedeco.javacpp.opencv_core.cvCreateImage(
-				org.bytedeco.javacpp.opencv_core.cvGetSize(workingImage),
+		IplImage ori = cvCreateImage(
+				cvGetSize(workingImage),
 				workingImage.depth(), workingImage.nChannels());
 		ConfigField singleCF;
 		List<Field> imageField = new ArrayList<Field>();
@@ -36,7 +36,7 @@ public class ConfigFieldMatcher implements FieldMatcher {
 			int startY = point[1];
 			int endX = point[0]+singleCF.getWidth();
 			int endY = point[1]+singleCF.getHeight();
-			org.bytedeco.javacpp.opencv_core.cvSetImageROI(ori, org.bytedeco.javacpp.opencv_core.cvRect(startX, startY, endX - startX, endY - startY));
+			cvSetImageROI(ori, cvRect(startX, startY, singleCF.getWidth() , singleCF.getHeight() ));
 			Field ir = new Field();
 			ir.setConfig(singleCF);
 			ir.setField(singleCF.getField());
