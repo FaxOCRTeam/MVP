@@ -34,9 +34,8 @@ public class ConfigFieldMatcher implements FieldMatcher {
 			int[] point =singleCF.getStartingPoint();
 			int startX = point[0];
 			int startY = point[1];
-			point =singleCF.getEndingPoint();
-			int endX = point[0];
-			int endY = point[1];
+			int endX = point[0]+singleCF.getWidth();
+			int endY = point[1]+singleCF.getHeight();
 			org.bytedeco.javacpp.opencv_core.cvSetImageROI(ori, org.bytedeco.javacpp.opencv_core.cvRect(startX, startY, endX - startX, endY - startY));
 			Field ir = new Field();
 			ir.setConfig(singleCF);
