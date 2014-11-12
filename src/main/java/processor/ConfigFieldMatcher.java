@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bytedeco.javacpp.opencv_core.*;
+
+import static org.bytedeco.javacpp.opencv_core.cvCloneImage;
+import static org.bytedeco.javacpp.opencv_core.cvCopy;
 import static org.bytedeco.javacpp.opencv_core.cvCreateImage;
 import static org.bytedeco.javacpp.opencv_core.cvGetSize;
+import static org.bytedeco.javacpp.opencv_core.cvResetImageROI;
 import static org.bytedeco.javacpp.opencv_core.cvSetImageROI;
 import static org.bytedeco.javacpp.opencv_core.cvRect;
 
@@ -22,10 +26,11 @@ public class ConfigFieldMatcher implements FieldMatcher {
 			List<ConfigField> configField) {
 		// TODO Auto-generated method stub
 	//	List<Field> imageResult = new ArrayList<Field>();
-
+		IplImage image = cvCloneImage(workingImage);
 		IplImage ori = cvCreateImage(
-				cvGetSize(workingImage),
-				workingImage.depth(), workingImage.nChannels());
+				cvGetSize(image),
+				image.depth(), image.nChannels());
+		
 		ConfigField singleCF;
 		List<Field> imageField = new ArrayList<Field>();
 		// cut the image
@@ -37,15 +42,15 @@ public class ConfigFieldMatcher implements FieldMatcher {
 			int endX = point[0]+singleCF.getWidth();
 			int endY = point[1]+singleCF.getHeight();
 			cvSetImageROI(ori, cvRect(startX, startY, singleCF.getWidth() , singleCF.getHeight() ));
+			image = cvCreateImage(cvGetSize(ori), ori.depth(),
+					ori.nChannels());
+			cvCopy(ori, image);
+			cvResetImageROI(ori);
+			org.bytedeco.javacpp.opencv_highgui.cvSaveImage(singleCF.getField()+".jpg",image);
 			Field ir = new Field();
 			ir.setConfig(singleCF);
 			ir.setField(singleCF.getField());
-			ir.setImage(ori.getBufferedImage());
-			CanvasFrame canvas = new CanvasFrame("STring", 1);   // gamma=1
-		    canvas.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
-		    CvMat mat = ori.asCvMat();
-		    canvas.setCanvasSize(mat.cols(), mat.rows());
-		    canvas.showImage(ori);
+			ir.setImage(image.getBufferedImage());
 			imageField.add(ir);
 		}
 
