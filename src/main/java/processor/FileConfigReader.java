@@ -27,7 +27,7 @@ public class FileConfigReader implements ConfigReader {
 			String table = null;
 			while ((line = reader.readLine()) != null) {
 				if (line.startsWith("#")) {
-					table = line.substring(1, line.length() - 2);
+					table = line.substring(1, line.length() - 1);
 					continue;
 				}
 				if (null == table)

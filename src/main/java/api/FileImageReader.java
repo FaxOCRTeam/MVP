@@ -35,7 +35,7 @@ public class FileImageReader {
 		
 		//Load to Color
 		 originImage = cvLoadImage(fileFullPath, CV_LOAD_IMAGE_COLOR);
-		 cvShowImage("origin", originImage);
+	//	 cvShowImage("origin", originImage);
 		 
 		//Covert to Gray
 		 grayImage = cvCreateImage(cvGetSize(originImage), IPL_DEPTH_8U, 1);
