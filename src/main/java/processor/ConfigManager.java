@@ -21,6 +21,7 @@ public class ConfigManager {
 	
 	 ConfigManager manager = new ConfigManager(); 
 		 
+	 
 	 // TODO ::  Read File image (Class FileImageReader)
 	   
 //	 String filePath ="";

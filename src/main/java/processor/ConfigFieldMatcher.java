@@ -26,10 +26,10 @@ public class ConfigFieldMatcher implements FieldMatcher {
 			List<ConfigField> configField) {
 		// TODO Auto-generated method stub
 	//	List<Field> imageResult = new ArrayList<Field>();
-		IplImage image = cvCloneImage(workingImage);
+		//IplImage image = cvCloneImage(workingImage);
 		IplImage ori = cvCreateImage(
-				cvGetSize(image),
-				image.depth(), image.nChannels());
+				cvGetSize(workingImage),
+				workingImage.depth(), workingImage.nChannels());
 		
 		ConfigField singleCF;
 		List<Field> imageField = new ArrayList<Field>();
@@ -41,16 +41,21 @@ public class ConfigFieldMatcher implements FieldMatcher {
 			int startY = point[1];
 			int endX = point[0]+singleCF.getWidth();
 			int endY = point[1]+singleCF.getHeight();
+			IplImage image = cvCloneImage(workingImage);
+			IplImage blobImage;
+			cvCopy(image, ori);
+			
 			cvSetImageROI(ori, cvRect(startX, startY, singleCF.getWidth() , singleCF.getHeight() ));
-			image = cvCreateImage(cvGetSize(ori), ori.depth(),
+			blobImage = cvCreateImage(cvGetSize(ori), ori.depth(),
 					ori.nChannels());
-			cvCopy(ori, image);
+			cvCopy(ori, blobImage);
+
 			cvResetImageROI(ori);
-			org.bytedeco.javacpp.opencv_highgui.cvSaveImage(singleCF.getField()+".jpg",image);
+			org.bytedeco.javacpp.opencv_highgui.cvSaveImage(singleCF.getField()+".jpg",blobImage);
 			Field ir = new Field();
 			ir.setConfig(singleCF);
 			ir.setField(singleCF.getField());
-			ir.setImage(image.getBufferedImage());
+			ir.setImage(blobImage.getBufferedImage());
 			imageField.add(ir);
 		}
 
