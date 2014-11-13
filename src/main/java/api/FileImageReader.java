@@ -40,14 +40,14 @@ public class FileImageReader {
 		//Covert to Gray
 		 grayImage = cvCreateImage(cvGetSize(originImage), IPL_DEPTH_8U, 1);
          cvCvtColor(originImage, grayImage, CV_BGR2GRAY);
-         cvShowImage("gray", grayImage);
-         org.bytedeco.javacpp.opencv_highgui.cvSaveImage("gray.jpg",grayImage);
+       //  cvShowImage("gray", grayImage);
+     //    org.bytedeco.javacpp.opencv_highgui.cvSaveImage("gray.jpg",grayImage);
          
         //Covert to Binary 
      	 binaryImage = cvCreateImage(cvGetSize(grayImage), IPL_DEPTH_8U, 1);
 		 cvThreshold(grayImage, binaryImage, 100, 255, CV_THRESH_BINARY);
-	     cvShowImage("binary", binaryImage);
-         org.bytedeco.javacpp.opencv_highgui.cvSaveImage("binaryImage.jpg",binaryImage);
+	  //   cvShowImage("binary", binaryImage);
+     //    org.bytedeco.javacpp.opencv_highgui.cvSaveImage("binaryImage.jpg",binaryImage);
 
 	}
 }

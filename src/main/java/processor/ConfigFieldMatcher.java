@@ -51,7 +51,7 @@ public class ConfigFieldMatcher implements FieldMatcher {
 			cvCopy(ori, blobImage);
 
 			cvResetImageROI(ori);
-			org.bytedeco.javacpp.opencv_highgui.cvSaveImage(singleCF.getField()+".jpg",blobImage);
+		//	org.bytedeco.javacpp.opencv_highgui.cvSaveImage(singleCF.getField()+".jpg",blobImage);
 			Field ir = new Field();
 			ir.setConfig(singleCF);
 			ir.setField(singleCF.getField());
