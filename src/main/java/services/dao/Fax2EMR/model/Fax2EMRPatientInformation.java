@@ -2,17 +2,17 @@ package services.dao.Fax2EMR.model;
 
 
 public class Fax2EMRPatientInformation {
-	Integer id;
-	String Last_Name;
-	String First_Name;
-	String Date_Of_Birth;
-	String Address;
-	String Phone;
-	String Medical_Record_Number;
-	String Collection_Date;
-	String Collection_Time;
-	String Diagnosis;
-	String Client_code;
+	public Integer id;
+	public String Last_Name;
+	public String First_Name;
+	public String Date_Of_Birth;
+	public String Address;
+	public String Phone;
+	public String Medical_Record_Number;
+	public String Collection_Date;
+	public String Collection_Time;
+	public String Diagnosis;
+	public String Client_code;
 	public Integer getId() {
 		return this.id;
 	}

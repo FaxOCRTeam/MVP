@@ -13,6 +13,7 @@ public class ContentProcessor {
 	public List<Field> process(List<Field> fields) throws TesseractException{
 		ImageRecognizer imageRecognizer = new TesseractImageRecognizer();
 		for(Field f:fields){
+		//	System.out.println(f.getField());
 			String filedContent = imageRecognizer.getString(f.getImage());
 			f.setContent(filedContent);
 		}
