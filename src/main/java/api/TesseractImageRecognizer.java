@@ -16,7 +16,7 @@ public class TesseractImageRecognizer implements ImageRecognizer {
 		String str = null;
 		try {
 			str = tesseract.doOCR(segment).trim();
-		//	System.out.println(str);
+			System.out.println(str);
 		} catch (TesseractException e) {
 			e.printStackTrace();
 		}

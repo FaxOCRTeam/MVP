@@ -33,7 +33,7 @@ public class ConfigManager {
 	 // TODO ::	 Process Image (Class ImageProcessor)
 	 ImageProcessor imageProcessor = new ImageProcessor();
 	 InputStream configStream = ConfigManager.class.getClassLoader().getResourceAsStream("ImageSegment.config");
-	 List<Field> imageField = imageProcessor.process(configStream, "Freddie's Form.jpg");
+	 List<Field> imageField = imageProcessor.process(configStream, "Lacey 's Form.jpg");
 	// imageProcessor.process(configStream, "F:\\ScanImage.jpg");
 	 
 		 
