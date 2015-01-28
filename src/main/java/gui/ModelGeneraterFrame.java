@@ -33,7 +33,7 @@ public class ModelGeneraterFrame extends JFrame {
 
 	private void initPanels() {
 		setLayout(new GridBagLayout());// set LayoutManager
-		JPanel panel1 = new JPanel();
+		SelectionPanel panel1 = new SelectionPanel();
 		panel1.setBorder(BorderFactory.createLineBorder(Color.gray));
 		GridBagConstraints gbc1 = getDefaultGBC();
 		gbc1.weightx = 70;
