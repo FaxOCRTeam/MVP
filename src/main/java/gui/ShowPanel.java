@@ -1,0 +1,77 @@
+package gui;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+public class ShowPanel extends JPanel {
+
+
+	private static final long serialVersionUID = 1L;
+	
+	  private JButton button1 =null;
+	  private JButton button2 =null;
+	  private JLabel label = null;
+	 
+	  private JTextField field1 = null;
+	  private JTextField field2 = null;
+	  private JTextField field3 = null;
+	  private JTextField field4 = null;
+	 
+	 public ShowPanel()
+	 {
+		 
+		 
+		 button1=new JButton("Ok");
+		 button2=new JButton("Cancel");
+		 field1=new JTextField();
+		 field2=new JTextField();
+		 field3=new JTextField();
+		 field4=new JTextField();
+	     label=new JLabel();
+	    
+	     
+	     this.setLayout(null);
+	     
+	     button1.setBounds(470, 180, 50,20);
+	     button2.setBounds(470, 210, 50,20);
+	     field1.setBounds(470, 10, 80,20);
+	     field2.setBounds(470, 40, 80,20);
+	     field3.setBounds(470, 70, 80,20);
+	     field4.setBounds(470, 100, 80,20);
+	     label.setBounds(10, 10, 300, 200);
+	     
+	     
+	     
+	     add(button1);
+	     add(button2);
+	     add(field1);
+	     add(field2);
+	     add(field3);
+	     add(field4);
+	     add(label);
+	     
+	   	     
+	 }
+	 
+	 public JTextField getField1()
+	 {
+		 return field1;
+	 }
+	 public JTextField getField2()
+	 {
+		 return field2;
+	 }
+	 public JTextField getField3()
+	 {
+		 return field3;
+	 }
+	 public JTextField getField4()
+	 {
+		 return field4;
+	 }
+	 
+	 
+	
+}

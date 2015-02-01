@@ -7,8 +7,11 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class ModelGeneraterFrame extends JFrame {
 
@@ -33,20 +36,23 @@ public class ModelGeneraterFrame extends JFrame {
 
 	private void initPanels() {
 		setLayout(new GridBagLayout());// set LayoutManager
-		SelectionPanel panel1 = new SelectionPanel();
-		panel1.setBorder(BorderFactory.createLineBorder(Color.gray));
-		GridBagConstraints gbc1 = getDefaultGBC();
-		gbc1.weightx = 70;
-		gbc1.weighty = 60;
-		add(panel1, gbc1);
-
-		JPanel panel2 = new JPanel();
+	
+		
+		ShowPanel panel2 = new ShowPanel();
 		panel2.setBorder(BorderFactory.createLineBorder(Color.blue));
 		GridBagConstraints gbc2 = getDefaultGBC();
 		gbc2.gridy = 1;
 		gbc2.weighty = 40;
 		add(panel2, gbc2);
-
+		
+		
+		SelectionPanel panel1 = new SelectionPanel(panel2);
+		panel1.setBorder(BorderFactory.createLineBorder(Color.gray));
+		GridBagConstraints gbc1 = getDefaultGBC();
+		gbc1.weightx = 70;
+		gbc1.weighty = 60;
+		add(panel1, gbc1);
+		
 		JPanel panel3 = new JPanel();
 		panel3.setBorder(BorderFactory.createLineBorder(Color.red));
 		GridBagConstraints gbc3 = getDefaultGBC();
@@ -57,6 +63,8 @@ public class ModelGeneraterFrame extends JFrame {
 		pack();
 
 	}
+	
+	
 
 	private GridBagConstraints getDefaultGBC() {
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -68,6 +76,9 @@ public class ModelGeneraterFrame extends JFrame {
 		gbc.anchor = GridBagConstraints.NORTHWEST;
 		return gbc;
 	}
+	
+	
+	
 
 	public static void main(String[] args) {
 		ModelGeneraterFrame frame = new ModelGeneraterFrame();

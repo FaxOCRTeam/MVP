@@ -10,18 +10,22 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class SelectionPanel extends JPanel {
 
 	private static final long serialVersionUID = -3544461806228328538L;
 
+	
 	SelectionPanel thisObj;
 	Rectangle rect;
 	Point[] dragPoint;
 	boolean dragging;
 
-	public SelectionPanel() {
+	public SelectionPanel(final ShowPanel panel2) {
 		thisObj = this;
 		dragPoint = new Point[2];
 		addMouseListener(new MouseAdapter() {
@@ -60,6 +64,11 @@ public class SelectionPanel extends JPanel {
 
 					}
 				}
+				panel2.getField1().setText(Integer.toString((int)rect.getX()));
+				panel2.getField2().setText(Integer.toString((int)rect.getY()));
+				panel2.getField3().setText(Integer.toString((int)rect.getX()+(int)rect.getWidth()));
+				panel2.getField4().setText(Integer.toString((int)rect.getY()+(int)rect.getHeight()));
+				
 				super.mouseDragged(e);
 				repaint();
 			}
@@ -74,6 +83,8 @@ public class SelectionPanel extends JPanel {
 				super.mouseMoved(e);
 			}
 		});
+		
+		
 	}
 
 	@Override
