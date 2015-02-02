@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -9,9 +10,9 @@ import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.awt.geom.Rectangle2D;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 public class SelectionPanel extends JPanel {
 
@@ -33,6 +34,7 @@ public class SelectionPanel extends JPanel {
 	Status status;
 
 	public SelectionPanel() {
+//		setPreferredSize(new Dimension(1000,1000));
 		thisObj = this;
 		addMouseListener(new MouseAdapter() {
 			@Override
