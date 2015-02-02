@@ -1,5 +1,12 @@
 package gui;
 
+import java.awt.AWTException;
+import java.awt.Rectangle;
+import java.awt.Robot;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -21,8 +28,7 @@ public class ShowPanel extends JPanel {
 	 
 	 public ShowPanel()
 	 {
-		 
-		 
+		 		 
 		 button1=new JButton("Ok");
 		 button2=new JButton("Cancel");
 		 field1=new JTextField();
@@ -41,9 +47,7 @@ public class ShowPanel extends JPanel {
 	     field3.setBounds(470, 70, 80,20);
 	     field4.setBounds(470, 100, 80,20);
 	     label.setBounds(10, 10, 300, 200);
-	     
-	     
-	     
+	          
 	     add(button1);
 	     add(button2);
 	     add(field1);
@@ -51,6 +55,20 @@ public class ShowPanel extends JPanel {
 	     add(field3);
 	     add(field4);
 	     add(label);
+	     
+	     
+	     button2.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				field1.setText(null);
+				field2.setText(null);
+				field3.setText(null);
+				field4.setText(null);
+				label.setIcon(null);
+			}
+	     });
 	     
 	   	     
 	 }
@@ -72,6 +90,16 @@ public class ShowPanel extends JPanel {
 		 return field4;
 	 }
 	 
+	 public JLabel getLabel()
+	 {
+		 return label;
+	 }
 	 
-	
+	 
+	 public static BufferedImage getScreenImage(int x, int y, int w, int h) throws AWTException, InterruptedException {
+	     Robot robot = new Robot();
+	     BufferedImage screen = robot.createScreenCapture(new Rectangle(x, y, w, h));
+		 return screen;
+	 }
+	 
 }
