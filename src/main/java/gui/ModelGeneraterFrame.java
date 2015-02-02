@@ -37,13 +37,14 @@ public class ModelGeneraterFrame extends JFrame {
 		panel1.setBorder(BorderFactory.createLineBorder(Color.gray));
 		GridBagConstraints gbc1 = getDefaultGBC();
 		gbc1.weightx = 70;
-		gbc1.weighty = 60;
+		gbc1.gridheight = 2;
 		add(panel1, gbc1);
 
 		JPanel panel2 = new JPanel();
 		panel2.setBorder(BorderFactory.createLineBorder(Color.blue));
 		GridBagConstraints gbc2 = getDefaultGBC();
-		gbc2.gridy = 1;
+		gbc2.gridx = 1;
+		gbc2.weightx = 30;
 		gbc2.weighty = 40;
 		add(panel2, gbc2);
 
@@ -51,8 +52,8 @@ public class ModelGeneraterFrame extends JFrame {
 		panel3.setBorder(BorderFactory.createLineBorder(Color.red));
 		GridBagConstraints gbc3 = getDefaultGBC();
 		gbc3.gridx = 1;
-		gbc3.gridheight = 2;
-		gbc3.weightx = 30;
+		gbc3.gridy = 1;
+		gbc3.weighty = 60;
 		add(panel3, gbc3);
 		pack();
 
