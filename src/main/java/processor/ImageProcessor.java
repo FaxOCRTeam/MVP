@@ -24,6 +24,7 @@ public class ImageProcessor {
 		
 		FieldMatcher fieldMatcher = new ConfigFieldMatcher();// need initialization
 		List<Field> imgFieldList = fieldMatcher.imageSegmentation(workingImage, conFieldList);
+		
 		return imgFieldList;
 	}
 	

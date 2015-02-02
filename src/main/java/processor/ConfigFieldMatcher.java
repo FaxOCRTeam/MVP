@@ -55,7 +55,7 @@ public class ConfigFieldMatcher implements FieldMatcher {
 			Field ir = new Field();
 			ir.setConfig(singleCF);
 			ir.setField(singleCF.getField());
-			ir.setImage(blobImage.getBufferedImage());
+			ir.setImage(ULremove.underlineRemove(blobImage).getBufferedImage());
 			imageField.add(ir);
 		}
 
