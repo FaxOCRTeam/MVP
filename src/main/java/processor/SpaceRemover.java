@@ -137,7 +137,7 @@ public class SpaceRemover {
 			cvResetImageROI(ori);
 
 			//File output = new File("./src/subimage_"+ pos +"of image"+count+".jpg");
-			File dir = new File("./src/output/image" + count );
+			File dir = new File("./output/image" + count );
 			if(!dir.exists()){
 				dir.mkdirs();
 			}
