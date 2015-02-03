@@ -40,7 +40,6 @@ public class ImagePreprocessor {
 		BufferedImage bImg = image.getBufferedImage(); 
 		ImageDeskew deskew = new ImageDeskew(bImg);
 		double angle = deskew.getSkewAngle();
-		System.out.print(angle);
 		ImageHelper ih = new ImageHelper();
 		BufferedImage rImg = ih.rotateImage(bImg, -angle);
 		IplImage ret = IplImage.createFrom(rImg);
@@ -68,7 +67,7 @@ public class ImagePreprocessor {
 		cvErode(BWImage, WorkingImage, null, ErodeCount);
 		return WorkingImage;
 	}
-	
+/*	
 	public static void main(String[] args) throws IOException{
 		BufferedImage img =  ImageIO.read(new File("p-00003.tif"));
 		IplImage origImg = IplImage.createFrom(img);
@@ -76,10 +75,10 @@ public class ImagePreprocessor {
 		canvas.showImage(origImg);
 		canvas.setSize((int)(img.getWidth()*0.4), (int)(img.getHeight()*0.4));
 		ImagePreprocessor ipp = new ImagePreprocessor(origImg);
-		
 		IplImage processedImg = ipp.deskew(origImg);
 		final CanvasFrame canvas2 = new CanvasFrame("processed");
 		canvas2.showImage(processedImg);
 		canvas2.setSize((int)(img.getWidth()*0.4), (int)(img.getHeight()*0.4));
 	}
+	*/
 }
