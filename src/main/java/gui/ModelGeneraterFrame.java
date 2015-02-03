@@ -34,11 +34,11 @@ public class ModelGeneraterFrame extends JFrame {
 
 	private void initPanels() {
 		setLayout(new GridBagLayout());// set LayoutManager
-		SelectionPanel selectionPanel = new SelectionPanel();
+		FormPanel selectionPanel = new FormPanel();
 		
 		JScrollPane panel1 = new JScrollPane(selectionPanel);
 		panel1.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		panel1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		panel1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		panel1.setBounds(50, 30, 300, 50);
 		
 		panel1.setBorder(BorderFactory.createLineBorder(Color.gray));
@@ -49,7 +49,7 @@ public class ModelGeneraterFrame extends JFrame {
 		add(panel1, gbc1);
 
 		
-		JPanel panel2 = new JPanel();
+		ControlPanel panel2 = new ControlPanel(selectionPanel);
 		panel2.setBorder(BorderFactory.createLineBorder(Color.blue));
 		GridBagConstraints gbc2 = getDefaultGBC();
 		gbc2.gridx = 1;
