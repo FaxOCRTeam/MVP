@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -9,20 +10,27 @@ import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
-public class SelectionPanel extends JPanel {
+public class FormPanel extends JPanel implements FormPanelInterface {
 
 	private static final long serialVersionUID = -3544461806228328538L;
 
-	SelectionPanel thisObj;
+	FormPanel thisObj;
 	Rectangle rect;
 	Rectangle[] resizingRect;
 
 	Point _mouseStart;
 	Rectangle _rectStart;
+
+	BufferedImage image;
 
 	int resizingDirection = -1;
 
@@ -32,7 +40,8 @@ public class SelectionPanel extends JPanel {
 
 	Status status;
 
-	public SelectionPanel() {
+	public FormPanel() {
+		// setPreferredSize(new Dimension(1000,1000));
 		thisObj = this;
 		addMouseListener(new MouseAdapter() {
 			@Override
@@ -153,6 +162,9 @@ public class SelectionPanel extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
+		if (null != image)
+			g2.drawImage(image, 0, 0, this);
+
 		g2.setColor(Color.red);
 		if (null != rect) {
 			g2.draw(rect);
@@ -164,5 +176,18 @@ public class SelectionPanel extends JPanel {
 				g2.draw(rr);
 			}
 		}
+	}
+
+	@Override
+	public void loadImage(File f) {
+		try {
+			this.image = ImageIO.read(f);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Dimension dimension = new Dimension(image.getWidth(), image.getHeight());
+		this.setSize(dimension);
+		this.setPreferredSize(dimension);
+		repaint();
 	}
 }
