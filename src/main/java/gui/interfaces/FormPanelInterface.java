@@ -1,4 +1,4 @@
-package gui;
+package gui.interfaces;
 
 import java.io.File;
 
