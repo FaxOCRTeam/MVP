@@ -1,0 +1,191 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf210
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0\fs24 \cf0 File Width:2458;\
+File Height:\
+3258;\
+Panel Name:\
+PATIENT INFORMATION;\
+Label Count:\
+13;\
+\
+Label #1.Patient Last Name\
+x-coordinate:\
+418;\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 y-coordinate:\
+360;\
+Width:\
+570;\
+Height:\
+50;\
+\
+Label #2. Patient First Name\
+x-coordinate:\
+1033;\
+y-coordinate:\
+360;\
+Width:\
+570;\
+Height:\
+50;\
+\
+Label #3. Date Of Birth\
+x-coordinate:\
+1810;\
+y-coordinate:\
+360;\
+Width:\
+464;\
+Height:\
+50;\
+\
+Label #4. Address\
+x-coordinate:\
+155;\
+y-coordinate:\
+432;\
+Width:\
+1175;\
+Height:\
+50;\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 Label #5. Phone\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 x-coordinate:\
+1464;\
+y-coordinate:\
+432;\
+Width:\
+485;\
+Height:\
+50;\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 Label #6. Gender \
+*Male\
+x-coordinate:\
+2076;\
+y-coordinate:\
+458;\
+Width:\
+22;\
+Height:\
+22;\
+\
+*Female\
+x-coordinate:\
+2190;\
+y-coordinate:\
+458;\
+Width:\
+22;\
+Height:\
+22;\
+\
+Label #7. Medical Record Number\
+x-coordinate:\
+392;\
+y-coordinate:\
+504;\
+Width:\
+364;\
+Height:\
+50;\
+\
+Label #8. Collection Date\
+x-coordinate:\
+1025;\
+y-coordinate:\
+504;\
+Width:\
+410;\
+Height:\
+50;\
+\
+Label #9. Collection Time\
+x-coordinate:\
+1713;\
+y-coordinate:\
+504;\
+Width:\
+184;\
+Height:\
+50;\
+\
+Label #10. Priority\
+*Stat\
+x-coordinate:\
+2056;\
+y-coordinate:\
+533;\
+Width:\
+22;\
+Height:\
+22;\
+\
+*Routine\
+x-coordinate:\
+2187;\
+y-coordinate:\
+533;\
+Width:\
+22;\
+Height:\
+22;\
+\
+Label #11. Diagnosis\
+x-coordinate:\
+400;\
+y-coordinate:\
+584;\
+Width:\
+860;\
+Height:\
+50;\
+\
+Label #12. Bill To\
+*Pt Self Pay\
+x-coordinate:\
+1398;\
+y-coordinate:\
+608;\
+Width:\
+22;\
+Height:\
+22;\
+\
+*Insurance\
+x-coordinate:\
+1608;\
+y-coordinate:\
+608;\
+Width:\
+22;\
+Height:\
+22;\
+\
+*Client\
+x-coordinate:\
+1812;\
+y-coordinate:\
+608;\
+Width:\
+22;\
+Height:\
+22;\
+\
+Label #13. Client code\
+x-coordinate:\
+2112;\
+y-coordinate:\
+584;\
+Width:\
+163;\
+Height:\
+50;}
