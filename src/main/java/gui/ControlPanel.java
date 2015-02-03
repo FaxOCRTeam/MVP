@@ -1,5 +1,9 @@
 package gui;
 
+import gui.interfaces.DisplayCoordinatesInterface;
+import gui.interfaces.FormPanelInterface;
+import gui.models.FormField;
+
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -25,6 +29,7 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface 
 	ControlPanel thisObj = null;
 
 	JLabel[] coordinatesLabels;
+	JTextField nameField;
 
 	int[] coordinates;
 
@@ -56,25 +61,40 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface 
 				formPanel.cancelSelection();
 			}
 		});
+		JButton saveButton = new JButton("save");
+		saveButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				FormField field = new FormField(nameField.getText(), coordinates);
+				System.out.println(field);
+				if(null != field.getName() && !"".equals(field.getName())) {
+					formPanel.cancelSelection();
+					nameField.setText("");
+					for (JLabel jl : coordinatesLabels)
+						jl.setText("");
+				} else {
+					JOptionPane.showMessageDialog(thisObj, "field name is required");
+					nameField.requestFocus();
+				}
+			}
+		});
 
 		JPanel coordinatesPanel = new JPanel();
 		SpringLayout csl = new SpringLayout();
-		Dimension cd = new Dimension(160, 150);
+		Dimension cd = new Dimension(200, 150);
 		coordinatesPanel.setSize(cd);
 		coordinatesPanel.setPreferredSize(cd);
 		coordinatesPanel.setLayout(csl);
-		coordinatesPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "selection coordinates"));
+		coordinatesPanel.setBorder(BorderFactory.createTitledBorder(//
+				BorderFactory.createEtchedBorder(), "form column"));
 		coordinatesLabels = new JLabel[4];
-		JTextField[] titleLabels = new JTextField[4];
+		JLabel[] titleLabels = new JLabel[4];
 		String[] titles = new String[] { "X", "Y", "Width", "Height" };
 		// int maxWidth = 0;
 		for (int i = 0; i < 4; i++) {
-			titleLabels[i] = new JTextField(titles[i]);
+			titleLabels[i] = new JLabel(titles[i]);
 			coordinatesLabels[i] = new JLabel();
-			// int w = titleLabels[i].getWidth();
 
-			// if (maxWidth < w)
-			// maxWidth = w;
 			coordinatesPanel.add(titleLabels[i]);
 			coordinatesPanel.add(coordinatesLabels[i]);
 			csl.putConstraint(SpringLayout.WEST, titleLabels[i], 5, SpringLayout.WEST, coordinatesPanel);
@@ -87,10 +107,23 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface 
 				csl.putConstraint(SpringLayout.NORTH, coordinatesLabels[i], 5, SpringLayout.SOUTH, titleLabels[i - 1]);
 			}
 		}
-		coordinatesPanel.validate();
+		nameField = new JTextField();
+		JLabel nfLabel = new JLabel("name");
+		Dimension nfDimention = new Dimension(120, 20);
+		nameField.setSize(nfDimention);
+		nameField.setPreferredSize(nfDimention);
+		nameField.setHorizontalAlignment(JTextField.RIGHT);
+		coordinatesPanel.add(nfLabel);
+		coordinatesPanel.add(nameField);
+		csl.putConstraint(SpringLayout.WEST, nfLabel, 5, SpringLayout.WEST, coordinatesPanel);
+		csl.putConstraint(SpringLayout.EAST, nameField, -5, SpringLayout.EAST, coordinatesPanel);
+		csl.putConstraint(SpringLayout.NORTH, nfLabel, 5, SpringLayout.SOUTH, titleLabels[3]);
+		csl.putConstraint(SpringLayout.NORTH, nameField, 5, SpringLayout.SOUTH, titleLabels[3]);
+
 		add(loadButton);
 		add(cancelButton);
 		add(coordinatesPanel);
+		add(saveButton);
 
 		springLayout.putConstraint(SpringLayout.WEST, loadButton, 5, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, loadButton, 5, SpringLayout.NORTH, this);
@@ -99,8 +132,9 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface 
 
 		springLayout.putConstraint(SpringLayout.WEST, coordinatesPanel, 5, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, coordinatesPanel, 5, SpringLayout.SOUTH, loadButton);
-		coordinatesPanel.setVisible(true);
 
+		springLayout.putConstraint(SpringLayout.WEST, saveButton, 5, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, saveButton, 5, SpringLayout.SOUTH, coordinatesPanel);
 	}
 
 	@Override
