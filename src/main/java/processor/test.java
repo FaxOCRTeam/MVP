@@ -52,16 +52,17 @@ public class test {
 		String dir = "./input/";
 		IplImage originImage = cvLoadImage(dir+"test.png", CV_LOAD_IMAGE_GRAYSCALE);
 		
-		
 		// image preprocessing
 		IplImage binaryImage = cvCreateImage(cvGetSize(originImage),
 					IPL_DEPTH_8U, 1);
 		cvThreshold(originImage, binaryImage, 100, 255, CV_THRESH_BINARY);
 		cvErode(binaryImage, binaryImage, null, 1);
 		cvDilate(binaryImage, binaryImage, null, 1);
+		
 		// underline removal
 		IplImage ulremovedImg = ULremover.underlineRemove(binaryImage)
 	;		
+		org.bytedeco.javacpp.opencv_highgui.cvSaveImage("output/ulRemovedTest.jpg", ulremovedImg);
 		// word segmentation
 		SpaceRemover.spaceRemove(ulremovedImg,2);
 	}
