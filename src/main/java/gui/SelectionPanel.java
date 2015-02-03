@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Robot;
@@ -13,6 +14,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -27,6 +29,10 @@ public class SelectionPanel extends JPanel {
 	Rectangle rect;
 	Point[] dragPoint;
 	boolean dragging;
+	
+	int x1,x2,x3,x4;
+	
+	private Image image;
 
 	public SelectionPanel(final ShowPanel panel2) {
 		thisObj = this;
@@ -50,6 +56,21 @@ public class SelectionPanel extends JPanel {
 			public void mouseReleased(MouseEvent e) {
 				dragging = false;
 				dragPoint[0] = null;
+				
+				Object object =e.getSource();
+				javax.swing.JPanel panel = (javax.swing.JPanel) object;
+				java.awt.Point leftpoint = panel.getLocationOnScreen();
+				
+				
+				try {
+					image = ShowPanel.getScreenImage((int)(rect.getX()+leftpoint.getX()), (int)(rect.getY()+leftpoint.getY()) ,(int)rect.getWidth(),(int)rect.getHeight());
+				} catch (AWTException e1) {
+					e1.printStackTrace();
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+				
+				panel2.getLabel().setIcon(new ImageIcon(image));
 				super.mouseReleased(e);
 			}
 		});
