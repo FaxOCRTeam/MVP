@@ -37,7 +37,7 @@ public class FileChoosingUtils {
 			}
 			// callback.process(selectedFile.getAbsolutePath());
 		} else {
-			System.out.println(String.format("Selection canceled~"));
+			System.out.println(String.format("[FileChoosingUtil]Selection canceled~"));
 			return null;
 		}
 		return result;

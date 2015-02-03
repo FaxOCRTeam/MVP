@@ -14,6 +14,8 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -31,6 +33,8 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 	Rectangle _rectStart;
 
 	BufferedImage image;
+
+	List<DisplayCoordinatesInterface> coNotifierList = new ArrayList<DisplayCoordinatesInterface>();
 
 	int resizingDirection = -1;
 
@@ -116,6 +120,7 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 					}
 					updateResizingRect();
 				}
+				notifyRect();
 				super.mouseDragged(e);
 				repaint();
 			}
@@ -146,7 +151,7 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 		});
 	}
 
-	public void updateResizingRect() {
+	private void updateResizingRect() {
 		final int resizeSize = 8;
 		resizingRect[0].setBounds((int) (rect.getX() - resizeSize / 2),//
 				(int) (rect.getY() - resizeSize / 2), resizeSize, resizeSize);
@@ -158,23 +163,36 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 				(int) (rect.getY() + rect.getHeight() - resizeSize / 2), resizeSize, resizeSize);
 	}
 
+	private void notifyRect() {
+		int[] rectCoordinates = new int[] { (int) rect.getX(), (int) rect.getY(), //
+				(int) rect.getWidth(), (int) rect.getHeight() };
+		for (DisplayCoordinatesInterface dci : coNotifierList) {
+			dci.setCoordinates(rectCoordinates);
+		}
+
+	}
+
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
+
 		if (null != image)
 			g2.drawImage(image, 0, 0, this);
-
 		g2.setColor(Color.red);
 		if (null != rect) {
 			g2.draw(rect);
-		}
-		if (null != resizingRect) {
-			g2.setColor(Color.gray);
-			for (Rectangle rr : resizingRect) {
-				g2.clearRect((int) rr.getX(), (int) rr.getY(), (int) rr.getWidth(), (int) rr.getHeight());
-				g2.draw(rr);
+			if (null != resizingRect) {
+				g2.setColor(Color.gray);
+				for (Rectangle rr : resizingRect) {
+					g2.clearRect((int) rr.getX(), (int) rr.getY(), (int) rr.getWidth(), (int) rr.getHeight());
+					g2.draw(rr);
+				}
 			}
+		} else {
+			g2.clearRect(getX(), getY(), getWidth(), getHeight());
+			if (null != image)
+				g2.drawImage(image, 0, 0, this);
 		}
 	}
 
@@ -189,5 +207,20 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 		this.setSize(dimension);
 		this.setPreferredSize(dimension);
 		repaint();
+	}
+
+	@Override
+	public void cancelSelection() {
+		rect = null;
+		resizingRect = null;
+		status = Status.silence;
+		_rectStart = null;
+		_mouseStart = null;
+		repaint();
+	}
+
+	@Override
+	public void addCoordinatesNotifier(DisplayCoordinatesInterface dci) {
+		coNotifierList.add(dci);
 	}
 }
