@@ -28,6 +28,7 @@ import static org.bytedeco.javacpp.opencv_imgproc.cvThreshold;
 public class SpaceRemover {
 	public static void main(String[] args) {
 		String dir = "./src/input/";
+		System.out.print(dir);
 		//String dir = "./src/input1/";
 		for (int i=1; i<16; i++){
 			String file = dir + "image" + i + ".jpg";
