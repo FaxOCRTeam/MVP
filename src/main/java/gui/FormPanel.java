@@ -2,6 +2,7 @@ package gui;
 
 import gui.interfaces.DisplayCoordinatesInterface;
 import gui.interfaces.FormPanelInterface;
+import gui.interfaces.ModelModificationInterface;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -226,4 +227,5 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 	public void addCoordinatesNotifier(DisplayCoordinatesInterface dci) {
 		coNotifierList.add(dci);
 	}
+
 }

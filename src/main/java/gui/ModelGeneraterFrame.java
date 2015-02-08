@@ -57,13 +57,15 @@ public class ModelGeneraterFrame extends JFrame {
 		add(panel2, gbc2);
 		selectionPanel.addCoordinatesNotifier(panel2);
 
-		JPanel panel3 = new JPanel();
+		ModelPanel panel3 = new ModelPanel();
 		panel3.setBorder(BorderFactory.createLineBorder(Color.red));
 		GridBagConstraints gbc3 = getDefaultGBC();
 		gbc3.gridx = 1;
 		gbc3.gridy = 1;
 		gbc3.weighty = 60;
 		add(panel3, gbc3);
+		panel2.addModelAddNotifier(panel3);
+
 		pack();
 
 	}
