@@ -1,7 +1,9 @@
 package gui;
 
+import gui.interfaces.ControlPanelInterface;
 import gui.interfaces.DisplayCoordinatesInterface;
 import gui.interfaces.FormPanelInterface;
+import gui.interfaces.ModelModificationInterface;
 import gui.models.FormField;
 
 import java.awt.Dimension;
@@ -9,6 +11,7 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -21,9 +24,11 @@ import javax.swing.SpringLayout;
 
 import utils.FileChoosingUtils;
 
-public class ControlPanel extends JPanel implements DisplayCoordinatesInterface {
+public class ControlPanel extends JPanel implements DisplayCoordinatesInterface, ControlPanelInterface {
 
 	private static final long serialVersionUID = -4096249866634543665L;
+
+	List<ModelModificationInterface> mmNotifierList = new ArrayList<ModelModificationInterface>();
 
 	FormPanelInterface formPanel;
 	ControlPanel thisObj = null;
@@ -66,8 +71,11 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				FormField field = new FormField(nameField.getText(), coordinates);
-				System.out.println(field);
-				if(null != field.getName() && !"".equals(field.getName())) {
+				for (ModelModificationInterface mmi : mmNotifierList) {
+					mmi.addField(field);
+				}
+				// System.out.println(field);
+				if (null != field.getName() && !"".equals(field.getName())) {
 					formPanel.cancelSelection();
 					nameField.setText("");
 					for (JLabel jl : coordinatesLabels)
@@ -147,6 +155,11 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface 
 		this.coordinates = coordinates.clone();
 		for (int i = 0; i < coordinates.length; i++)
 			this.coordinatesLabels[i].setText(coordinates[i] + "");
+	}
+
+	@Override
+	public void addModelAddNotifier(ModelModificationInterface mmi) {
+		mmNotifierList.add(mmi);
 	}
 
 }
