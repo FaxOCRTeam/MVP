@@ -8,4 +8,6 @@ public interface FormPanelInterface {
 	void cancelSelection();
 
 	void addCoordinatesNotifier(DisplayCoordinatesInterface dci);
+	
+	void setSelection(int[] selection);
 }

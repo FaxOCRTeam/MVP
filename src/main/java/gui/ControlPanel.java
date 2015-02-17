@@ -3,6 +3,7 @@ package gui;
 import gui.interfaces.ControlPanelInterface;
 import gui.interfaces.DisplayCoordinatesInterface;
 import gui.interfaces.FormPanelInterface;
+import gui.interfaces.MainCoordinateInterface;
 import gui.interfaces.ModelModificationInterface;
 import gui.models.FormField;
 
@@ -22,9 +23,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
+import com.mysql.jdbc.StringUtils;
+
 import utils.FileChoosingUtils;
 
-public class ControlPanel extends JPanel implements DisplayCoordinatesInterface, ControlPanelInterface {
+public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
+		ControlPanelInterface, MainCoordinateInterface {
 
 	private static final long serialVersionUID = -4096249866634543665L;
 
@@ -70,12 +74,8 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 		saveButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FormField field = new FormField(nameField.getText(), coordinates);
-				for (ModelModificationInterface mmi : mmNotifierList) {
-					mmi.addField(field);
-				}
-				// System.out.println(field);
-				if (null != field.getName() && !"".equals(field.getName())) {
+				boolean succuss = saveCoordinates();
+				if (succuss) {
 					formPanel.cancelSelection();
 					nameField.setText("");
 					for (JLabel jl : coordinatesLabels)
@@ -105,14 +105,20 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 
 			coordinatesPanel.add(titleLabels[i]);
 			coordinatesPanel.add(coordinatesLabels[i]);
-			csl.putConstraint(SpringLayout.WEST, titleLabels[i], 5, SpringLayout.WEST, coordinatesPanel);
-			csl.putConstraint(SpringLayout.EAST, coordinatesLabels[i], -15, SpringLayout.EAST, coordinatesPanel);
+			csl.putConstraint(SpringLayout.WEST, titleLabels[i], 5, SpringLayout.WEST,
+					coordinatesPanel);
+			csl.putConstraint(SpringLayout.EAST, coordinatesLabels[i], -15, SpringLayout.EAST,
+					coordinatesPanel);
 			if (i == 0) {
-				csl.putConstraint(SpringLayout.NORTH, titleLabels[i], 5, SpringLayout.NORTH, coordinatesPanel);
-				csl.putConstraint(SpringLayout.NORTH, coordinatesLabels[i], 5, SpringLayout.NORTH, coordinatesPanel);
+				csl.putConstraint(SpringLayout.NORTH, titleLabels[i], 5, SpringLayout.NORTH,
+						coordinatesPanel);
+				csl.putConstraint(SpringLayout.NORTH, coordinatesLabels[i], 5,
+						SpringLayout.NORTH, coordinatesPanel);
 			} else {
-				csl.putConstraint(SpringLayout.NORTH, titleLabels[i], 5, SpringLayout.SOUTH, titleLabels[i - 1]);
-				csl.putConstraint(SpringLayout.NORTH, coordinatesLabels[i], 5, SpringLayout.SOUTH, titleLabels[i - 1]);
+				csl.putConstraint(SpringLayout.NORTH, titleLabels[i], 5, SpringLayout.SOUTH,
+						titleLabels[i - 1]);
+				csl.putConstraint(SpringLayout.NORTH, coordinatesLabels[i], 5,
+						SpringLayout.SOUTH, titleLabels[i - 1]);
 			}
 		}
 		nameField = new JTextField();
@@ -124,7 +130,8 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 		coordinatesPanel.add(nfLabel);
 		coordinatesPanel.add(nameField);
 		csl.putConstraint(SpringLayout.WEST, nfLabel, 5, SpringLayout.WEST, coordinatesPanel);
-		csl.putConstraint(SpringLayout.EAST, nameField, -5, SpringLayout.EAST, coordinatesPanel);
+		csl.putConstraint(SpringLayout.EAST, nameField, -5, SpringLayout.EAST,
+				coordinatesPanel);
 		csl.putConstraint(SpringLayout.NORTH, nfLabel, 5, SpringLayout.SOUTH, titleLabels[3]);
 		csl.putConstraint(SpringLayout.NORTH, nameField, 5, SpringLayout.SOUTH, titleLabels[3]);
 
@@ -134,15 +141,21 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 		add(saveButton);
 
 		springLayout.putConstraint(SpringLayout.WEST, loadButton, 5, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.NORTH, loadButton, 5, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, cancelButton, 5, SpringLayout.EAST, loadButton);
-		springLayout.putConstraint(SpringLayout.NORTH, cancelButton, 5, SpringLayout.NORTH, this);
+		springLayout
+				.putConstraint(SpringLayout.NORTH, loadButton, 5, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, cancelButton, 5, SpringLayout.EAST,
+				loadButton);
+		springLayout.putConstraint(SpringLayout.NORTH, cancelButton, 5, SpringLayout.NORTH,
+				this);
 
-		springLayout.putConstraint(SpringLayout.WEST, coordinatesPanel, 5, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.NORTH, coordinatesPanel, 5, SpringLayout.SOUTH, loadButton);
+		springLayout.putConstraint(SpringLayout.WEST, coordinatesPanel, 5, SpringLayout.WEST,
+				this);
+		springLayout.putConstraint(SpringLayout.NORTH, coordinatesPanel, 5,
+				SpringLayout.SOUTH, loadButton);
 
 		springLayout.putConstraint(SpringLayout.WEST, saveButton, 5, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.NORTH, saveButton, 5, SpringLayout.SOUTH, coordinatesPanel);
+		springLayout.putConstraint(SpringLayout.NORTH, saveButton, 5, SpringLayout.SOUTH,
+				coordinatesPanel);
 	}
 
 	@Override
@@ -158,8 +171,32 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 	}
 
 	@Override
+	public void setCoordinatesAndName(int[] coordinates, String name, boolean notify) {
+		nameField.setText(name);
+		if (notify) {
+			formPanel.setSelection(coordinates);
+		} else {
+			setCoordinates(coordinates);
+		}
+		repaint();
+
+	}
+
+	@Override
 	public void addModelAddNotifier(ModelModificationInterface mmi) {
 		mmNotifierList.add(mmi);
+	}
+
+	@Override
+	public boolean saveCoordinates() {
+		if (StringUtils.isNullOrEmpty(nameField.getText()))
+			return false;
+
+		FormField field = new FormField(nameField.getText(), coordinates);
+		for (ModelModificationInterface mmi : mmNotifierList) {
+			mmi.addField(field);
+		}
+		return true;
 	}
 
 }

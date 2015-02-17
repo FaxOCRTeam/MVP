@@ -81,9 +81,6 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				status = Status.silence;
-				resizingRect = new Rectangle[4];
-				for (int i = 0; i < resizingRect.length; i++)
-					resizingRect[i] = new Rectangle();
 				updateResizingRect();
 				repaint();
 				super.mouseReleased(e);
@@ -94,7 +91,8 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				if (status == Status.initialing) {
-					rect.setSize((int) (e.getX() - rect.getX()), (int) (e.getY() - rect.getY()));
+					rect.setSize((int) (e.getX() - rect.getX()),
+							(int) (e.getY() - rect.getY()));
 				} else {
 					int mouseDeltaX = (int) e.getX() - (int) _mouseStart.getX();
 					int mouseDeltaY = (int) e.getY() - (int) _mouseStart.getY();
@@ -114,7 +112,8 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 									(int) (_rectStart.getY()), //
 									(int) (rbX - e.getX()), (int) (e.getY() - rect.getY()));
 						} else {
-							rect.setSize((int) (e.getX() - rect.getX()), (int) (e.getY() - rect.getY()));
+							rect.setSize((int) (e.getX() - rect.getX()),
+									(int) (e.getY() - rect.getY()));
 						}
 
 					} else if (status == Status.relocating) {
@@ -131,20 +130,24 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 
 			@Override
 			public void mouseMoved(MouseEvent e) {
-				final int[] resizingCursorIndex = new int[] { Cursor.NW_RESIZE_CURSOR, Cursor.NE_RESIZE_CURSOR, Cursor.SW_RESIZE_CURSOR, Cursor.SE_RESIZE_CURSOR };
+				final int[] resizingCursorIndex = new int[] { Cursor.NW_RESIZE_CURSOR,
+						Cursor.NE_RESIZE_CURSOR, Cursor.SW_RESIZE_CURSOR,
+						Cursor.SE_RESIZE_CURSOR };
 				if (null != rect) {
 					boolean cursorResizing = false;
 					if (status == Status.silence) {
 						for (int i = 0; i < resizingRect.length; i++) {
 							if (resizingRect[i].contains(e.getX(), e.getY())) {
-								thisObj.setCursor(Cursor.getPredefinedCursor(resizingCursorIndex[i]));
+								thisObj.setCursor(Cursor
+										.getPredefinedCursor(resizingCursorIndex[i]));
 								cursorResizing = true;
 								break;
 							}
 						}
 						if (!cursorResizing)
 							if (rect.contains(e.getX(), e.getY()))
-								thisObj.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+								thisObj.setCursor(Cursor
+										.getPredefinedCursor(Cursor.HAND_CURSOR));
 							else
 								thisObj.setCursor(Cursor.getDefaultCursor());
 					}
@@ -156,15 +159,24 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 	}
 
 	private void updateResizingRect() {
+		if (null == resizingRect) {
+			resizingRect = new Rectangle[4];
+			for (int i = 0; i < resizingRect.length; i++)
+				resizingRect[i] = new Rectangle();
+		}
 		final int resizeSize = 8;
 		resizingRect[0].setBounds((int) (rect.getX() - resizeSize / 2),//
 				(int) (rect.getY() - resizeSize / 2), resizeSize, resizeSize);
 		resizingRect[1].setBounds((int) (rect.getX() + rect.getWidth() - resizeSize / 2),//
 				(int) (rect.getY() - resizeSize / 2), resizeSize, resizeSize);
-		resizingRect[2].setBounds((int) (rect.getX() - resizeSize / 2),//
-				(int) (rect.getY() + rect.getHeight() - resizeSize / 2), resizeSize, resizeSize);
-		resizingRect[3].setBounds((int) (rect.getX() + rect.getWidth() - resizeSize / 2),//
-				(int) (rect.getY() + rect.getHeight() - resizeSize / 2), resizeSize, resizeSize);
+		resizingRect[2].setBounds(
+				(int) (rect.getX() - resizeSize / 2),//
+				(int) (rect.getY() + rect.getHeight() - resizeSize / 2), resizeSize,
+				resizeSize);
+		resizingRect[3].setBounds(
+				(int) (rect.getX() + rect.getWidth() - resizeSize / 2),//
+				(int) (rect.getY() + rect.getHeight() - resizeSize / 2), resizeSize,
+				resizeSize);
 	}
 
 	private void notifyRect() {
@@ -189,7 +201,8 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 			if (null != resizingRect) {
 				g2.setColor(Color.gray);
 				for (Rectangle rr : resizingRect) {
-					g2.clearRect((int) rr.getX(), (int) rr.getY(), (int) rr.getWidth(), (int) rr.getHeight());
+					g2.clearRect((int) rr.getX(), (int) rr.getY(), (int) rr.getWidth(),
+							(int) rr.getHeight());
 					g2.draw(rr);
 				}
 			}
@@ -226,6 +239,15 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 	@Override
 	public void addCoordinatesNotifier(DisplayCoordinatesInterface dci) {
 		coNotifierList.add(dci);
+	}
+
+	@Override
+	public void setSelection(int[] selection) {
+		rect = new Rectangle(selection[0], selection[1], selection[2], selection[3]);
+		updateResizingRect();
+		notifyRect();
+		repaint();
+
 	}
 
 }
