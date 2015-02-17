@@ -18,7 +18,7 @@ public class FileChoosingUtils {
 		int chooseReturn = chooser.showOpenDialog(null);
 		if (chooseReturn == JFileChooser.APPROVE_OPTION) {
 			File selectedFile = chooser.getSelectedFile();
-			if(null != selectedFile) {
+			if (null != selectedFile) {
 				result.add(selectedFile);
 				if (key != null) {
 					ConfigurationUtil.update(key, selectedFile.getAbsolutePath());
@@ -29,13 +29,12 @@ public class FileChoosingUtils {
 					for (File f : selectedFiles) {
 						result.add(f);
 					}
-					if(selectedFiles.length > 0 && key != null) {
+					if (selectedFiles.length > 0 && key != null) {
 						ConfigurationUtil.update(key, selectedFiles[0].getAbsolutePath());
 					}
 				}
 
 			}
-			// callback.process(selectedFile.getAbsolutePath());
 		} else {
 			System.out.println(String.format("[FileChoosingUtil]Selection canceled~"));
 			return null;
