@@ -115,16 +115,18 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 							rect.setSize((int) (e.getX() - rect.getX()),
 									(int) (e.getY() - rect.getY()));
 						} else if (resizingDirection == 4) {
-							rect.setSize((int) (e.getX() - rect.getX()),
-									(int) (e.getY() - rect.getY()));
+							rect.setBounds((int) (_rectStart.getX()),//
+									(int) (_rectStart.getY() + mouseDeltaY), //
+									(int) (rect.getWidth()), (int) (rbY - e.getY()));
 						} else if (resizingDirection == 5) {
 							rect.setSize((int) (e.getX() - rect.getX()),
-									(int) (e.getY() - rect.getY()));
+									(int) (rect.getHeight()));
 						} else if (resizingDirection == 6) {
-							rect.setSize((int) (e.getX() - rect.getX()),
-									(int) (e.getY() - rect.getY()));
+							rect.setBounds((int) (_rectStart.getX() + mouseDeltaX),//
+									(int) (_rectStart.getY()), //
+									(int) (rbX - e.getX()), (int) (rect.getHeight()));
 						} else if (resizingDirection == 7) {
-							rect.setSize((int) (e.getX() - rect.getX()),
+							rect.setSize((int) (rect.getWidth()),
 									(int) (e.getY() - rect.getY()));
 						}
 
