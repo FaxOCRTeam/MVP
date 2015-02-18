@@ -92,8 +92,6 @@ public class ModelPanel extends JPanel implements ModelModificationInterface {
 									JOptionPane.QUESTION_MESSAGE, null, //
 									new String[]{"Export", "No", "Cancel"}, //
 									null);
-//					System.out.println(">>" + selection);
-//					return;
 					if(selection == 0)
 						exportAxtion.actionPerformed(e);
 					else if (selection == -1 || selection == 2)
@@ -101,7 +99,8 @@ public class ModelPanel extends JPanel implements ModelModificationInterface {
 				}
 				List<File> chooseFile = FileChoosingUtils.chooseFile("model");
 				if (null != chooseFile && chooseFile.size() > 0) {
-					saveToModelFile(chooseFile.get(0));
+					loadFromFile(chooseFile.get(0));
+					_regenerateColumnDisplay();
 				} else {
 					JOptionPane.showMessageDialog(thisObj, "No file chosen");
 				}

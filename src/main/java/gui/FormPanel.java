@@ -111,8 +111,22 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 							rect.setBounds((int) (_rectStart.getX() + mouseDeltaX),//
 									(int) (_rectStart.getY()), //
 									(int) (rbX - e.getX()), (int) (e.getY() - rect.getY()));
-						} else {
+						} else if (resizingDirection == 3) {
 							rect.setSize((int) (e.getX() - rect.getX()),
+									(int) (e.getY() - rect.getY()));
+						} else if (resizingDirection == 4) {
+							rect.setBounds((int) (_rectStart.getX()),//
+									(int) (_rectStart.getY() + mouseDeltaY), //
+									(int) (rect.getWidth()), (int) (rbY - e.getY()));
+						} else if (resizingDirection == 5) {
+							rect.setSize((int) (e.getX() - rect.getX()),
+									(int) (rect.getHeight()));
+						} else if (resizingDirection == 6) {
+							rect.setBounds((int) (_rectStart.getX() + mouseDeltaX),//
+									(int) (_rectStart.getY()), //
+									(int) (rbX - e.getX()), (int) (rect.getHeight()));
+						} else if (resizingDirection == 7) {
+							rect.setSize((int) (rect.getWidth()),
 									(int) (e.getY() - rect.getY()));
 						}
 
@@ -132,7 +146,8 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 			public void mouseMoved(MouseEvent e) {
 				final int[] resizingCursorIndex = new int[] { Cursor.NW_RESIZE_CURSOR,
 						Cursor.NE_RESIZE_CURSOR, Cursor.SW_RESIZE_CURSOR,
-						Cursor.SE_RESIZE_CURSOR };
+						Cursor.SE_RESIZE_CURSOR, Cursor.N_RESIZE_CURSOR,
+						Cursor.E_RESIZE_CURSOR, Cursor.W_RESIZE_CURSOR, Cursor.S_RESIZE_CURSOR };
 				if (null != rect) {
 					boolean cursorResizing = false;
 					if (status == Status.silence) {
@@ -160,23 +175,45 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 
 	private void updateResizingRect() {
 		if (null == resizingRect) {
-			resizingRect = new Rectangle[4];
+			resizingRect = new Rectangle[8];
 			for (int i = 0; i < resizingRect.length; i++)
 				resizingRect[i] = new Rectangle();
 		}
 		final int resizeSize = 8;
 		resizingRect[0].setBounds((int) (rect.getX() - resizeSize / 2),//
 				(int) (rect.getY() - resizeSize / 2), resizeSize, resizeSize);
+		// x, y
 		resizingRect[1].setBounds((int) (rect.getX() + rect.getWidth() - resizeSize / 2),//
 				(int) (rect.getY() - resizeSize / 2), resizeSize, resizeSize);
+		// x+w, y
 		resizingRect[2].setBounds(
 				(int) (rect.getX() - resizeSize / 2),//
 				(int) (rect.getY() + rect.getHeight() - resizeSize / 2), resizeSize,
 				resizeSize);
+		// x, y+h
 		resizingRect[3].setBounds(
 				(int) (rect.getX() + rect.getWidth() - resizeSize / 2),//
 				(int) (rect.getY() + rect.getHeight() - resizeSize / 2), resizeSize,
 				resizeSize);
+		// x+w, y+h
+		resizingRect[4].setBounds((int) (rect.getX() + rect.getWidth() / 2 - resizeSize / 2),//
+				(int) (rect.getY() - resizeSize / 2), resizeSize, resizeSize);
+		// x+w/2, y
+		resizingRect[5].setBounds(
+				(int) (rect.getX() + rect.getWidth() - resizeSize / 2),//
+				(int) (rect.getY() + rect.getHeight() / 2 - resizeSize / 2), resizeSize,
+				resizeSize);
+		// x+w, y+h/2
+		resizingRect[6].setBounds(
+				(int) (rect.getX() - resizeSize / 2),//
+				(int) (rect.getY() + rect.getHeight() / 2 - resizeSize / 2), resizeSize,
+				resizeSize);
+		// x, y+h/2
+		resizingRect[7].setBounds(
+				(int) (rect.getX() + rect.getWidth() / 2 - resizeSize / 2),//
+				(int) (rect.getY() + rect.getHeight() - resizeSize / 2), resizeSize,
+				resizeSize);
+		// x+w/2, y+h
 	}
 
 	private void notifyRect() {
