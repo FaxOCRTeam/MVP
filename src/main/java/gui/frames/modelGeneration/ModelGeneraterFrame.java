@@ -1,4 +1,4 @@
-package gui;
+package gui.frames.modelGeneration;
 
 import java.awt.Color;
 import java.awt.Dimension;
