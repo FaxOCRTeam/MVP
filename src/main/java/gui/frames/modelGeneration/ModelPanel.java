@@ -90,14 +90,14 @@ public class ModelPanel extends JPanel implements ModelModificationInterface {
 									"unsaved change in model", //
 									JOptionPane.YES_NO_CANCEL_OPTION, //
 									JOptionPane.QUESTION_MESSAGE, null, //
-									new String[]{"Export", "No", "Cancel"}, //
+									new String[] { "Export", "No", "Cancel" }, //
 									null);
-					if(selection == 0)
+					if (selection == 0)
 						exportAxtion.actionPerformed(e);
 					else if (selection == -1 || selection == 2)
 						return;
 				}
-				List<File> chooseFile = FileChoosingUtils.chooseFile("model");
+				List<File> chooseFile = FileChoosingUtils.chooseFile("model", false);
 				if (null != chooseFile && chooseFile.size() > 0) {
 					loadFromFile(chooseFile.get(0));
 					_regenerateColumnDisplay();
@@ -244,7 +244,7 @@ public class ModelPanel extends JPanel implements ModelModificationInterface {
 			writer.println(ff.toString());
 		}
 		writer.close();
-		
+
 	}
 
 	public void loadFromFile(File f) {
@@ -287,7 +287,7 @@ public class ModelPanel extends JPanel implements ModelModificationInterface {
 	ActionListener exportAxtion = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			List<File> chooseFile = FileChoosingUtils.chooseFile("model");
+			List<File> chooseFile = FileChoosingUtils.chooseFile("model", true);
 			if (null != chooseFile && chooseFile.size() > 0) {
 				saveToModelFile(chooseFile.get(0));
 			} else {

@@ -7,7 +7,7 @@ import java.util.List;
 import javax.swing.JFileChooser;
 
 public class FileChoosingUtils {
-	public static List<File> chooseFile(String key) {
+	public static List<File> chooseFile(String key, boolean save) {
 		List<File> result = new ArrayList<File>();
 		JFileChooser chooser = new JFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -15,7 +15,11 @@ public class FileChoosingUtils {
 		if (null != previousFilePath) {
 			chooser.setCurrentDirectory(new File(previousFilePath));
 		}
-		int chooseReturn = chooser.showOpenDialog(null);
+		int chooseReturn =  -1;
+		if(save)
+			chooseReturn = chooser.showSaveDialog(null);
+		else
+			chooser.showOpenDialog(null);
 		if (chooseReturn == JFileChooser.APPROVE_OPTION) {
 			File selectedFile = chooser.getSelectedFile();
 			if (null != selectedFile) {
