@@ -1,4 +1,4 @@
-package gui;
+package gui.frames.modelGeneration;
 
 import gui.interfaces.ControlPanelInterface;
 import gui.interfaces.DisplayCoordinatesInterface;
