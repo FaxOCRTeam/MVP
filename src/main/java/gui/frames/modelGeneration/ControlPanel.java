@@ -55,7 +55,7 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 		loadButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				List<File> chooseFile = FileChoosingUtils.chooseFile("sampleForm");
+				List<File> chooseFile = FileChoosingUtils.chooseFile("sampleForm", FileChoosingUtils.OPEN_DIALOG);
 				if (null != chooseFile && chooseFile.size() > 0)
 					formPanel.loadImage(chooseFile.get(0));
 				else {
