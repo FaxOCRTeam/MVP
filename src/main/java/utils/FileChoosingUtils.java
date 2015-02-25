@@ -7,19 +7,27 @@ import java.util.List;
 import javax.swing.JFileChooser;
 
 public class FileChoosingUtils {
-	public static List<File> chooseFile(String key, boolean save) {
+	public static final int SAVE_DIALOG = 1;
+	public static final int OPEN_DIALOG = 2;
+	public static final int OPEN_DIALOG_MUlTIPLE = 3;
+
+	public static List<File> chooseFile(String key, int openOption) {
 		List<File> result = new ArrayList<File>();
 		JFileChooser chooser = new JFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		if (openOption == OPEN_DIALOG_MUlTIPLE)
+			chooser.setMultiSelectionEnabled(true);
+		else
+			chooser.setMultiSelectionEnabled(false);
 		String previousFilePath = ConfigurationUtil.get(key);
 		if (null != previousFilePath) {
 			chooser.setCurrentDirectory(new File(previousFilePath));
 		}
-		int chooseReturn =  -1;
-		if(save)
+		int chooseReturn = -1;
+		if (openOption == SAVE_DIALOG)
 			chooseReturn = chooser.showSaveDialog(null);
-		else
-			chooser.showOpenDialog(null);
+		else if (openOption == OPEN_DIALOG || openOption == OPEN_DIALOG_MUlTIPLE)
+			chooseReturn = chooser.showOpenDialog(null);
 		if (chooseReturn == JFileChooser.APPROVE_OPTION) {
 			File selectedFile = chooser.getSelectedFile();
 			if (null != selectedFile) {

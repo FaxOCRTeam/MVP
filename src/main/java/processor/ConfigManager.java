@@ -24,7 +24,8 @@ public class ConfigManager {
 		// TODO :: Read File image (Class FileImageReader)
 
 		// TODO :: Process Image (Class ImageProcessor)
-		List<File> chooseFile = FileChoosingUtils.chooseFile("previousFormImage", false);
+		List<File> chooseFile = FileChoosingUtils.chooseFile("previousFormImage",
+				FileChoosingUtils.OPEN_DIALOG_MUlTIPLE);
 		if (null == chooseFile)
 			return;
 

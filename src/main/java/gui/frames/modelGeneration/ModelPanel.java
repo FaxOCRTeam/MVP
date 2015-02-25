@@ -97,7 +97,7 @@ public class ModelPanel extends JPanel implements ModelModificationInterface {
 					else if (selection == -1 || selection == 2)
 						return;
 				}
-				List<File> chooseFile = FileChoosingUtils.chooseFile("model", false);
+				List<File> chooseFile = FileChoosingUtils.chooseFile("model", FileChoosingUtils.OPEN_DIALOG);
 				if (null != chooseFile && chooseFile.size() > 0) {
 					loadFromFile(chooseFile.get(0));
 					_regenerateColumnDisplay();
@@ -287,7 +287,7 @@ public class ModelPanel extends JPanel implements ModelModificationInterface {
 	ActionListener exportAxtion = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			List<File> chooseFile = FileChoosingUtils.chooseFile("model", true);
+			List<File> chooseFile = FileChoosingUtils.chooseFile("model", FileChoosingUtils.SAVE_DIALOG);
 			if (null != chooseFile && chooseFile.size() > 0) {
 				saveToModelFile(chooseFile.get(0));
 			} else {
