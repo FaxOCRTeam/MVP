@@ -29,23 +29,22 @@ public class FileChoosingUtils {
 		else if (openOption == OPEN_DIALOG || openOption == OPEN_DIALOG_MUlTIPLE)
 			chooseReturn = chooser.showOpenDialog(null);
 		if (chooseReturn == JFileChooser.APPROVE_OPTION) {
-			File selectedFile = chooser.getSelectedFile();
-			if (null != selectedFile) {
-				result.add(selectedFile);
-				if (key != null) {
-					ConfigurationUtil.update(key, selectedFile.getAbsolutePath());
+			File[] selectedFiles = chooser.getSelectedFiles();
+			if (null != selectedFiles && selectedFiles.length > 0) {
+				for (File f : selectedFiles) {
+					result.add(f);
+				}
+				if (selectedFiles.length > 0 && key != null) {
+					ConfigurationUtil.update(key, selectedFiles[0].getAbsolutePath());
 				}
 			} else {
-				File[] selectedFiles = chooser.getSelectedFiles();
-				if (null != selectedFiles) {
-					for (File f : selectedFiles) {
-						result.add(f);
-					}
-					if (selectedFiles.length > 0 && key != null) {
-						ConfigurationUtil.update(key, selectedFiles[0].getAbsolutePath());
+				File selectedFile = chooser.getSelectedFile();
+				if (null != selectedFile) {
+					result.add(selectedFile);
+					if (key != null) {
+						ConfigurationUtil.update(key, selectedFile.getAbsolutePath());
 					}
 				}
-
 			}
 		} else {
 			System.out.println(String.format("[FileChoosingUtil]Selection canceled~"));

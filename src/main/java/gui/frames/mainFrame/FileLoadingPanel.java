@@ -47,7 +47,7 @@ public class FileLoadingPanel extends JPanel {
 		add(list);
 
 		layout.putConstraint(SpringLayout.NORTH, list, 5, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, list, -5, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.EAST, list, -5, SpringLayout.EAST, this);
 
 		JButton addButton = new JButton("add");
 		addButton.addActionListener(new ActionListener() {
@@ -67,6 +67,6 @@ public class FileLoadingPanel extends JPanel {
 		});
 		add(addButton);
 		layout.putConstraint(SpringLayout.NORTH, addButton, 5, SpringLayout.SOUTH, list);
-		layout.putConstraint(SpringLayout.WEST, addButton, -5, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.EAST, addButton, -5, SpringLayout.EAST, this);
 	}
 }
