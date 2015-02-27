@@ -7,41 +7,119 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 public class ConfigurationUtil {
-	static final String defaultFile = "config.properties";
-	static final File propertiesFile = new File(defaultFile);
-	static Properties properties = null;
+	private static class PropertiesFile {
+		boolean initalized;
+		Properties properties;
+		File file;
 
-	static {
-		properties = new Properties();
-		if (propertiesFile.exists()) {
+		public PropertiesFile(File file) {
+			super();
+			this.file = file;
+			this.properties = new Properties();
+			if (file.exists()) {
+				try {
+					properties.load(new InputStreamReader(new FileInputStream(file), "utf-8"));
+					initalized = true;
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		public boolean isInitalized() {
+			return initalized;
+		}
+
+		public String get(String key) {
+			return properties.getProperty(key);
+		}
+
+		public void update(String key, String value) {
+			properties.setProperty(key, value);
 			try {
-				properties.load(new InputStreamReader(new FileInputStream(propertiesFile), "utf-8"));
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
+				properties.store(new PrintWriter(file), "autoSave");
+				initalized = true;
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-	}
 
-	public static String get(String key) {
-		return properties.getProperty(key);
-	}
-
-	public static void update(String key, String value) {
-		properties.setProperty(key, value);
-		try {
-			properties.store(new PrintWriter(propertiesFile), "autoSave");
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		public List<String> keys() {
+			List<String> result = new ArrayList<String>();
+			Enumeration<Object> keys = properties.keys();
+			while (keys.hasMoreElements()) {
+				result.add((String) keys.nextElement());
+			}
+			return result;
 		}
 	}
 
+	static Map<String, PropertiesFile> propertiesFileMap = new HashMap<String, ConfigurationUtil.PropertiesFile>();
+
+	static final String defaultFile = "config.properties";
+	static {
+		PropertiesFile defaultConfig = new PropertiesFile(new File(defaultFile));
+		propertiesFileMap.put(null, defaultConfig);
+		if (!defaultConfig.isInitalized()) {
+			defaultConfig.update("file_loader_config", "configs/file_loader_config.properties");
+			defaultConfig.update("dao_config", "daogenerator_config.properties");
+		}
+		if (StringUtils.isEmpty(defaultConfig.get("file_loader_config")))
+			defaultConfig.update("file_loader_config", "configs/file_loader_config.properties");
+		open(get(null, "file_loader_config"), true, "fileLoader");
+
+		if (StringUtils.isEmpty(defaultConfig.get("dao_config")))
+			defaultConfig.update("dao_config", "daogenerator_config.properties");
+		open(get(null, "dao_config"), true, "dao");
+	}
+
+	// public static String get(String columnKey) {
+	// return get(null, columnKey);
+	// }
+
+	public static String get(String fileKey, String columnKey) {
+		return propertiesFileMap.get(fileKey).get(columnKey);
+	}
+
+	// public static void update(String columnKey, String value) {
+	// update(null, columnKey, value);
+	// }
+
+	public static List<String> keys(String fileKey) {
+		return propertiesFileMap.get(fileKey).keys();
+	}
+
+	public static void update(String fileKey, String columnKey, String value) {
+		propertiesFileMap.get(fileKey).update(columnKey, value);
+	}
+
+	public static void open(String path, boolean internal, String key) {
+		File f = null;
+		if (internal) {
+			URL resource = ConfigurationUtil.class.getClassLoader().getResource(path);
+			f = new File(resource.getFile());
+		} else {
+			f = new File(path);
+		}
+		propertiesFileMap.put(key, new PropertiesFile(f));
+	}
+
+	public static boolean isOpened(String key) {
+		return propertiesFileMap.containsKey(key);
+	}
 }
