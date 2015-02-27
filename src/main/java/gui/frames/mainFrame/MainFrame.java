@@ -32,7 +32,7 @@ public class MainFrame extends JFrame{
 		add(flpanel);
 		
 		layout.putConstraint(SpringLayout.NORTH, flpanel, 5, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, flpanel, 5, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.EAST, flpanel, -25, SpringLayout.EAST, this);
 	}
 	
 	public static void main(String[] args) {

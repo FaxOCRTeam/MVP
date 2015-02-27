@@ -11,6 +11,8 @@ import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.SpringLayout;
 
 import utils.FileChoosingUtils;
@@ -20,18 +22,15 @@ public class FileLoadingPanel extends JPanel {
 	private static final long serialVersionUID = 4071238035793237990L;
 
 	FileLoadingPanel thisObj;
-	JList<String> list = null;
 	DefaultListModel<String> listModel = null;
 
 	public FileLoadingPanel() {
 		thisObj = this;
-		Dimension dimension = new Dimension(400, 600);
+		Dimension dimension = new Dimension(310, 460);
 		setPreferredSize(dimension);
 		setSize(dimension);
-		
 		setVisible(true);
 		
-		System.out.println("init file loading panel");
 		init();
 	}
 
@@ -41,13 +40,20 @@ public class FileLoadingPanel extends JPanel {
 
 		Dimension listDim = new Dimension(300, 400);
 		listModel = new DefaultListModel<String>();
-		list = new JList<String>(listModel);
-		list.setPreferredSize(listDim);
-		list.setSize(listDim);
-		add(list);
+		
+		JList<String> list = new JList<String>(listModel);
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		list.setLayoutOrientation(JList.VERTICAL);
+		list.setVisibleRowCount(-1);
+		
+		JScrollPane listScroller = new JScrollPane(list);
+		listScroller.setPreferredSize(listDim);
+		listScroller.setSize(listDim);
+		
+		add(listScroller);
 
-		layout.putConstraint(SpringLayout.NORTH, list, 5, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, list, -5, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.NORTH, listScroller, 5, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.EAST, listScroller, -5, SpringLayout.EAST, this);
 
 		JButton addButton = new JButton("add");
 		addButton.addActionListener(new ActionListener() {
@@ -66,7 +72,7 @@ public class FileLoadingPanel extends JPanel {
 			}
 		});
 		add(addButton);
-		layout.putConstraint(SpringLayout.NORTH, addButton, 5, SpringLayout.SOUTH, list);
-		layout.putConstraint(SpringLayout.WEST, addButton, -5, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.NORTH, addButton, 5, SpringLayout.SOUTH, listScroller);
+		layout.putConstraint(SpringLayout.EAST, addButton, -5, SpringLayout.EAST, this);
 	}
 }
