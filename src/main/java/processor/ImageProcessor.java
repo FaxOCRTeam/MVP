@@ -2,11 +2,15 @@ package processor;
 
 import static org.bytedeco.javacpp.opencv_highgui.CV_LOAD_IMAGE_COLOR;
 import static org.bytedeco.javacpp.opencv_highgui.cvLoadImage;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bytedeco.javacpp.opencv_core.IplImage;
 
+import java.awt.image.BufferedImage;
 import java.io.InputStream;
+
 import api.ConfigReader;
 import api.FieldMatcher;
 import api.FileImageReader;
@@ -24,6 +28,23 @@ public class ImageProcessor {
 		
 		FieldMatcher fieldMatcher = new ConfigFieldMatcher();// need initialization
 		List<Field> imgFieldList = fieldMatcher.imageSegmentation(workingImage, conFieldList);
+		
+		for(Field f:imgFieldList){
+			IplImage fieldImage = IplImage.createFrom(f.getImage());
+			
+			ArrayList<ArrayList<IplImage>> imageList = new ArrayList<ArrayList<IplImage>>();
+			
+			
+			fieldImage = LineSeperator.verticalbarremove(fieldImage);
+			ArrayList<IplImage> lineImageList = (ArrayList<IplImage>) LineSeperator.lineSperate(fieldImage);
+			for(IplImage image:lineImageList){
+				image = ULremover.underlineRemove(image);
+				ArrayList<IplImage> wordImageList = SpaceRemover.spaceRemove(image);
+				imageList.add(wordImageList);
+			}
+			f.setimageList(imageList);
+			
+		}
 		return imgFieldList;
 	}
 	

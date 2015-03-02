@@ -45,12 +45,12 @@ public class SpaceRemover {
 //					"./src/binaryImage.jpg", binaryImage);
 			cvErode(binaryImage, binaryImage, null, 1);
 			cvDilate(binaryImage, binaryImage, null, 1);
-			spaceRemove(binaryImage,i);
+			spaceRemove(binaryImage);
 		}
 		  
 	}
 
-	public static void spaceRemove(IplImage image, int count) {
+	public static ArrayList<IplImage> spaceRemove(IplImage image) {
 		CvMat imgMat = image.asCvMat();
 		int imgCols = imgMat.cols();
 		int imgRows = imgMat.rows();
@@ -120,6 +120,7 @@ public class SpaceRemover {
 		Iterator<Spaces> itsp = spaceBetWords.iterator();
 		int wordStart = 0;
 		int pos = 1;
+		ArrayList<IplImage> returnlist = new ArrayList<IplImage>();
 		while(itsp.hasNext()){
 			Spaces oneSpace = itsp.next();
 			if(oneSpace.getWidth() == 0){
@@ -135,15 +136,16 @@ public class SpaceRemover {
 					ori.nChannels());
 			cvCopy(ori, blobImage);
 			cvResetImageROI(ori);
-
+			returnlist.add(blobImage);
 			//File output = new File("./src/subimage_"+ pos +"of image"+count+".jpg");
-			File dir = new File("./output/image" + count );
+			File dir = new File("./output/image");
 			if(!dir.exists()){
 				dir.mkdirs();
 			}
 			org.bytedeco.javacpp.opencv_highgui.cvSaveImage(dir.toString()+"/"+ pos + ".jpg",blobImage);
 			pos ++;
 		}
+		return returnlist;
 	}
 	
 }

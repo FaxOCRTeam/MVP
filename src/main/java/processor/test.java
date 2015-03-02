@@ -64,7 +64,7 @@ public class test {
 	;		
 		org.bytedeco.javacpp.opencv_highgui.cvSaveImage("output/ulRemovedTest.jpg", ulremovedImg);
 		// word segmentation
-		SpaceRemover.spaceRemove(ulremovedImg,2);
+		SpaceRemover.spaceRemove(ulremovedImg);
 	}
 	
 //	public String Last_Name ="abc";
