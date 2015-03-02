@@ -1,5 +1,6 @@
 package processor;
 
+import static org.bytedeco.javacpp.opencv_core.IPL_DEPTH_8U;
 import static org.bytedeco.javacpp.opencv_core.cvCloneImage;
 import static org.bytedeco.javacpp.opencv_core.cvCopy;
 import static org.bytedeco.javacpp.opencv_core.cvCreateImage;
@@ -7,6 +8,12 @@ import static org.bytedeco.javacpp.opencv_core.cvGetSize;
 import static org.bytedeco.javacpp.opencv_core.cvRect;
 import static org.bytedeco.javacpp.opencv_core.cvResetImageROI;
 import static org.bytedeco.javacpp.opencv_core.cvSetImageROI;
+import static org.bytedeco.javacpp.opencv_highgui.CV_LOAD_IMAGE_GRAYSCALE;
+import static org.bytedeco.javacpp.opencv_highgui.cvLoadImage;
+import static org.bytedeco.javacpp.opencv_imgproc.CV_THRESH_BINARY;
+import static org.bytedeco.javacpp.opencv_imgproc.cvDilate;
+import static org.bytedeco.javacpp.opencv_imgproc.cvErode;
+import static org.bytedeco.javacpp.opencv_imgproc.cvThreshold;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -20,7 +27,27 @@ import org.bytedeco.javacpp.opencv_core.IplImage;
 public class LineSeperator {
 	public static void main(String[] args){
 		LineSeperator ls = new LineSeperator();
-	//	ls.lineSperate(image, count);
+		String dir = "./src/input/";
+		System.out.print(dir);
+		//String dir = "./src/input1/";
+		for (int i=1; i<2; i++){
+			String file = dir + "image" + i + ".jpg";
+			//String file = dir + i + ".png";
+			IplImage originImage = cvLoadImage(file, CV_LOAD_IMAGE_GRAYSCALE);
+//			org.bytedeco.javacpp.opencv_highgui.cvSaveImage(
+//					"./src/originImage.jpg", originImage);
+//			org.bytedeco.javacpp.opencv_highgui.cvSaveImage(
+//					"./src/grayImage.jpg", grayImage);
+			IplImage binaryImage = cvCreateImage(cvGetSize(originImage),
+					IPL_DEPTH_8U, 1);
+			cvThreshold(originImage, binaryImage, 100, 255, CV_THRESH_BINARY);
+//			org.bytedeco.javacpp.opencv_highgui.cvSaveImage(
+//					"./src/binaryImage.jpg", binaryImage);
+			cvErode(binaryImage, binaryImage, null, 1);
+			cvDilate(binaryImage, binaryImage, null, 1);
+			binaryImage = verticalbarremove(binaryImage);
+			lineSperate(binaryImage,i);
+		}
 	}
 	public static List<IplImage> lineSperate(IplImage image,int count){
 		image = verticalbarremove(image);
@@ -38,7 +65,8 @@ public class LineSeperator {
 		int currentCharStart = 0, currentCharWidth = 0;
 		for (int i = 0; i < imgRows; i++) {
 			for (int j = 0; j < imgCols; j++) {
-				if (imgMat.get(j, i) == 0) {
+			//	System.out.println(j+" "+i);
+				if (imgMat.get(i, j) == 0) {
 					areaOfLine[i]++;
 				}
 			}
@@ -51,7 +79,7 @@ public class LineSeperator {
 							spaceAndWidth.add(new Spaces(startOfSpace,widthOfSpace));
 				}
 				else if(i == imgRows-1){
-					System.out.println(areaOfLine[i]);
+			//		System.out.println(areaOfLine[i]);
 					widthOfSpace = i - startOfSpace;
 					if(widthOfSpace != 0)
 						spaceAndWidth.add(new Spaces(startOfSpace,widthOfSpace));
@@ -100,7 +128,7 @@ public class LineSeperator {
 			IplImage blobImage;
 			
 			cvCopy(clImage, ori);			
-			cvSetImageROI(ori, cvRect(wordStart,0,oneSpace.getWidth() - wordStart,imgRows));
+			cvSetImageROI(ori, cvRect(0,wordStart,imgCols,oneSpace.getWidth() - wordStart));
 			wordStart = oneSpace.getWidth() + oneSpace.getStart();
 			blobImage = cvCreateImage(cvGetSize(ori), ori.depth(),
 					ori.nChannels());
