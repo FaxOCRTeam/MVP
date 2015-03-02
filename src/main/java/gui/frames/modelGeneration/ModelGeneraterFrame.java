@@ -92,5 +92,6 @@ public class ModelGeneraterFrame extends JFrame {
 	}
 
 	public static void main(String[] args) {
+		new ModelGeneraterFrame();
 	}
 }

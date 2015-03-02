@@ -1,11 +1,16 @@
 package gui.frames.mainFrame;
 
+import gui.frames.dbConfig.DBConfigFrame;
 import gui.frames.modelGeneration.ModelGeneraterFrame;
+import gui.models.FormField;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -14,11 +19,20 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.SpringLayout;
 
+import net.sourceforge.tess4j.TesseractException;
+import processor.ContentProcessor;
+import processor.DBWriterImpl;
+import processor.ImageProcessor;
+import dataModel.ConfigField;
+import dataModel.Field;
+
 public class MainFrame extends JFrame {
 	private static final long serialVersionUID = 8211256500380495618L;
 	public final String title = "Fax to EMR";
 
 	JMenuBar bar = null;
+	FileLoadingPanel flpanel;
+	PreviewPreparePanel previewPanel;
 
 	public MainFrame() {
 		setTitle(title);
@@ -52,6 +66,21 @@ public class MainFrame extends JFrame {
 		modelMenu.add(generate);
 		bar.add(modelMenu);
 
+		JMenu configMenu = new JMenu("config");
+		configMenu.setMnemonic('c');
+
+		JMenuItem dbConfig = new JMenuItem("database configuration");
+		dbConfig.setMnemonic('d');
+		dbConfig.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new DBConfigFrame();
+			}
+		});
+
+		configMenu.add(dbConfig);
+		bar.add(configMenu);
+
 		add(bar);
 		validate();
 	}
@@ -60,20 +89,43 @@ public class MainFrame extends JFrame {
 		SpringLayout layout = new SpringLayout();
 		setLayout(layout);
 
-		FileLoadingPanel flpanel = new FileLoadingPanel();
+		flpanel = new FileLoadingPanel(this);
 		flpanel.setBorder(BorderFactory.createLineBorder(Color.gray));
 		add(flpanel);
 
 		layout.putConstraint(SpringLayout.NORTH, flpanel, 5, SpringLayout.SOUTH, bar);
 		layout.putConstraint(SpringLayout.EAST, flpanel, -25, SpringLayout.EAST, this);
-		
-		PreviewPreparePanel previewPanel = new PreviewPreparePanel();
+
+		previewPanel = new PreviewPreparePanel();
 		add(previewPanel);
-		
+
 		layout.putConstraint(SpringLayout.NORTH, previewPanel, 5, SpringLayout.SOUTH, bar);
 		layout.putConstraint(SpringLayout.WEST, previewPanel, 5, SpringLayout.WEST, this);
-		
-		
+	}
+
+	public void processPicture(String picFilePath) {
+		if (null == previewPanel.getModelFile())
+			return;
+
+		List<FormField> model = FormField.loadModel(previewPanel.getModelFile());
+		List<ConfigField> transformModel = new ArrayList<ConfigField>();
+		for (FormField ff : model) {
+			transformModel.add(ff.toConfigField());
+		}
+		ImageProcessor processor = new ImageProcessor();
+		List<Field> process = processor.process(transformModel, picFilePath);
+		ContentProcessor contentProcessor = new ContentProcessor();
+		try {
+			contentProcessor.process(process);
+		} catch (TesseractException e) {
+			e.printStackTrace();
+		}
+		DBWriterImpl dbWriter = new DBWriterImpl();
+		dbWriter.writeToDB(process);
+	}
+
+	public boolean modelReady() {
+		return null != previewPanel.getModelFile();
 	}
 
 	public static void main(String[] args) {

@@ -1,6 +1,5 @@
 package gui.frames.mainFrame;
 
-import gui.frames.modelGeneration.ModelGeneraterFrame;
 import gui.frames.modelPreview.ModelPreviewFrame;
 
 import java.awt.Color;
@@ -27,8 +26,9 @@ public class PreviewPreparePanel extends JPanel {
 	SpringLayout layout;
 	JLabel modelPathLabel, previewPicPathLabel;
 	JButton preview;
-	
+
 	PreviewPreparePanel thisobj;
+	
 	public PreviewPreparePanel() {
 		thisobj = this;
 		layout = new SpringLayout();
@@ -39,7 +39,7 @@ public class PreviewPreparePanel extends JPanel {
 		setPreferredSize(dime);
 
 		setBorder(BorderFactory.createLineBorder(Color.gray));
-		
+
 		init();
 	}
 
@@ -49,7 +49,7 @@ public class PreviewPreparePanel extends JPanel {
 
 		preview = new JButton("preview");
 		preview.setEnabled(false);
-		
+
 		JButton modelButton = new JButton("load model");
 		modelButton.addActionListener(new ActionListener() {
 			@Override
@@ -61,21 +61,21 @@ public class PreviewPreparePanel extends JPanel {
 				} else {
 					JOptionPane.showMessageDialog(null, "No file chosen");
 				}
-				if(checkPreviewEnable())
+				if (checkPreviewEnable())
 					preview.setEnabled(true);
 				thisobj.validate();
 				thisobj.repaint();
 			}
 		});
-		
+
 		preview.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ModelPreviewFrame preview = new ModelPreviewFrame(new File(modelPathLabel.getText()), new File(previewPicPathLabel.getText()));
-				
+				ModelPreviewFrame preview = new ModelPreviewFrame(new File(modelPathLabel
+						.getText()), new File(previewPicPathLabel.getText()));
 			}
 		});
-		
+
 		JButton picButton = new JButton("load preview picture");
 		picButton.addActionListener(new ActionListener() {
 			@Override
@@ -87,24 +87,28 @@ public class PreviewPreparePanel extends JPanel {
 				} else {
 					JOptionPane.showMessageDialog(null, "No file chosen");
 				}
-				if(checkPreviewEnable())
+				if (checkPreviewEnable())
 					preview.setEnabled(true);
 				thisobj.validate();
 				thisobj.repaint();
 			}
 		});
-		
+
 		add(modelButton);
 		add(modelPathLabel);
 		add(picButton);
 		add(previewPicPathLabel);
 		add(preview);
-		
+
 		layout.putConstraint(SpringLayout.NORTH, modelButton, 5, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.NORTH, modelPathLabel, 5, SpringLayout.SOUTH, modelButton);
-		layout.putConstraint(SpringLayout.NORTH, picButton, 5, SpringLayout.SOUTH, modelPathLabel);
-		layout.putConstraint(SpringLayout.NORTH, previewPicPathLabel, 5, SpringLayout.SOUTH, picButton);
-		layout.putConstraint(SpringLayout.NORTH, preview, 5, SpringLayout.SOUTH, previewPicPathLabel);
+		layout.putConstraint(SpringLayout.NORTH, modelPathLabel, 5, SpringLayout.SOUTH,
+				modelButton);
+		layout.putConstraint(SpringLayout.NORTH, picButton, 5, SpringLayout.SOUTH,
+				modelPathLabel);
+		layout.putConstraint(SpringLayout.NORTH, previewPicPathLabel, 5, SpringLayout.SOUTH,
+				picButton);
+		layout.putConstraint(SpringLayout.NORTH, preview, 5, SpringLayout.SOUTH,
+				previewPicPathLabel);
 	}
 
 	boolean checkPreviewEnable() {
@@ -117,6 +121,13 @@ public class PreviewPreparePanel extends JPanel {
 				|| previewPicPathLabel.getText().equals("no file choosen"))
 			return false;
 		return true;
+	}
+
+	public File getModelFile() {
+		if (null == modelPathLabel || StringUtils.isEmpty(modelPathLabel.getText())//
+				|| modelPathLabel.getText().equals("no file choosen"))
+			return null;
+		return new File(modelPathLabel.getText());
 	}
 
 }

@@ -13,24 +13,38 @@ import java.util.List;
 
 import com.google.gson.Gson;
 
+import dataModel.ConfigField;
+import dataModel.Field;
+
 public class FormField {
+
 	static Gson gson = new Gson();
 
-	String name;
+	String table;
+	String field;
 	int[] rectConfig;
 
-	public FormField(String name, int[] rectConfig) {
+	public FormField(String table, String field, int[] rectConfig) {
 		super();
-		this.name = name;
+		this.table = table;
+		this.field = field;
 		this.rectConfig = rectConfig;
 	}
 
-	public String getName() {
-		return name;
+	public String getTable() {
+		return table;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setTable(String table) {
+		this.table = table;
+	}
+
+	public String getField() {
+		return field;
+	}
+
+	public void setField(String field) {
+		this.field = field;
 	}
 
 	public int[] getRectConfig() {
@@ -61,7 +75,7 @@ public class FormField {
 	public static FormField parseObj(String json) {
 		return gson.fromJson(json, FormField.class);
 	}
-	
+
 	public static void saveModel(File f, List<FormField> model) {
 		PrintWriter writer = null;
 		try {
@@ -74,10 +88,10 @@ public class FormField {
 		}
 		writer.close();
 	}
-	
+
 	public static List<FormField> loadModel(File f) {
 		List<FormField> result = new ArrayList<FormField>();
-		
+
 		BufferedReader reader = null;
 		try {
 			reader = new BufferedReader(new InputStreamReader(new FileInputStream(f), "utf-8"));
@@ -100,5 +114,10 @@ public class FormField {
 			e.printStackTrace();
 		}
 		return result;
+	}
+
+	public ConfigField toConfigField() {
+		return new ConfigField(new int[] { rectConfig[0], rectConfig[1] },//
+				rectConfig[2], rectConfig[3], field, table);
 	}
 }
