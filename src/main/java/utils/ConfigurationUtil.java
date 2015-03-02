@@ -75,17 +75,20 @@ public class ConfigurationUtil {
 	static {
 		PropertiesFile defaultConfig = new PropertiesFile(new File(defaultFile));
 		propertiesFileMap.put(null, defaultConfig);
+		final String fileLoaderPath = "src/main/resources/configs/file_loader_config.properties"; 
+		final String dbConfigPath = "src/main/resources/daogenerator_config.properties";
+		
 		if (!defaultConfig.isInitalized()) {
-			defaultConfig.update("file_loader_config", "configs/file_loader_config.properties");
-			defaultConfig.update("dao_config", "daogenerator_config.properties");
+			defaultConfig.update("file_loader_config", fileLoaderPath);
+			defaultConfig.update("dao_config", dbConfigPath);
 		}
 		if (StringUtils.isEmpty(defaultConfig.get("file_loader_config")))
-			defaultConfig.update("file_loader_config", "configs/file_loader_config.properties");
-		open(get(null, "file_loader_config"), true, "fileLoader");
+			defaultConfig.update("file_loader_config", fileLoaderPath);
+		open(get(null, "file_loader_config"), false, "fileLoader");
 
 		if (StringUtils.isEmpty(defaultConfig.get("dao_config")))
-			defaultConfig.update("dao_config", "daogenerator_config.properties");
-		open(get(null, "dao_config"), true, "dao");
+			defaultConfig.update("dao_config", dbConfigPath);
+		open(get(null, "dao_config"), false, "dao");
 	}
 
 	// public static String get(String columnKey) {
@@ -116,6 +119,7 @@ public class ConfigurationUtil {
 		} else {
 			f = new File(path);
 		}
+		System.out.println(f.getAbsolutePath());
 		propertiesFileMap.put(key, new PropertiesFile(f));
 	}
 
