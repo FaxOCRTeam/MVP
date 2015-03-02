@@ -1,6 +1,15 @@
 package gui.models;
 
-import javax.swing.JScrollBar;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gson.Gson;
 
@@ -51,5 +60,45 @@ public class FormField {
 
 	public static FormField parseObj(String json) {
 		return gson.fromJson(json, FormField.class);
+	}
+	
+	public static void saveModel(File f, List<FormField> model) {
+		PrintWriter writer = null;
+		try {
+			writer = new PrintWriter(f);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		for (FormField ff : model) {
+			writer.println(ff.toString());
+		}
+		writer.close();
+	}
+	
+	public static List<FormField> loadModel(File f) {
+		List<FormField> result = new ArrayList<FormField>();
+		
+		BufferedReader reader = null;
+		try {
+			reader = new BufferedReader(new InputStreamReader(new FileInputStream(f), "utf-8"));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		String line = null;
+		try {
+			while ((line = reader.readLine()) != null) {
+				result.add(parseObj(line));
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 }

@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.SpringLayout;
 
 public class MainFrame extends JFrame{
+	private static final long serialVersionUID = 8211256500380495618L;
 	public final String title = "Fax to EMR";
 
 	public MainFrame() {

@@ -97,7 +97,8 @@ public class ModelPanel extends JPanel implements ModelModificationInterface {
 					else if (selection == -1 || selection == 2)
 						return;
 				}
-				List<File> chooseFile = FileChoosingUtils.chooseFile("model", FileChoosingUtils.OPEN_DIALOG);
+				List<File> chooseFile = FileChoosingUtils.chooseFile("model",
+						FileChoosingUtils.OPEN_DIALOG);
 				if (null != chooseFile && chooseFile.size() > 0) {
 					loadFromFile(chooseFile.get(0));
 					_regenerateColumnDisplay();
@@ -234,17 +235,7 @@ public class ModelPanel extends JPanel implements ModelModificationInterface {
 	}
 
 	public void saveToModelFile(File f) {
-		PrintWriter writer = null;
-		try {
-			writer = new PrintWriter(f);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		for (FormField ff : formData) {
-			writer.println(ff.toString());
-		}
-		writer.close();
-
+		FormField.saveModel(f, formData);
 	}
 
 	public void loadFromFile(File f) {
@@ -253,27 +244,7 @@ public class ModelPanel extends JPanel implements ModelModificationInterface {
 		else if (formData.size() > 0)
 			formData.clear();
 
-		BufferedReader reader = null;
-		try {
-			reader = new BufferedReader(new InputStreamReader(new FileInputStream(f), "utf-8"));
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		String line = null;
-		try {
-			while ((line = reader.readLine()) != null) {
-				formData.add(FormField.parseObj(line));
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		try {
-			reader.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		formData.addAll(FormField.loadModel(f));
 	}
 
 	public void addCoordinatesNotifier(DisplayCoordinatesInterface dci) {
@@ -287,7 +258,8 @@ public class ModelPanel extends JPanel implements ModelModificationInterface {
 	ActionListener exportAxtion = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			List<File> chooseFile = FileChoosingUtils.chooseFile("model", FileChoosingUtils.SAVE_DIALOG);
+			List<File> chooseFile = FileChoosingUtils.chooseFile("model",
+					FileChoosingUtils.SAVE_DIALOG);
 			if (null != chooseFile && chooseFile.size() > 0) {
 				saveToModelFile(chooseFile.get(0));
 			} else {
