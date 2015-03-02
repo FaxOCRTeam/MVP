@@ -23,9 +23,13 @@ public class FileLoadingPanel extends JPanel {
 
 	FileLoadingPanel thisObj;
 	DefaultListModel<String> listModel = null;
-
-	public FileLoadingPanel() {
+	
+	JButton processButton;
+	MainFrame parent;
+	
+	public FileLoadingPanel(MainFrame mainFrame) {
 		thisObj = this;
+		parent = mainFrame;
 		Dimension dimension = new Dimension(310, 460);
 		setPreferredSize(dimension);
 		setSize(dimension);
@@ -74,5 +78,21 @@ public class FileLoadingPanel extends JPanel {
 		add(addButton);
 		layout.putConstraint(SpringLayout.NORTH, addButton, 5, SpringLayout.SOUTH, listScroller);
 		layout.putConstraint(SpringLayout.EAST, addButton, -5, SpringLayout.EAST, this);
+		
+		processButton = new JButton("process");
+//		processButton.setEnabled(false);
+		processButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				while(listModel.size() > 0) {
+					parent.processPicture(listModel.get(0));
+					listModel.remove(0);
+				}
+			}
+		});
+		add(processButton);
+		
+		layout.putConstraint(SpringLayout.NORTH, processButton, 5, SpringLayout.SOUTH, listScroller);
+		layout.putConstraint(SpringLayout.EAST, processButton, -5, SpringLayout.WEST, addButton);
 	}
 }

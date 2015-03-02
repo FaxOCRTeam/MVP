@@ -1,8 +1,10 @@
 package gui.interfaces;
 
+import gui.models.FormField;
+
 public interface DisplayCoordinatesInterface {
 	void setCoordinates(final int[] coordinates);
 
-	void setCoordinatesAndName(final int[] coordinates, String name, boolean notify);
+	void setCoordinatesAndName(FormField ff, boolean notify);
 
 }

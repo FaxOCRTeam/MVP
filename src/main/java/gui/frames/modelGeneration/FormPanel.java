@@ -280,6 +280,7 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 
 	@Override
 	public void setSelection(int[] selection) {
+		System.out.println(selection);
 		rect = new Rectangle(selection[0], selection[1], selection[2], selection[3]);
 		updateResizingRect();
 		notifyRect();

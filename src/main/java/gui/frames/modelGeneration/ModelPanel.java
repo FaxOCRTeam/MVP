@@ -9,14 +9,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +45,7 @@ public class ModelPanel extends JPanel implements ModelModificationInterface {
 		formData = new ArrayList<FormField>();
 
 		modelDisplayPanel = new JPanel();
+		modelDisplayPanel.setPreferredSize(new Dimension(210, 1000));
 		modelDisplaySpringLayout = new SpringLayout();
 		modelDisplayPanel.setLayout(modelDisplaySpringLayout);
 
@@ -157,7 +151,7 @@ public class ModelPanel extends JPanel implements ModelModificationInterface {
 		// ffPanel.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
 		ffPanel.setBorder(BorderFactory.createTitledBorder(//
-				BorderFactory.createEtchedBorder(), ff.getName()));
+				BorderFactory.createEtchedBorder(), ff.getField()));
 		// Add labels to demo field.
 		JLabel[] infoLabels = new JLabel[ff.getRectConfig().length];
 		for (int i = 0; i < ff.getRectConfig().length; i++) {
@@ -182,8 +176,7 @@ public class ModelPanel extends JPanel implements ModelModificationInterface {
 				int index = Integer.parseInt(e.getActionCommand());
 				mainCoordinate.saveCoordinates();
 				for (DisplayCoordinatesInterface dci : displayNotifier) {
-					dci.setCoordinatesAndName(formData.get(index).getRectConfig(), //
-							formData.get(index).getName(), true);
+					dci.setCoordinatesAndName(formData.get(index), true);
 				}
 				formData.remove(index);
 				_regenerateColumnDisplay();

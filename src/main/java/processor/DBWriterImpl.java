@@ -17,6 +17,7 @@ public class DBWriterImpl implements DBWriter {
 	static Map<String, Class[]> tableMapMapping = new HashMap<String, Class[]>();
 	static {
 		tableMapMapping.put("Patient_INFORMATION".toLowerCase(), new Class[] { Fax2EMRPatientInformation.class, Fax2EMRPatientInformationDAO.class });
+		tableMapMapping.put("patientinformation".toLowerCase(), new Class[] { Fax2EMRPatientInformation.class, Fax2EMRPatientInformationDAO.class });
 	}
 
 	@SuppressWarnings("unchecked")
@@ -49,10 +50,17 @@ public class DBWriterImpl implements DBWriter {
 				java.lang.reflect.Field field = classes[0].getField("id");
 				field.setAccessible(true);
 				field.set(newInstance, 0);
-
+				
+				for(java.lang.reflect.Field f : classes[0].getDeclaredFields()) {
+					f.setAccessible(true);
+					Object object = f.get(newInstance);
+					if(null == object && f.getType().equals(String.class)) {
+						f.set(newInstance, "");
+					}
+				}
 				Object daoInstance = classes[1].getMethod("getInstance").invoke(null);
 				Method method = classes[1].getMethod("insert", classes[0]);
-
+				
 				method.invoke(daoInstance, newInstance);
 			} catch (InstantiationException e) {
 				e.printStackTrace();
