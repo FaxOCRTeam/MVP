@@ -55,8 +55,8 @@ public class ImagePreprocessor {
 	}
 	
 	public IplImage erodeAndDilateImage(IplImage image){
-		int ErodeCount = 1;
-		int DilateCount = 1;
+		int ErodeCount = 0;//1;
+		int DilateCount = 0;//1;
 		int threshold = 150;
 		
 		IplImage rawImage = cvCloneImage(image);
@@ -64,7 +64,8 @@ public class ImagePreprocessor {
 		cvCvtColor(rawImage, GrayImage, CV_BGR2GRAY);
 		
 		IplImage BWImage = cvCreateImage(cvGetSize(GrayImage), IPL_DEPTH_8U, 1);
-		cvThreshold(GrayImage, BWImage, 100, 255, CV_THRESH_BINARY);
+		//cvThreshold(GrayImage, BWImage, 100, 255, CV_THRESH_BINARY);
+		cvAdaptiveThreshold(GrayImage, BWImage, threshold, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 51, 20);
 		
 		IplImage WorkingImage = cvCreateImage(cvGetSize(BWImage), IPL_DEPTH_8U, 1);
 
@@ -76,17 +77,17 @@ public class ImagePreprocessor {
 		return WorkingImage;
 	}
 	
-	/*public static void main(String[] args) throws IOException{
-		BufferedImage img =  ImageIO.read(new File("p-00003.tif"));
-		IplImage origImg = IplImage.createFrom(img);
-		final CanvasFrame canvas = new CanvasFrame("original");
-		canvas.showImage(origImg);
-		canvas.setSize((int)(img.getWidth()*0.4), (int)(img.getHeight()*0.4));
-		ImagePreprocessor ipp = new ImagePreprocessor(origImg);
-		IplImage processedImg = ipp.deskew(origImg);
-		final CanvasFrame canvas2 = new CanvasFrame("processed");
-		canvas2.showImage(processedImg);
-		canvas2.setSize((int)(img.getWidth()*0.4), (int)(img.getHeight()*0.4));
-	}*/
+//	public static void main(String[] args) throws IOException{
+//		BufferedImage img =  ImageIO.read(new File("/Users/wangru/git/MVP/output/image2/1.jpg"));
+//		IplImage origImg = IplImage.createFrom(img);
+//		final CanvasFrame canvas = new CanvasFrame("original");
+//		canvas.showImage(origImg);
+//		canvas.setSize((int)(img.getWidth()*0.4), (int)(img.getHeight()*0.4));
+//		ImagePreprocessor ipp = new ImagePreprocessor(origImg);
+//		IplImage processedImg = ipp.deskew(origImg);
+//		final CanvasFrame canvas2 = new CanvasFrame("processed");
+//		canvas2.showImage(processedImg);
+//		canvas2.setSize((int)(img.getWidth()*0.4), (int)(img.getHeight()*0.4));
+//	}
 	
 }

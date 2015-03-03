@@ -19,8 +19,9 @@
 	<classpathentry kind="lib" path="lib/tess4j.jar"/>
 	<classpathentry kind="lib" path="lib/daoGenerator.jar"/>
 	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.10.jar"/>
-	<classpathentry kind="lib" path="lib/javacpp.jar"/>
-	<classpathentry kind="lib" path="lib/javacv.jar"/>
-	<classpathentry kind="lib" path="lib/opencv.jar"/>
+	<classpathentry kind="lib" path="/Users/wangru/GoogleDrive/study/Myproject/javacv-bin 2/javacpp.jar"/>
+	<classpathentry kind="lib" path="/Users/wangru/GoogleDrive/study/Myproject/javacv-bin 2/javacv.jar"/>
+	<classpathentry kind="lib" path="/Users/wangru/GoogleDrive/study/Myproject/javacv-bin 2/opencv-macosx-x86_64.jar"/>
+	<classpathentry kind="lib" path="/Users/wangru/GoogleDrive/study/Myproject/javacv-bin 2/opencv.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
