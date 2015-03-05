@@ -14,13 +14,13 @@ public class ModelGeneraterFrame extends JFrame {
 	private static final long serialVersionUID = 5866100335982142250L;
 
 	public final String title = "Model Generator";
-
+	Dimension frameDimension;
 	public ModelGeneraterFrame() {
 		setTitle(title);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		Dimension dimension = new Dimension(800, 700);
-		setSize(dimension);
-		setPreferredSize(dimension);
+		frameDimension = new Dimension(800, 700);
+		setSize(frameDimension);
+		setPreferredSize(frameDimension);
 		setLayout(new GridLayout(1, 2));
 		pack();
 		setVisible(true);
