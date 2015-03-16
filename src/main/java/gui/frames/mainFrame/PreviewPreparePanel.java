@@ -67,7 +67,7 @@ public class PreviewPreparePanel extends JPanel {
 				thisobj.repaint();
 			}
 		});
-
+		modelButton.setToolTipText("load model");
 		preview.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
