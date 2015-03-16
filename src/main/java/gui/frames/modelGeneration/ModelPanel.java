@@ -3,6 +3,7 @@ package gui.frames.modelGeneration;
 import gui.interfaces.DisplayCoordinatesInterface;
 import gui.interfaces.MainCoordinateInterface;
 import gui.interfaces.ModelModificationInterface;
+import gui.interfaces.SavableFrame;
 import gui.models.FormField;
 
 import java.awt.Dimension;
@@ -36,10 +37,10 @@ public class ModelPanel extends JPanel implements ModelModificationInterface {
 	List<DisplayCoordinatesInterface> displayNotifier = new ArrayList<DisplayCoordinatesInterface>();
 	MainCoordinateInterface mainCoordinate = null;
 
-	ModelGeneraterFrame parentFrame = null;
+	SavableFrame parentFrame = null;
 	boolean changed = false;
 
-	public ModelPanel(ModelGeneraterFrame parentFrame) {
+	public ModelPanel(SavableFrame parentFrame) {
 		this.parentFrame = parentFrame;
 
 		formData = new ArrayList<FormField>();
@@ -77,8 +78,7 @@ public class ModelPanel extends JPanel implements ModelModificationInterface {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (changed) {
-					int selection = JOptionPane
-							.showOptionDialog(
+					int selection = JOptionPane.showOptionDialog(
 									parentFrame, //
 									"There's unsaved change in model, do you want to export the model now?", //
 									"unsaved change in model", //
