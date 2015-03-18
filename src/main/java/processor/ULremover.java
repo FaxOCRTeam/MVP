@@ -49,16 +49,20 @@ public class ULremover {
 						count++;
 						count +=blank;
 						blank = 0;
-						if(j==imgCols -1&&count>imgCols*0.35){
+						if(j==imgCols -1&&count>imgCols*0.3){
 							Integer[] insertInt = {startpoint, count};
 							underlineList.add(insertInt);
 						}
 					}
 					else if(count>0&&blank<3){
 						blank++;
+						if(j==imgCols -1&&count>imgCols*0.3){
+							Integer[] insertInt = {startpoint, count};
+							underlineList.add(insertInt);
+						}
 					}
 					else if(count>0){
-						if(count>imgCols *0.35){
+						if(count>imgCols *0.3){
 							Integer[] insertInt = {startpoint, count};
 							underlineList.add(insertInt);
 						}

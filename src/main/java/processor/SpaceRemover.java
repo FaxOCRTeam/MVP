@@ -62,6 +62,7 @@ public class SpaceRemover {
 		
 		ArrayList<Spaces> spaceAndWidth = new ArrayList<Spaces>();
 		ArrayList<Integer> wordLen = new ArrayList<Integer>();
+	//	org.bytedeco.javacpp.opencv_highgui.cvSaveImage("./test1.jpg",image);
 		int startOfSpace = 0, widthOfSpace = 0;
 		int currentCharStart = 0, currentCharWidth = 0;
 		for (int i = 0; i < imgCols; i++) {

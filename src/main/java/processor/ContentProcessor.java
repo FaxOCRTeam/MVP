@@ -26,6 +26,7 @@ public class ContentProcessor {
 			}
 			filedContent.trim();
 		//	String filedContent = imageRecognizer.getString(f.getImage());
+			System.out.println(filedContent);
 			f.setContent(filedContent);
 		}
 		return fields;

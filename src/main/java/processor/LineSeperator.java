@@ -61,6 +61,7 @@ public class LineSeperator {
 				image.depth(), image.nChannels());
 		ArrayList<Spaces> spaceAndWidth = new ArrayList<Spaces>();
 		ArrayList<Integer> lineLen = new ArrayList<Integer>();
+	//	org.bytedeco.javacpp.opencv_highgui.cvSaveImage("./test.jpg",image);
 		int startOfSpace = 0, widthOfSpace = 0;
 		int currentCharStart = 0, currentCharWidth = 0;
 		for (int i = 0; i < imgRows; i++) {
@@ -114,6 +115,16 @@ public class LineSeperator {
 				break;
 			spaceBetWords.add(new Spaces(spc.getWidth(),spc.getStart()));
 		}
+//		for(int i = 0;i<spaceBetWords.size()-1;i++){///////////////////////////////////
+//			Spaces n_spc = spaceBetWords.get(i+1);
+//			Spaces c_spc = spaceBetWords.get(i);
+//			c_spc.width = n_spc.start;
+//			spaceBetWords.set(i, c_spc);
+//		}
+//		Spaces c_spc = spaceBetWords.get(spaceBetWords.size()-1);
+//		c_spc.width = imgRows;
+		spaceBetWords.add(new Spaces(Integer.MAX_VALUE,imgRows));
+	//	Spaces spc = new Spaces(Integer.MAX_VALUE,imgRows);
 		Collections.sort(spaceBetWords);
 		Iterator<Spaces> itsp = spaceBetWords.iterator();
 		int wordStart = 0;
