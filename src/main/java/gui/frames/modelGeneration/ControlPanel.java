@@ -92,8 +92,8 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 		zoomIn.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        scale -= 0.1;
-        zoomIn.setEnabled(scale > 0.1);
+        scale = 1.1;
+        zoomIn.setEnabled(scale < 2.0);
         formPanel.resizeImage(scale);
       }
     });	
@@ -102,8 +102,8 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 		zoomOut.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        scale += 0.1;
-        zoomOut.setEnabled(scale < 2.0);
+        scale = 0.9;
+        zoomOut.setEnabled(scale > 0.1);
         formPanel.resizeImage(scale);
       }
     });

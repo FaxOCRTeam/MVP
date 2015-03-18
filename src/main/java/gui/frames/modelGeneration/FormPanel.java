@@ -266,15 +266,6 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 		repaint();
 	}
 	
-	
-//	public void resizeImage(double scale)  {    
-//      int newImageWidth = (int) (image.getWidth() * scale);
-//      int newImageHeight = (int) (image.getHeight() * scale);
-//      BufferedImage resizedImage = new BufferedImage(newImageWidth, newImageHeight, Transparency.OPAQUE);
-//      Graphics2D g2 = resizedImage.createGraphics();
-//      g2.drawImage(image, 0, 0, newImageWidth , newImageHeight , null);
-//      super.repaint(); // don't forget this line!
-//  }
 
 	@Override
 	public void cancelSelection() {
@@ -307,8 +298,12 @@ public class FormPanel extends JPanel implements FormPanelInterface {
     int newImageWidth = (int) (image.getWidth() * scale);
     int newImageHeight = (int) (image.getHeight() * scale);
 
+    System.out.println(scale);
+    System.out.println(newImageWidth);
+    System.out.println(newImageHeight);
+    
     if (newImageWidth>0 && newImageHeight>0) {
-      Image newImage =  image.getScaledInstance(newImageWidth, newImageHeight, Image.SCALE_DEFAULT);
+      Image newImage =  image.getScaledInstance(newImageWidth, newImageHeight, Image.SCALE_SMOOTH);
       image = toBufferedImage(newImage);
       repaint();
     } else {
