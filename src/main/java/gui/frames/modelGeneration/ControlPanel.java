@@ -31,7 +31,8 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 		ControlPanelInterface, MainCoordinateInterface {
 
 	private static final long serialVersionUID = -4096249866634543665L;
-
+	double scale = 1.0;
+	
 	List<ModelModificationInterface> mmNotifierList = new ArrayList<ModelModificationInterface>();
 
 	FormPanelInterface formPanel;
@@ -86,7 +87,27 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 				}
 			}
 		});
-
+		
+		final JButton zoomIn = new JButton("zoom in");
+		zoomIn.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        scale -= 0.1;
+        zoomIn.setEnabled(scale > 0.1);
+        formPanel.resizeImage(scale);
+      }
+    });	
+		
+		final JButton zoomOut = new JButton("zoom out");
+		zoomOut.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        scale += 0.1;
+        zoomOut.setEnabled(scale < 2.0);
+        formPanel.resizeImage(scale);
+      }
+    });
+		
 		JPanel coordinatesPanel = new JPanel();
 		SpringLayout csl = new SpringLayout();
 		Dimension cd = new Dimension(200, 150);
@@ -139,6 +160,8 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 		add(cancelButton);
 		add(coordinatesPanel);
 		add(saveButton);
+		add(zoomIn);
+		add(zoomOut);
 
 		springLayout.putConstraint(SpringLayout.WEST, loadButton, 5, SpringLayout.WEST, this);
 		springLayout
@@ -156,6 +179,13 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 		springLayout.putConstraint(SpringLayout.WEST, saveButton, 5, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, saveButton, 5, SpringLayout.SOUTH,
 				coordinatesPanel);
+		springLayout.putConstraint(SpringLayout.WEST, zoomIn, 5, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, zoomIn, 5, SpringLayout.SOUTH,
+		        saveButton);
+		springLayout.putConstraint(SpringLayout.WEST, zoomOut, 5, SpringLayout.EAST,
+		        zoomIn);
+    springLayout.putConstraint(SpringLayout.NORTH, zoomOut, 35, SpringLayout.SOUTH,
+        coordinatesPanel);
 	}
 
 	@Override
