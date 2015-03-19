@@ -61,6 +61,8 @@ public class LineSeperator {
 				image.depth(), image.nChannels());
 		ArrayList<Spaces> spaceAndWidth = new ArrayList<Spaces>();
 		ArrayList<Integer> lineLen = new ArrayList<Integer>();
+		ArrayList<IplImage> returnlist = new ArrayList<IplImage>();
+
 	//	org.bytedeco.javacpp.opencv_highgui.cvSaveImage("./test.jpg",image);
 		int startOfSpace = 0, widthOfSpace = 0;
 		int currentCharStart = 0, currentCharWidth = 0;
@@ -105,6 +107,10 @@ public class LineSeperator {
 		Collections.sort(spaceAndWidth,Collections.reverseOrder());
 		Collections.sort(lineLen);
 		//System.out.println(count);
+		if(lineLen.size()==0){
+			returnlist.add(image);
+			return returnlist;
+		}
 		int charMedian = lineLen.get(lineLen.size()/2);
 		//System.out.println(charMedian);
 		Iterator<Spaces> itr = spaceAndWidth.iterator();
@@ -129,7 +135,6 @@ public class LineSeperator {
 		Iterator<Spaces> itsp = spaceBetWords.iterator();
 		int wordStart = 0;
 		int pos = 1;
-		ArrayList<IplImage> returnlist = new ArrayList<IplImage>();
 		while(itsp.hasNext()){
 			Spaces oneSpace = itsp.next();
 			if(oneSpace.getWidth() == 0){

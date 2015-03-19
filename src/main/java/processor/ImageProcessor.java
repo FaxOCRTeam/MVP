@@ -31,9 +31,9 @@ public class ImageProcessor {
 			fieldImage = LineSeperator.verticalbarremove(fieldImage);
 			ArrayList<IplImage> lineImageList = (ArrayList<IplImage>) LineSeperator.lineSperate(fieldImage);
 			for(IplImage image:lineImageList){
-			//	org.bytedeco.javacpp.opencv_highgui.cvSaveImage("./test3.jpg",image);
+				org.bytedeco.javacpp.opencv_highgui.cvSaveImage("./test3.jpg",image);
 				image = ULremover.underlineRemove(image);
-		//		org.bytedeco.javacpp.opencv_highgui.cvSaveImage("./test2.jpg",image);
+				org.bytedeco.javacpp.opencv_highgui.cvSaveImage("./test2.jpg",image);
 				ArrayList<IplImage> wordImageList = SpaceRemover.spaceRemove(image);
 				imageList.add(wordImageList);
 			}

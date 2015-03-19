@@ -28,6 +28,7 @@ public class ULremover {
 		int imgCols = imgMat.cols();
 		int imgRows = imgMat.rows();
 		int[] shadow = new int[imgRows];
+		double singleLineremovebar = 0.28;
 		for (int i = 0; i < imgRows; i++) {
 			for (int j = 0; j < imgCols; j++) {
 				if (imgMat.get(i, j) == 0) {
@@ -49,20 +50,20 @@ public class ULremover {
 						count++;
 						count +=blank;
 						blank = 0;
-						if(j==imgCols -1&&count>imgCols*0.3){
+						if(j==imgCols -1&&count>imgCols*singleLineremovebar){
 							Integer[] insertInt = {startpoint, count};
 							underlineList.add(insertInt);
 						}
 					}
 					else if(count>0&&blank<3){
 						blank++;
-						if(j==imgCols -1&&count>imgCols*0.3){
+						if(j==imgCols -1&&count>imgCols*singleLineremovebar){
 							Integer[] insertInt = {startpoint, count};
 							underlineList.add(insertInt);
 						}
 					}
 					else if(count>0){
-						if(count>imgCols *0.3){
+						if(count>imgCols *singleLineremovebar){
 							Integer[] insertInt = {startpoint, count};
 							underlineList.add(insertInt);
 						}
