@@ -56,6 +56,7 @@ public class LineSeperator {
 		int imgRows = imgMat.rows();
 		int[] areaOfLine = new int[imgRows];
 		int isInLine = 0;
+		double linesepbar = 0.55;
 		IplImage ori = cvCreateImage(
 				cvGetSize(image),
 				image.depth(), image.nChannels());
@@ -117,7 +118,7 @@ public class LineSeperator {
 		ArrayList<Spaces> spaceBetWords = new ArrayList<Spaces>();
 		while (itr.hasNext()){
 			Spaces spc = itr.next();
-			if(spc.getWidth() < charMedian * 0.5 )
+			if(spc.getWidth() < charMedian * linesepbar )
 				break;
 			spaceBetWords.add(new Spaces(spc.getWidth(),spc.getStart()));
 		}
@@ -144,7 +145,7 @@ public class LineSeperator {
 			IplImage blobImage;
 			
 			cvCopy(clImage, ori);			
-			cvSetImageROI(ori, cvRect(0,wordStart,imgCols,oneSpace.getWidth() - wordStart));
+			cvSetImageROI(ori, cvRect(0,wordStart,imgCols,(int)(oneSpace.getWidth() - wordStart+charMedian * linesepbar)));
 			wordStart = oneSpace.getWidth() + oneSpace.getStart();
 			blobImage = cvCreateImage(cvGetSize(ori), ori.depth(),
 					ori.nChannels());
@@ -168,6 +169,7 @@ public class LineSeperator {
 		CvMat imgMat = image.asCvMat();
 		int imgCols = imgMat.cols();
 		int imgRows = imgMat.rows();
+		double singleLineremovebar = 0.7;
 		int[] shadow = new int[imgCols];
 		for (int i = 0; i < imgCols; i++) {
 			for (int j = 0; j < imgRows; j++) {
@@ -190,16 +192,20 @@ public class LineSeperator {
 						count++;
 						count +=blank;
 						blank = 0;
-						if(j==imgRows -1&&count>imgRows*0.7){
+						if(j==imgRows -1&&count>imgRows*singleLineremovebar){
 							Integer[] insertInt = {startpoint, count};
 							barList.add(insertInt);
 						}
 					}
 					else if(count>0&&blank<2){
 						blank++;
+						if(j==imgRows -1&&count>imgRows*singleLineremovebar){
+							Integer[] insertInt = {startpoint, count};
+							barList.add(insertInt);
+						}
 					}
 					else if(count>0){
-						if(count>imgCols *0.7){
+						if(count>imgCols *singleLineremovebar){
 							Integer[] insertInt = {startpoint, count};
 							barList.add(insertInt);
 						}
