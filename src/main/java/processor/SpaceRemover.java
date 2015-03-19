@@ -126,21 +126,26 @@ public class SpaceRemover {
 			spaceBetWords.add(new Spaces(spc.getWidth(),spc.getStart()));
 		}
 		Collections.sort(spaceBetWords);
-		Iterator<Spaces> itsp = spaceBetWords.iterator();
+		//Iterator<Spaces> itsp = spaceBetWords.iterator();
 		int wordStart = 0;
 		int pos = 1;
 		int smallestSpace = spaceAndWidth.get(spaceAndWidth.size()-1).width;
-		while(itsp.hasNext()){
-			Spaces oneSpace = itsp.next();
+		for(int i=0; i< spaceBetWords.size();i++){
+			Spaces oneSpace = spaceBetWords.get(i);
 			if(oneSpace.getWidth() == 0){
 				continue;
 			}
 			IplImage clImage = cvCloneImage(image);
 			IplImage blobImage;
-			
 			cvCopy(clImage, ori);
-			cvSetImageROI(ori, cvRect(wordStart,0,oneSpace.getWidth() + smallestSpace * 2 - wordStart,imgRows));
-			wordStart = oneSpace.getWidth() + oneSpace.getStart() - smallestSpace;
+			if(i == spaceBetWords.size()-1){
+				cvSetImageROI(ori, cvRect(wordStart,0,oneSpace.getWidth() + smallestSpace * 2 - wordStart,imgRows));
+				wordStart = oneSpace.getWidth() + oneSpace.getStart() - smallestSpace;
+			}
+			else{
+				cvSetImageROI(ori, cvRect(wordStart,0,oneSpace.getWidth() + smallestSpace * 2 - wordStart,imgRows));
+				wordStart = oneSpace.getWidth() + oneSpace.getStart() - smallestSpace;
+			}
 			blobImage = cvCreateImage(cvGetSize(ori), ori.depth(),
 					ori.nChannels());
 			cvCopy(ori, blobImage);
@@ -153,7 +158,27 @@ public class SpaceRemover {
 				dir.mkdirs();
 			}
 			org.bytedeco.javacpp.opencv_highgui.cvSaveImage(dir.toString()+"/"+ pos + ".jpg",blobImage);
-			pos ++;
+			pos ++;	
+		}
+		if(wordStart + wordLen.get(wordLen.size()-1) < imgCols ){
+			int width = imgCols - wordStart;
+			IplImage clImage = cvCloneImage(image);
+			IplImage blobImage;
+			cvCopy(clImage, ori);
+			cvSetImageROI(ori, cvRect(wordStart,0,width,imgRows));
+			wordStart = width + wordStart - smallestSpace;
+			blobImage = cvCreateImage(cvGetSize(ori), ori.depth(),
+					ori.nChannels());
+			cvCopy(ori, blobImage);
+			cvResetImageROI(ori);
+			returnlist.add(blobImage);
+			//File output = new File("./src/subimage_"+ pos +"of image"+count+".jpg");
+			File dir = new File("./output/image/"+abc);
+			if(!dir.exists()){
+				dir.mkdirs();
+			}
+			org.bytedeco.javacpp.opencv_highgui.cvSaveImage(dir.toString()+"/"+ pos + ".jpg",blobImage);
+			pos ++;	
 		}
 		abc++;
 		return returnlist;
