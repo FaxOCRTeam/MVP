@@ -50,6 +50,8 @@ public class SpaceRemover {
 		  
 	}
 	public static int abc = 0;
+	public static double SPACE_IN_WORD_THRE = 0.55;
+	
 	public static ArrayList<IplImage> spaceRemove(IplImage image) {
 		CvMat imgMat = image.asCvMat();
 		int imgCols = imgMat.cols();
@@ -119,7 +121,7 @@ public class SpaceRemover {
 		ArrayList<Spaces> spaceBetWords = new ArrayList<Spaces>();
 		while (itr.hasNext()){
 			Spaces spc = itr.next();
-			if(spc.getWidth() < charMedian * 0.5 )
+			if(spc.getWidth() < charMedian * SPACE_IN_WORD_THRE )
 				break;
 			spaceBetWords.add(new Spaces(spc.getWidth(),spc.getStart()));
 		}
@@ -127,6 +129,7 @@ public class SpaceRemover {
 		Iterator<Spaces> itsp = spaceBetWords.iterator();
 		int wordStart = 0;
 		int pos = 1;
+		int smallestSpace = spaceAndWidth.get(spaceAndWidth.size()-1).width;
 		while(itsp.hasNext()){
 			Spaces oneSpace = itsp.next();
 			if(oneSpace.getWidth() == 0){
@@ -135,9 +138,9 @@ public class SpaceRemover {
 			IplImage clImage = cvCloneImage(image);
 			IplImage blobImage;
 			
-			cvCopy(clImage, ori);			
-			cvSetImageROI(ori, cvRect(wordStart,0,oneSpace.getWidth() - wordStart,imgRows));
-			wordStart = oneSpace.getWidth() + oneSpace.getStart();
+			cvCopy(clImage, ori);
+			cvSetImageROI(ori, cvRect(wordStart,0,oneSpace.getWidth() + smallestSpace * 2 - wordStart,imgRows));
+			wordStart = oneSpace.getWidth() + oneSpace.getStart() - smallestSpace;
 			blobImage = cvCreateImage(cvGetSize(ori), ori.depth(),
 					ori.nChannels());
 			cvCopy(ori, blobImage);
