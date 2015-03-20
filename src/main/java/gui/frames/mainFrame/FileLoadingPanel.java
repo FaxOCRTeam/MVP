@@ -64,6 +64,7 @@ public class FileLoadingPanel extends JPanel {
 		layout.putConstraint(SpringLayout.EAST, listScroller, -5, SpringLayout.EAST, this);
 
 		JButton addButton = new JButton("add");
+		addButton.setToolTipText("Add a new form image to process (*.tif, *.fig, *.png, *.bmp)");
 		addButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -84,6 +85,7 @@ public class FileLoadingPanel extends JPanel {
 		layout.putConstraint(SpringLayout.EAST, addButton, -5, SpringLayout.EAST, this);
 		
 		processButton = new JButton("process");
+		processButton.setToolTipText("Process the selected form of image segmentation, preprocessing and OCR; Save the results into database");
 //		processButton.setEnabled(false);
 		processButton.addActionListener(new ActionListener() {
 			@Override

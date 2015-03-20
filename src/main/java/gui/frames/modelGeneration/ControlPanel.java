@@ -63,6 +63,7 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 
 	public void init(SpringLayout springLayout) {
 		JButton loadButton = new JButton("load form");
+		loadButton.setToolTipText("Load a sample form to segment");
 		loadButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -76,6 +77,7 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 			}
 		});
 		JButton cancelButton = new JButton("cancel selection");
+		cancelButton.setToolTipText("Cancel current segmentation of the image in left panel");
 		cancelButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -87,6 +89,7 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 			}
 		});
 		JButton saveButton = new JButton("save");
+		saveButton.setToolTipText("Save current segmentation into model");
 		saveButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -104,7 +107,9 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 		});
 		
 		JButton zoomInButton = new JButton("+");
+		zoomInButton.setToolTipText("Zoom in the image in left panel");
 		JButton zoomOutButton = new JButton("-");
+		zoomOutButton.setToolTipText("Zoom out the image in left panel");
 		zoomInButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
