@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
@@ -30,10 +31,13 @@ public class FileLoadingPanel extends JPanel {
 	public FileLoadingPanel(MainFrame mainFrame) {
 		thisObj = this;
 		parent = mainFrame;
-		Dimension dimension = new Dimension(310, 460);
+		Dimension dimension = new Dimension(410, 490);
 		setPreferredSize(dimension);
 		setSize(dimension);
 		setVisible(true);
+		
+		setBorder(BorderFactory.createTitledBorder(//
+				BorderFactory.createEtchedBorder(), "load file"));
 		
 		init();
 	}
@@ -42,7 +46,7 @@ public class FileLoadingPanel extends JPanel {
 		SpringLayout layout = new SpringLayout();
 		setLayout(layout);
 
-		Dimension listDim = new Dimension(300, 400);
+		Dimension listDim = new Dimension(this.getWidth()-30, this.getHeight()-70);
 		listModel = new DefaultListModel<String>();
 		
 		JList<String> list = new JList<String>(listModel);
@@ -66,7 +70,7 @@ public class FileLoadingPanel extends JPanel {
 				List<File> chooseFile = FileChoosingUtils.chooseFile("sampleForm", FileChoosingUtils.OPEN_DIALOG_MUlTIPLE);
 				if (null != chooseFile && chooseFile.size() > 0) {
 					for (File f : chooseFile) {
-						listModel.addElement(f.getName());
+						listModel.addElement(f.getAbsolutePath());
 					}
 				} else {
 					JOptionPane.showMessageDialog(thisObj, "No file chosen");

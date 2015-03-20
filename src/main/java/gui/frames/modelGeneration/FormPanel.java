@@ -173,12 +173,27 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 			}
 		});
 	}
-
-	private void updateResizingRect() {
+	
+	private void updateOriginalSelection() {
 		originalRect = new Rectangle((int) Math.ceil(rect.getX() / scale), //
 				(int) Math.ceil(rect.getY() / scale), //
 				(int) Math.ceil(rect.getWidth() / scale), //
 				(int) Math.ceil(rect.getHeight() / scale));
+	}
+	
+	private void updateScaledSelection() {
+		if(null == originalRect)
+			return;
+		rect = new Rectangle((int) Math.ceil(originalRect.getX() * scale), //
+				(int) Math.ceil(originalRect.getY() * scale), //
+				(int) Math.ceil(originalRect.getWidth() * scale), //
+				(int) Math.ceil(originalRect.getHeight() * scale));
+	}
+	
+	private void updateResizingRect() {
+		if(null == rect)
+			return;
+		updateOriginalSelection();
 		if (null == resizingRect) {
 			resizingRect = new Rectangle[8];
 			for (int i = 0; i < resizingRect.length; i++)
@@ -275,6 +290,7 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 
 	@Override
 	public void cancelSelection() {
+		originalRect = null;
 		rect = null;
 		resizingRect = null;
 		status = Status.silence;
@@ -290,8 +306,8 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 
 	@Override
 	public void setSelection(int[] selection) {
-		System.out.println(selection);
-		rect = new Rectangle(selection[0], selection[1], selection[2], selection[3]);
+		originalRect = new Rectangle(selection[0], selection[1], selection[2], selection[3]);
+		updateScaledSelection();
 		updateResizingRect();
 		notifyRect();
 		repaint();
@@ -325,15 +341,13 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 
 	// @Override
 	private void resizeImage() {
+		if(null == originImage) {
+			return;
+		}
 		int newImageWidth = (int) (originImage.getWidth() * scale);
 		int newImageHeight = (int) (originImage.getHeight() * scale);
 
-		Rectangle newRect = new Rectangle();
-		newRect.setLocation((int) (originalRect.getX() * scale),
-				(int) (originalRect.getY() * scale));
-		newRect.setSize((int) (originalRect.getWidth() * scale),
-				(int) (originalRect.getHeight() * scale));
-		rect = newRect;
+		updateScaledSelection();
 
 		if (newImageWidth > 0 && newImageHeight > 0) {
 			Image newImage = originImage.getScaledInstance(newImageWidth, newImageHeight,
