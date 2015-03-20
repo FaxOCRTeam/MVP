@@ -35,14 +35,15 @@ public class MainFrame extends JFrame {
 
 	public MainFrame() {
 		setTitle(title);
-		Dimension dimension = new Dimension(800, 700);
+		Dimension dimension = new Dimension(800, 570);
 		setSize(dimension);
 		setPreferredSize(dimension);
 
 		initMenu();
 		init();
-
+		
 		pack();
+		setResizable(false);
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
@@ -89,7 +90,6 @@ public class MainFrame extends JFrame {
 		setLayout(layout);
 
 		flpanel = new FileLoadingPanel(this);
-		flpanel.setBorder(BorderFactory.createLineBorder(Color.gray));
 		add(flpanel);
 
 		layout.putConstraint(SpringLayout.NORTH, flpanel, 5, SpringLayout.SOUTH, bar);

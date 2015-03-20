@@ -34,11 +34,11 @@ public class PreviewPreparePanel extends JPanel {
 		layout = new SpringLayout();
 		setLayout(layout);
 
-		Dimension dime = new Dimension(300, 300);
+		Dimension dime = new Dimension(350, 190);
 		setSize(dime);
 		setPreferredSize(dime);
-
-		setBorder(BorderFactory.createLineBorder(Color.gray));
+		setBorder(BorderFactory.createTitledBorder(//
+				BorderFactory.createEtchedBorder(), "load model"));
 
 		init();
 	}
@@ -109,6 +109,16 @@ public class PreviewPreparePanel extends JPanel {
 				picButton);
 		layout.putConstraint(SpringLayout.NORTH, preview, 5, SpringLayout.SOUTH,
 				previewPicPathLabel);
+		
+		layout.putConstraint(SpringLayout.WEST, modelButton, 5, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.WEST, modelPathLabel, 5, SpringLayout.WEST,
+				this);
+		layout.putConstraint(SpringLayout.WEST, picButton, 5, SpringLayout.WEST,
+				this);
+		layout.putConstraint(SpringLayout.WEST, previewPicPathLabel, 5, SpringLayout.WEST,
+				this);
+		layout.putConstraint(SpringLayout.WEST, preview, 5, SpringLayout.WEST,
+				this);
 	}
 
 	boolean checkPreviewEnable() {
