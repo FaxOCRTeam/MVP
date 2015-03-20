@@ -2,20 +2,19 @@ package gui.frames.modelGeneration;
 
 import gui.interfaces.DisplayCoordinatesInterface;
 import gui.interfaces.FormPanelInterface;
-import gui.interfaces.ModelModificationInterface;
 
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,7 +22,6 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 public class FormPanel extends JPanel implements FormPanelInterface {
 
@@ -37,7 +35,10 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 	Rectangle _rectStart;
 
 	BufferedImage image;
-
+	BufferedImage originImage;
+	
+	double scale = 1.0;
+	
 	List<DisplayCoordinatesInterface> coNotifierList = new ArrayList<DisplayCoordinatesInterface>();
 
 	int resizingDirection = -1;
@@ -257,6 +258,11 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		/**
+		 * not safe, change to new instance
+		 */
+		originImage = image;
+		
 		Dimension dimension = new Dimension(image.getWidth(), image.getHeight());
 		this.setSize(dimension);
 		this.setPreferredSize(dimension);
@@ -287,5 +293,40 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 		repaint();
 
 	}
+	
+	 @Override
+	  public void resizeImage(double scale) {
+	    repaint();
+	    System.out.println("Here");
+	    int newImageWidth = (int) (image.getWidth() * scale);
+	    int newImageHeight = (int) (image.getHeight() * scale);
+
+	    System.out.println(scale);
+	    System.out.println(newImageWidth);
+	    System.out.println(newImageHeight);
+	    
+	    if (newImageWidth>0 && newImageHeight>0) {
+	      Image newImage =  image.getScaledInstance(newImageWidth, newImageHeight, Image.SCALE_SMOOTH);
+	      image = toBufferedImage(newImage);
+	      repaint();
+	    } else {
+	      System.out.println("Cannot zoom any more!!");
+	    }
+	    
+	  }
+	  
+	  public static BufferedImage toBufferedImage(Image img){
+	    if (img instanceof BufferedImage) {
+	        return (BufferedImage) img;
+	    }
+	    // Create a buffered image with transparency
+	    BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+	    // Draw the image on to the buffered image
+	    Graphics2D bGr = bimage.createGraphics();
+	    bGr.drawImage(img, 0, 0, null);
+	    bGr.dispose();
+	    // Return the buffered image
+	    return bimage;
+	  }
 
 }

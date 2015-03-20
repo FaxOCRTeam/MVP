@@ -10,4 +10,6 @@ public interface FormPanelInterface {
 	void addCoordinatesNotifier(DisplayCoordinatesInterface dci);
 	
 	void setSelection(int[] selection);
+
+	void resizeImage(double scale);
 }
