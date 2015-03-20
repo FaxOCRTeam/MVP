@@ -66,7 +66,7 @@ public class FileLoadingPanel extends JPanel {
 				List<File> chooseFile = FileChoosingUtils.chooseFile("sampleForm", FileChoosingUtils.OPEN_DIALOG_MUlTIPLE);
 				if (null != chooseFile && chooseFile.size() > 0) {
 					for (File f : chooseFile) {
-						listModel.addElement(f.getName());
+						listModel.addElement(f.getAbsolutePath());
 					}
 				} else {
 					JOptionPane.showMessageDialog(thisObj, "No file chosen");
