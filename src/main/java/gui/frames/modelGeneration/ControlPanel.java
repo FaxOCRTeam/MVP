@@ -98,7 +98,22 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 				}
 			}
 		});
-
+		
+		JButton zoomInButton = new JButton("+");
+		JButton zoomOutButton = new JButton("-");
+		zoomInButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				formPanel.zoomIn();
+			}
+		});
+		zoomOutButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				formPanel.zoomOut();
+			}
+		});
+		
 		JPanel coordinatesPanel = new JPanel();
 		SpringLayout csl = new SpringLayout();
 		Dimension cd = new Dimension(200, 180);
@@ -182,6 +197,8 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 		add(cancelButton);
 		add(coordinatesPanel);
 		add(saveButton);
+		add(zoomInButton);
+		add(zoomOutButton);
 
 		springLayout.putConstraint(SpringLayout.WEST, loadButton, 5, SpringLayout.WEST, this);
 		springLayout
@@ -196,7 +213,15 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 		springLayout.putConstraint(SpringLayout.NORTH, coordinatesPanel, 5,
 				SpringLayout.SOUTH, loadButton);
 
-		springLayout.putConstraint(SpringLayout.WEST, saveButton, 5, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.WEST, zoomInButton, 5, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, zoomInButton, 5, SpringLayout.SOUTH,
+				coordinatesPanel);
+		
+		springLayout.putConstraint(SpringLayout.WEST, zoomOutButton, 5, SpringLayout.EAST, zoomInButton);
+		springLayout.putConstraint(SpringLayout.NORTH, zoomOutButton, 5, SpringLayout.SOUTH,
+				coordinatesPanel);
+		
+		springLayout.putConstraint(SpringLayout.WEST, saveButton, 5, SpringLayout.EAST, zoomOutButton);
 		springLayout.putConstraint(SpringLayout.NORTH, saveButton, 5, SpringLayout.SOUTH,
 				coordinatesPanel);
 	}
