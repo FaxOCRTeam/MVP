@@ -4,27 +4,15 @@ import gui.frames.dbConfig.DBConfigFrame;
 import gui.frames.mainFrame.MainFrame;
 import gui.frames.modelGeneration.ModelGeneraterFrame;
 
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.SpringLayout;
-
-import utils.ConfigurationUtil;
-import utils.Pair;
 
 public class WelcomeFrame extends JFrame {
 	private static final long serialVersionUID = -1592789028157705734L;

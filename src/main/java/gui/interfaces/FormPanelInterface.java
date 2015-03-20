@@ -11,5 +11,8 @@ public interface FormPanelInterface {
 	
 	void setSelection(int[] selection);
 
-	void resizeImage(double scale);
+//	void resizeImage(double scale);
+	void zoomIn();
+	void zoomOut();
+	void originZoom();
 }

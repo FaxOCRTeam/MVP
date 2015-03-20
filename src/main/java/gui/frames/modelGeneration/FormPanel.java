@@ -29,6 +29,7 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 
 	FormPanel thisObj;
 	Rectangle rect;
+	Rectangle originalRect;
 	Rectangle[] resizingRect;
 
 	Point _mouseStart;
@@ -36,9 +37,9 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 
 	BufferedImage image;
 	BufferedImage originImage;
-	
+
 	double scale = 1.0;
-	
+
 	List<DisplayCoordinatesInterface> coNotifierList = new ArrayList<DisplayCoordinatesInterface>();
 
 	int resizingDirection = -1;
@@ -130,14 +131,13 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 							rect.setSize((int) (rect.getWidth()),
 									(int) (e.getY() - rect.getY()));
 						}
-
 					} else if (status == Status.relocating) {
 						rect.setBounds((int) (_rectStart.getX() + (mouseDeltaX)),//
 								(int) (_rectStart.getY() + (mouseDeltaY)), //
 								(int) rect.getWidth(), (int) rect.getHeight());
 					}
-					updateResizingRect();
 				}
+				updateResizingRect();
 				notifyRect();
 				super.mouseDragged(e);
 				repaint();
@@ -175,6 +175,10 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 	}
 
 	private void updateResizingRect() {
+		originalRect = new Rectangle((int) Math.ceil(rect.getX() / scale), //
+				(int) Math.ceil(rect.getY() / scale), //
+				(int) Math.ceil(rect.getWidth() / scale), //
+				(int) Math.ceil(rect.getHeight() / scale));
 		if (null == resizingRect) {
 			resizingRect = new Rectangle[8];
 			for (int i = 0; i < resizingRect.length; i++)
@@ -218,12 +222,12 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 	}
 
 	private void notifyRect() {
-		int[] rectCoordinates = new int[] { (int) rect.getX(), (int) rect.getY(), //
-				(int) rect.getWidth(), (int) rect.getHeight() };
+		int[] rectCoordinates = new int[] { (int) originalRect.getX(),
+				(int) originalRect.getY(), //
+				(int) originalRect.getWidth(), (int) originalRect.getHeight() };
 		for (DisplayCoordinatesInterface dci : coNotifierList) {
 			dci.setCoordinates(rectCoordinates);
 		}
-
 	}
 
 	@Override
@@ -262,7 +266,7 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 		 * not safe, change to new instance
 		 */
 		originImage = image;
-		
+
 		Dimension dimension = new Dimension(image.getWidth(), image.getHeight());
 		this.setSize(dimension);
 		this.setPreferredSize(dimension);
@@ -293,40 +297,68 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 		repaint();
 
 	}
-	
-	 @Override
-	  public void resizeImage(double scale) {
-	    repaint();
-	    System.out.println("Here");
-	    int newImageWidth = (int) (image.getWidth() * scale);
-	    int newImageHeight = (int) (image.getHeight() * scale);
 
-	    System.out.println(scale);
-	    System.out.println(newImageWidth);
-	    System.out.println(newImageHeight);
-	    
-	    if (newImageWidth>0 && newImageHeight>0) {
-	      Image newImage =  image.getScaledInstance(newImageWidth, newImageHeight, Image.SCALE_SMOOTH);
-	      image = toBufferedImage(newImage);
-	      repaint();
-	    } else {
-	      System.out.println("Cannot zoom any more!!");
-	    }
-	    
-	  }
-	  
-	  public static BufferedImage toBufferedImage(Image img){
-	    if (img instanceof BufferedImage) {
-	        return (BufferedImage) img;
-	    }
-	    // Create a buffered image with transparency
-	    BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-	    // Draw the image on to the buffered image
-	    Graphics2D bGr = bimage.createGraphics();
-	    bGr.drawImage(img, 0, 0, null);
-	    bGr.dispose();
-	    // Return the buffered image
-	    return bimage;
-	  }
+	@Override
+	public void zoomOut() {
+		scale *= 0.8;
+		if (scale <= 0.2) {
+			scale = 0.2;
+		}
+		resizeImage();
+
+	}
+
+	@Override
+	public void zoomIn() {
+		scale /= 0.8;
+		if (scale >= 2) {
+			scale = 2;
+		}
+		resizeImage();
+	}
+
+	@Override
+	public void originZoom() {
+		scale = 1.0;
+		resizeImage();
+	}
+
+	// @Override
+	private void resizeImage() {
+		int newImageWidth = (int) (originImage.getWidth() * scale);
+		int newImageHeight = (int) (originImage.getHeight() * scale);
+
+		Rectangle newRect = new Rectangle();
+		newRect.setLocation((int) (originalRect.getX() * scale),
+				(int) (originalRect.getY() * scale));
+		newRect.setSize((int) (originalRect.getWidth() * scale),
+				(int) (originalRect.getHeight() * scale));
+		rect = newRect;
+
+		if (newImageWidth > 0 && newImageHeight > 0) {
+			Image newImage = originImage.getScaledInstance(newImageWidth, newImageHeight,
+					Image.SCALE_SMOOTH);
+			image = toBufferedImage(newImage);
+			repaint();
+		} else {
+			System.out.println("Cannot zoom any more!!");
+		}
+		updateResizingRect();
+	}
+
+	public static BufferedImage toBufferedImage(Image img) {
+		if (img instanceof BufferedImage) {
+			return (BufferedImage) img;
+		}
+		// Create a buffered image with transparency
+		BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null),
+				BufferedImage.TYPE_INT_ARGB);
+		// Draw the image on to the buffered image
+		Graphics2D bGr = bimage.createGraphics();
+		bGr.drawImage(img, 0, 0, null);
+		bGr.dispose();
+		// Return the buffered image
+		return bimage;
+	}
 
 }
