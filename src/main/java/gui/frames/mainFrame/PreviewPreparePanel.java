@@ -48,9 +48,11 @@ public class PreviewPreparePanel extends JPanel {
 		previewPicPathLabel = new JLabel("no file choosen");
 
 		preview = new JButton("preview");
+		preview.setToolTipText("Preview the image after applying form segmentation model");
 		preview.setEnabled(false);
 
 		JButton modelButton = new JButton("load model");
+		modelButton.setToolTipText("Load a image segmentation model");
 		modelButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -67,7 +69,6 @@ public class PreviewPreparePanel extends JPanel {
 				thisobj.repaint();
 			}
 		});
-		modelButton.setToolTipText("load model");
 		preview.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -77,6 +78,7 @@ public class PreviewPreparePanel extends JPanel {
 		});
 
 		JButton picButton = new JButton("load preview picture");
+		picButton.setToolTipText("Load a sample form");
 		picButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

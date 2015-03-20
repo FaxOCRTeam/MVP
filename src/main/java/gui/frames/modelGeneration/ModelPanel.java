@@ -72,8 +72,10 @@ public class ModelPanel extends JPanel implements ModelModificationInterface {
 		sl.putConstraint(SpringLayout.WEST, panel1, 5, SpringLayout.WEST, this);
 
 		JButton saveButton = new JButton("export model");
+		saveButton.setToolTipText("Export current model into local file");
 		saveButton.addActionListener(exportAxtion);
 		JButton importButton = new JButton("import model");
+		importButton.setToolTipText("Import a existed segmentation model");
 		importButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -169,6 +171,7 @@ public class ModelPanel extends JPanel implements ModelModificationInterface {
 		}
 		// Add button
 		JButton loadButton = new JButton("load");
+		loadButton.setToolTipText("Load and preview this segmentation in image left panel");
 		loadButton.setActionCommand("" + index);
 		loadButton.addActionListener(new ActionListener() {
 			@Override
@@ -187,6 +190,7 @@ public class ModelPanel extends JPanel implements ModelModificationInterface {
 		});
 
 		JButton deleteButton = new JButton("delete");
+		deleteButton.setToolTipText("Delete this segmentation");
 		deleteButton.setActionCommand("" + index);
 		deleteButton.addActionListener(new ActionListener() {
 			@Override
