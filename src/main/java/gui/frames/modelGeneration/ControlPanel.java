@@ -80,6 +80,10 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				formPanel.cancelSelection();
+				fieldModel.removeAllElements();
+				tableBox.setSelectedIndex(-1);
+				for (JLabel jl : coordinatesLabels)
+					jl.setText("");
 			}
 		});
 		JButton saveButton = new JButton("save");
