@@ -37,34 +37,60 @@ public class test {
 	
 	public static void main(String[] args) throws IOException{
 		//image skews correction
-		BufferedImage img =  ImageIO.read(new File("p-00003.tif"));
-		IplImage origImg = IplImage.createFrom(img);
-		final CanvasFrame canvas = new CanvasFrame("original");
-		canvas.showImage(origImg);
-		canvas.setSize((int)(img.getWidth()*0.4), (int)(img.getHeight()*0.4));
-		ImagePreprocessor ipp = new ImagePreprocessor(origImg);
-		IplImage processedImg = ipp.deskew(origImg);
-		final CanvasFrame canvas2 = new CanvasFrame("processed");
-		canvas2.showImage(processedImg);
-		canvas2.setSize((int)(img.getWidth()*0.4), (int)(img.getHeight()*0.4));
-		
-		// field segmentation skipped 
-		String dir = "./input/";
-		IplImage originImage = cvLoadImage(dir+"test.png", CV_LOAD_IMAGE_GRAYSCALE);
-		
-		// image preprocessing
-		IplImage binaryImage = cvCreateImage(cvGetSize(originImage),
-					IPL_DEPTH_8U, 1);
-		cvThreshold(originImage, binaryImage, 100, 255, CV_THRESH_BINARY);
-		cvErode(binaryImage, binaryImage, null, 1);
-		cvDilate(binaryImage, binaryImage, null, 1);
-		
-		// underline removal
-		IplImage ulremovedImg = ULremover.underlineRemove(binaryImage)
-	;		
-		org.bytedeco.javacpp.opencv_highgui.cvSaveImage("output/ulRemovedTest.jpg", ulremovedImg);
-		// word segmentation
-		SpaceRemover.spaceRemove(ulremovedImg);
+		for (int i = 9; i<=12; i++){
+			String formAdr = "input/p000"+ String.format("%02d", i) + ".tif";
+			BufferedImage img =  ImageIO.read(new File(formAdr));
+			IplImage origImg = IplImage.createFrom(img);
+			final CanvasFrame canvas = new CanvasFrame("original");
+			//canvas.showImage(origImg);
+			//canvas.setSize((int)(img.getWidth()*0.4), (int)(img.getHeight()*0.4));
+			ImagePreprocessor ipp = new ImagePreprocessor(origImg);
+			IplImage processedImg = ipp.deskew(origImg);
+			final CanvasFrame canvas2 = new CanvasFrame("processed");
+			//canvas2.showImage(processedImg);
+			//canvas2.setSize((int)(img.getWidth()*0.4), (int)(img.getHeight()*0.4));
+			// image preprocessing
+			IplImage binaryImage = cvCreateImage(cvGetSize(processedImg),
+												IPL_DEPTH_8U, 1);
+			cvThreshold(processedImg, binaryImage, 100, 255, CV_THRESH_BINARY);
+			cvErode(binaryImage, binaryImage, null, 1);
+			cvDilate(binaryImage, binaryImage, null, 1);
+			
+			ConfigReader configReader = new FileConfigReader();
+			InputStream configStream = ConfigManager.class.getClassLoader()
+					.getResourceAsStream("ImageSegment.config");
+			List<ConfigField> conFieldList = configReader
+					.loadingConfiguration(configStream);
+			ConfigField singleCF;
+			
+			for (ConfigField cf : conFieldList) {
+				singleCF = cf;
+				int[] point =singleCF.getStartingPoint();
+				int startX = point[0];
+				int startY = point[1];
+				int endX = point[0]+singleCF.getWidth();
+				int endY = point[1]+singleCF.getHeight();
+				IplImage image = cvCloneImage(processedImg);
+				IplImage ori = cvCreateImage(cvGetSize(image), image.depth(),
+						image.nChannels());
+				IplImage blobImage;
+				cvCopy(image, ori);
+	
+				cvSetImageROI(ori,
+						cvRect(startX, startY, singleCF.getWidth(), singleCF.getHeight()));
+				
+				blobImage = cvCreateImage(cvGetSize(ori), ori.depth(),
+				ori.nChannels());
+				
+				// underline removal
+				IplImage ulremovedImg = ULremover.underlineRemove(blobImage);		
+				org.bytedeco.javacpp.opencv_highgui.cvSaveImage("output/"+formAdr+"-"+cf.toString()+".jpg", ulremovedImg);
+				// word segmentation
+				SpaceRemover.spaceRemove(ulremovedImg);
+	
+			}
+			
+		}
 	}
 	
 //	public String Last_Name ="abc";
