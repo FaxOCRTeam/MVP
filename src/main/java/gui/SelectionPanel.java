@@ -30,7 +30,6 @@ public class SelectionPanel extends JPanel {
 	Point[] dragPoint;
 	boolean dragging;
 	
-	int x1,x2,x3,x4;
 	
 	private Image image;
 
@@ -68,7 +67,7 @@ public class SelectionPanel extends JPanel {
 					e1.printStackTrace();
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
-				}
+				}	
 				
 				panel2.getLabel().setIcon(new ImageIcon(image));
 				super.mouseReleased(e);
