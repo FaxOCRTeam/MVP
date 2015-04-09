@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 import services.dao.Fax2EMR.dao.Fax2EMRPatientInformationDAO;
+import services.dao.Fax2EMR.dao.Fax2EMRTestFormDAO;
 import services.dao.Fax2EMR.model.Fax2EMRPatientInformation;
+import services.dao.Fax2EMR.model.Fax2EMRTestForm;
 import dataModel.Field;
 import api.DBWriter;
 
@@ -18,6 +20,8 @@ public class DBWriterImpl implements DBWriter {
 	static {
 		tableMapMapping.put("Patient_INFORMATION".toLowerCase(), new Class[] { Fax2EMRPatientInformation.class, Fax2EMRPatientInformationDAO.class });
 		tableMapMapping.put("patientinformation".toLowerCase(), new Class[] { Fax2EMRPatientInformation.class, Fax2EMRPatientInformationDAO.class });
+		tableMapMapping.put("Test_Form".toLowerCase(), new Class[] { Fax2EMRTestForm.class, Fax2EMRTestFormDAO.class });
+		tableMapMapping.put("testform".toLowerCase(), new Class[] { Fax2EMRTestForm.class, Fax2EMRTestFormDAO.class });
 	}
 
 	@SuppressWarnings("unchecked")

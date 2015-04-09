@@ -8,12 +8,15 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import services.dao.Fax2EMR.model.Fax2EMRPatientInformation;
+import services.dao.Fax2EMR.model.Fax2EMRTestForm;
 
 public class DBModelRegester {
 	static final String projectPrefix = "Fax2EMR";
 	static List<Class<?>> configuredClass;
 	static Map<String, Class<?>> shortNameMap;
-	
+	public static void main(String[] args){
+		init();
+	}
 	static  {
 		init();
 	}
@@ -21,8 +24,8 @@ public class DBModelRegester {
 	static void init() {
 		configuredClass = new ArrayList<Class<?>>();
 		shortNameMap = new HashMap<String, Class<?>>();
-
 		regester(Fax2EMRPatientInformation.class);
+		regester(Fax2EMRTestForm.class);
 	}
 	
 	static void regester(Class<?> dbClass) {
