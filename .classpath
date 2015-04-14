@@ -19,7 +19,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/tess4j.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/daoGenerator.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/mysql-connector-java-5.1.10.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/javacpp.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/javacv.jar"/>
+	<classpathentry kind="lib" path="lib/javacv.jar"/>
+	<classpathentry kind="lib" path="lib/javacpp.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

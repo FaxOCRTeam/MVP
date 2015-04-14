@@ -1,6 +1,8 @@
 package processor;
 
 import static org.bytedeco.javacpp.opencv_core.IPL_DEPTH_8U;
+
+
 import static org.bytedeco.javacpp.opencv_core.cvCloneImage;
 import static org.bytedeco.javacpp.opencv_core.cvCreateImage;
 import static org.bytedeco.javacpp.opencv_core.cvGetSize;
