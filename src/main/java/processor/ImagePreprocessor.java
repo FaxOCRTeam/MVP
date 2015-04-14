@@ -54,6 +54,26 @@ public class ImagePreprocessor {
 		return ret;
 	}
 	
+	public BufferedImage deskew(BufferedImage bImg) {
+		ImageDeskew deskew = new ImageDeskew(bImg);
+		double angle = deskew.getSkewAngle();
+		
+		IplImage image = IplImage.createFrom(bImg);
+		IplImage ret = IplImage.create(image.width(),image.height(), IPL_DEPTH_8U, 1);
+		cvSetZero(ret);
+		cvNot(ret,ret);
+		
+		CvPoint2D32f my_center = new CvPoint2D32f();
+		my_center.put((double)(image.width() / 2), (double)(image.height() / 2));
+		int flags = CV_INTER_LINEAR + CV_WARP_FILL_OUTLIERS;
+		CvScalar fillval = cvScalarAll(255);
+		CvMat map_matrix = cvCreateMat(2, 3, CV_32FC1);
+		cv2DRotationMatrix(my_center, angle, 1, map_matrix);
+		cvWarpAffine(image, ret, map_matrix, flags, fillval);
+		
+		return ret.getBufferedImage();
+	}
+	
 	public IplImage erodeAndDilateImage(IplImage image){
 		int ErodeCount = 0;//1;
 		int DilateCount = 0;//1;
@@ -76,18 +96,18 @@ public class ImagePreprocessor {
 		cvErode(BWImage, WorkingImage, null, ErodeCount);
 		return WorkingImage;
 	}
-	
-//	public static void main(String[] args) throws IOException{
-//		BufferedImage img =  ImageIO.read(new File("/Users/wangru/git/MVP/output/image2/1.jpg"));
-//		IplImage origImg = IplImage.createFrom(img);
-//		final CanvasFrame canvas = new CanvasFrame("original");
-//		canvas.showImage(origImg);
-//		canvas.setSize((int)(img.getWidth()*0.4), (int)(img.getHeight()*0.4));
-//		ImagePreprocessor ipp = new ImagePreprocessor(origImg);
-//		IplImage processedImg = ipp.deskew(origImg);
-//		final CanvasFrame canvas2 = new CanvasFrame("processed");
-//		canvas2.showImage(processedImg);
-//		canvas2.setSize((int)(img.getWidth()*0.4), (int)(img.getHeight()*0.4));
-//	}
-	
+/*	
+	public static void main(String[] args) throws IOException{
+		BufferedImage img =  ImageIO.read(new File("p-00003.tif"));
+		IplImage origImg = IplImage.createFrom(img);
+		final CanvasFrame canvas = new CanvasFrame("original");
+		canvas.showImage(origImg);
+		canvas.setSize((int)(img.getWidth()*0.4), (int)(img.getHeight()*0.4));
+		ImagePreprocessor ipp = new ImagePreprocessor(origImg);
+		IplImage processedImg = ipp.deskew(origImg);
+		final CanvasFrame canvas2 = new CanvasFrame("processed");
+		canvas2.showImage(processedImg);
+		canvas2.setSize((int)(img.getWidth()*0.4), (int)(img.getHeight()*0.4));
+	}
+*/
 }
