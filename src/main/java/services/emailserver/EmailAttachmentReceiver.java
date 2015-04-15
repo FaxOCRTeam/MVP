@@ -1,3 +1,5 @@
+package services.emailserver;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
@@ -82,6 +84,7 @@ public class EmailAttachmentReceiver {
  
                 if (contentType.contains("multipart")) {
                     // content may contain attachments
+                	System.out.println("Attachment included!");
                     Multipart multiPart = (Multipart) message.getContent();
                     int numberOfParts = multiPart.getCount();
                     for (int partCount = 0; partCount < numberOfParts; partCount++) {
@@ -89,6 +92,7 @@ public class EmailAttachmentReceiver {
                         if (Part.ATTACHMENT.equalsIgnoreCase(part.getDisposition())) {
                             // this part is attachment
                             String fileName = part.getFileName();
+                            System.out.println("File name is: " + fileName);
                             attachFiles += fileName + ", ";
                             part.saveFile(saveDirectory + File.separator + fileName);
                         } else {
@@ -135,10 +139,10 @@ public class EmailAttachmentReceiver {
      * Runs this program with Gmail POP3 server
      */
     public static void main(String[] args) {
-        String host = "pop.gmail.com";
+        String host = "pop3.live.com";
         String port = "995";
-        String userName = "freddiezhang.cmu@gmail.com";
-        String password = "anying007";
+        String userName = "freddiezhang.cmu@hotmail.com";
+        String password = "12345qwert";
  
         String saveDirectory = "~/Documents/tmp";
  
