@@ -27,6 +27,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
+import org.bytedeco.javacpp.opencv_core.IplImage;
+
 import api.DBModelRegester;
 
 import com.mysql.jdbc.StringUtils;
@@ -62,6 +64,28 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 	}
 
 	public void init(SpringLayout springLayout) {
+		
+		JButton deskewButton  =new JButton("deskew form");
+		deskewButton.setToolTipText("Deskew a sample form in left panel");
+		deskewButton.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				if(formPanel.getImage() == null)
+					JOptionPane.showMessageDialog(thisObj, "No image loaded");
+				else{
+					
+					IplImage image = IplImage.createFrom(formPanel.getImage());
+					formPanel.deskew(image);
+				}
+				
+				
+			}
+		});
+		
+		
+		
+		
 		JButton loadButton = new JButton("load form");
 		loadButton.setToolTipText("Load a sample form to segment");
 		loadButton.addActionListener(new ActionListener() {
@@ -208,8 +232,10 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 		add(saveButton);
 		add(zoomInButton);
 		add(zoomOutButton);
-
-		springLayout.putConstraint(SpringLayout.WEST, loadButton, 5, SpringLayout.WEST, this);
+		add(deskewButton);
+		
+		
+		
 		springLayout
 				.putConstraint(SpringLayout.NORTH, loadButton, 5, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, cancelButton, 5, SpringLayout.EAST,
@@ -219,8 +245,13 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 
 		springLayout.putConstraint(SpringLayout.WEST, coordinatesPanel, 5, SpringLayout.WEST,
 				this);
+		
+		
+		springLayout.putConstraint(SpringLayout.NORTH, deskewButton, 5, SpringLayout.SOUTH, loadButton);
+		
 		springLayout.putConstraint(SpringLayout.NORTH, coordinatesPanel, 5,
-				SpringLayout.SOUTH, loadButton);
+				SpringLayout.SOUTH, deskewButton);
+	
 
 		springLayout.putConstraint(SpringLayout.WEST, zoomInButton, 5, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, zoomInButton, 5, SpringLayout.SOUTH,
@@ -233,6 +264,37 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 		springLayout.putConstraint(SpringLayout.WEST, saveButton, 5, SpringLayout.EAST, zoomOutButton);
 		springLayout.putConstraint(SpringLayout.NORTH, saveButton, 5, SpringLayout.SOUTH,
 				coordinatesPanel);
+		
+		//
+		
+		springLayout
+		.putConstraint(SpringLayout.NORTH, loadButton, 5, SpringLayout.NORTH, this);
+springLayout.putConstraint(SpringLayout.WEST, cancelButton, 5, SpringLayout.EAST,
+		loadButton);
+springLayout.putConstraint(SpringLayout.NORTH, cancelButton, 5, SpringLayout.NORTH,
+		this);
+
+springLayout.putConstraint(SpringLayout.WEST, coordinatesPanel, 5, SpringLayout.WEST,
+		this);
+
+
+springLayout.putConstraint(SpringLayout.NORTH, deskewButton, 5, SpringLayout.SOUTH, loadButton);
+
+springLayout.putConstraint(SpringLayout.NORTH, coordinatesPanel, 5,
+		SpringLayout.SOUTH, deskewButton);
+
+
+springLayout.putConstraint(SpringLayout.WEST, zoomInButton, 5, SpringLayout.WEST, this);
+springLayout.putConstraint(SpringLayout.NORTH, zoomInButton, 5, SpringLayout.SOUTH,
+		coordinatesPanel);
+
+springLayout.putConstraint(SpringLayout.WEST, zoomOutButton, 5, SpringLayout.EAST, zoomInButton);
+springLayout.putConstraint(SpringLayout.NORTH, zoomOutButton, 5, SpringLayout.SOUTH,
+		coordinatesPanel);
+
+springLayout.putConstraint(SpringLayout.WEST, saveButton, 5, SpringLayout.EAST, zoomOutButton);
+springLayout.putConstraint(SpringLayout.NORTH, saveButton, 5, SpringLayout.SOUTH,
+		coordinatesPanel);
 	}
 
 	@Override

@@ -1,5 +1,15 @@
 package gui.frames.modelGeneration;
 
+import static org.bytedeco.javacpp.opencv_core.CV_32FC1;
+import static org.bytedeco.javacpp.opencv_core.IPL_DEPTH_8U;
+import static org.bytedeco.javacpp.opencv_core.cvCreateMat;
+import static org.bytedeco.javacpp.opencv_core.cvNot;
+import static org.bytedeco.javacpp.opencv_core.cvScalarAll;
+import static org.bytedeco.javacpp.opencv_core.cvSetZero;
+import static org.bytedeco.javacpp.opencv_imgproc.CV_INTER_LINEAR;
+import static org.bytedeco.javacpp.opencv_imgproc.CV_WARP_FILL_OUTLIERS;
+import static org.bytedeco.javacpp.opencv_imgproc.cv2DRotationMatrix;
+import static org.bytedeco.javacpp.opencv_imgproc.cvWarpAffine;
 import gui.interfaces.DisplayCoordinatesInterface;
 import gui.interfaces.FormPanelInterface;
 
@@ -22,6 +32,13 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+
+import org.bytedeco.javacpp.opencv_core.CvMat;
+import org.bytedeco.javacpp.opencv_core.CvPoint2D32f;
+import org.bytedeco.javacpp.opencv_core.CvScalar;
+import org.bytedeco.javacpp.opencv_core.IplImage;
+
+import com.recognition.software.jdeskew.ImageDeskew;
 
 public class FormPanel extends JPanel implements FormPanelInterface {
 
@@ -49,6 +66,7 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 	}
 
 	Status status;
+
 
 	public FormPanel() {
 		// setPreferredSize(new Dimension(1000,1000));
@@ -374,5 +392,33 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 		// Return the buffered image
 		return bimage;
 	}
-
+	
+	@Override
+	public BufferedImage getImage(){
+		
+		return image;
+	}
+	
+	@Override
+	public void deskew(IplImage Ipl){
+		BufferedImage bImg = Ipl.getBufferedImage();
+		IplImage ret = IplImage.create(Ipl.width(),Ipl.height(), IPL_DEPTH_8U, 1);
+		cvSetZero(ret);
+		cvNot(ret,ret);
+		ImageDeskew deskew = new ImageDeskew(bImg);
+		double angle = deskew.getSkewAngle();
+		
+		CvPoint2D32f my_center = new CvPoint2D32f();
+		my_center.put((double)(Ipl.width() / 2), (double)(Ipl.height() / 2));
+		int flags = CV_INTER_LINEAR + CV_WARP_FILL_OUTLIERS;
+		CvScalar fillval = cvScalarAll(255);
+		CvMat map_matrix = cvCreateMat(2, 3, CV_32FC1);
+		cv2DRotationMatrix(my_center, angle, 1, map_matrix);
+		cvWarpAffine(Ipl, ret, map_matrix, flags, fillval);
+		image = ret.getBufferedImage();
+		repaint();
+		
+	}
+	
+	
 }

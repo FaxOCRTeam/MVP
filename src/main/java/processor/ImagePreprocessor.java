@@ -77,17 +77,17 @@ public class ImagePreprocessor {
 		return WorkingImage;
 	}
 	
-//	public static void main(String[] args) throws IOException{
-//		BufferedImage img =  ImageIO.read(new File("/Users/wangru/git/MVP/output/image2/1.jpg"));
-//		IplImage origImg = IplImage.createFrom(img);
-//		final CanvasFrame canvas = new CanvasFrame("original");
-//		canvas.showImage(origImg);
-//		canvas.setSize((int)(img.getWidth()*0.4), (int)(img.getHeight()*0.4));
-//		ImagePreprocessor ipp = new ImagePreprocessor(origImg);
-//		IplImage processedImg = ipp.deskew(origImg);
-//		final CanvasFrame canvas2 = new CanvasFrame("processed");
-//		canvas2.showImage(processedImg);
-//		canvas2.setSize((int)(img.getWidth()*0.4), (int)(img.getHeight()*0.4));
-//	}
+	public static void main(String[] args) throws IOException{
+		BufferedImage img =  ImageIO.read(new File("./save.jpg"));
+		IplImage origImg = IplImage.createFrom(img);
+		final CanvasFrame canvas = new CanvasFrame("original");
+		canvas.showImage(origImg);
+		canvas.setSize((int)(img.getWidth()*0.4), (int)(img.getHeight()*0.4));
+		ImagePreprocessor ipp = new ImagePreprocessor(origImg);
+		IplImage processedImg = ipp.deskew(origImg);
+		final CanvasFrame canvas2 = new CanvasFrame("processed");
+		canvas2.showImage(processedImg);
+		canvas2.setSize((int)(img.getWidth()*0.4), (int)(img.getHeight()*0.4));
+	}
 	
 }
