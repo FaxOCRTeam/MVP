@@ -2,3 +2,4 @@ target/*
 .DS_Store
 bin/*
 *.jpg
+*/file_loader_config.properties
