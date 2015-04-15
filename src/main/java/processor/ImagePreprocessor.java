@@ -17,6 +17,7 @@ import static org.bytedeco.javacpp.opencv_core.cvNot;
 import static org.bytedeco.javacpp.opencv_imgproc.*;
 import static org.bytedeco.javacpp.opencv_core.*;
 
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -59,19 +60,27 @@ public class ImagePreprocessor {
 	public BufferedImage deskew(BufferedImage bImg) {
 		ImageDeskew deskew = new ImageDeskew(bImg);
 		double angle = deskew.getSkewAngle();
-		
-		IplImage image = IplImage.createFrom(bImg);
-		IplImage ret = IplImage.create(image.width(),image.height(), IPL_DEPTH_8U, 1);
+		// Convert colored BufferedImage to gray scale
+	    BufferedImage gimage = new BufferedImage(bImg.getWidth(), bImg.getHeight(),
+	    		BufferedImage.TYPE_BYTE_GRAY);  
+	    Graphics g = gimage.getGraphics();  
+	    g.drawImage(bImg, 0, 0, null);  
+	    g.dispose();
+	    
+		IplImage ret = IplImage.create(bImg.getWidth(),bImg.getHeight(), IPL_DEPTH_8U, 1);
 		cvSetZero(ret);
 		cvNot(ret,ret);
 		
+		IplImage ret2 = IplImage.create(bImg.getWidth(),bImg.getHeight(), IPL_DEPTH_8U, 1);
+		ret2.copyFrom(gimage);
+		
 		CvPoint2D32f my_center = new CvPoint2D32f();
-		my_center.put((double)(image.width() / 2), (double)(image.height() / 2));
+		my_center.put((double)(bImg.getWidth() / 2), (double)(bImg.getWidth() / 2));
 		int flags = CV_INTER_LINEAR + CV_WARP_FILL_OUTLIERS;
 		CvScalar fillval = cvScalarAll(255);
 		CvMat map_matrix = cvCreateMat(2, 3, CV_32FC1);
 		cv2DRotationMatrix(my_center, angle, 1, map_matrix);
-		cvWarpAffine(image, ret, map_matrix, flags, fillval);
+		cvWarpAffine(ret2, ret, map_matrix, flags, fillval);
 		
 		return ret.getBufferedImage();
 	}
@@ -99,14 +108,14 @@ public class ImagePreprocessor {
 		return WorkingImage;
 	}
 
-/*	
+/*
 	public static void main(String[] args) throws IOException{
-		BufferedImage img =  ImageIO.read(new File("p-00003.tif"));
+		BufferedImage img =  ImageIO.read(new File("Freddie's Form.jpg"));
 		IplImage origImg = IplImage.createFrom(img);
 		final CanvasFrame canvas = new CanvasFrame("original");
 		canvas.showImage(origImg);
 		canvas.setSize((int)(img.getWidth()*0.4), (int)(img.getHeight()*0.4));
-		ImagePreprocessor ipp = new ImagePreprocessor(origImg);
+		ImagePreprocessor ipp = new ImagePreprocessor();
 		BufferedImage processedImg = ipp.deskew(img);
 		final CanvasFrame canvas2 = new CanvasFrame("processed");
 		canvas2.showImage(processedImg);
