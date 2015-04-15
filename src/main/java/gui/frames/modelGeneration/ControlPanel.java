@@ -265,36 +265,7 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 		springLayout.putConstraint(SpringLayout.NORTH, saveButton, 5, SpringLayout.SOUTH,
 				coordinatesPanel);
 		
-		//
-		
-		springLayout
-		.putConstraint(SpringLayout.NORTH, loadButton, 5, SpringLayout.NORTH, this);
-springLayout.putConstraint(SpringLayout.WEST, cancelButton, 5, SpringLayout.EAST,
-		loadButton);
-springLayout.putConstraint(SpringLayout.NORTH, cancelButton, 5, SpringLayout.NORTH,
-		this);
 
-springLayout.putConstraint(SpringLayout.WEST, coordinatesPanel, 5, SpringLayout.WEST,
-		this);
-
-
-springLayout.putConstraint(SpringLayout.NORTH, deskewButton, 5, SpringLayout.SOUTH, loadButton);
-
-springLayout.putConstraint(SpringLayout.NORTH, coordinatesPanel, 5,
-		SpringLayout.SOUTH, deskewButton);
-
-
-springLayout.putConstraint(SpringLayout.WEST, zoomInButton, 5, SpringLayout.WEST, this);
-springLayout.putConstraint(SpringLayout.NORTH, zoomInButton, 5, SpringLayout.SOUTH,
-		coordinatesPanel);
-
-springLayout.putConstraint(SpringLayout.WEST, zoomOutButton, 5, SpringLayout.EAST, zoomInButton);
-springLayout.putConstraint(SpringLayout.NORTH, zoomOutButton, 5, SpringLayout.SOUTH,
-		coordinatesPanel);
-
-springLayout.putConstraint(SpringLayout.WEST, saveButton, 5, SpringLayout.EAST, zoomOutButton);
-springLayout.putConstraint(SpringLayout.NORTH, saveButton, 5, SpringLayout.SOUTH,
-		coordinatesPanel);
 	}
 
 	@Override
