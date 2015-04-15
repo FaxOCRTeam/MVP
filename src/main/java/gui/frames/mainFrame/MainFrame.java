@@ -119,8 +119,9 @@ public class MainFrame extends JFrame {
 		} catch (TesseractException e) {
 			e.printStackTrace();
 		}
-		DBWriterImpl dbWriter = new DBWriterImpl();
-		dbWriter.writeToDB(process);
+//		DBWriterImpl dbWriter = new DBWriterImpl();
+//		dbWriter.writeToDB(process);
+		System.out.print(process);
 	}
 
 	public boolean modelReady() {
