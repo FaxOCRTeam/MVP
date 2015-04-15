@@ -106,7 +106,7 @@ public class ImagePreprocessor {
 		canvas.showImage(origImg);
 		canvas.setSize((int)(img.getWidth()*0.4), (int)(img.getHeight()*0.4));
 		ImagePreprocessor ipp = new ImagePreprocessor(origImg);
-		IplImage processedImg = ipp.deskew(origImg);
+		BufferedImage processedImg = ipp.deskew(img);
 		final CanvasFrame canvas2 = new CanvasFrame("processed");
 		canvas2.showImage(processedImg);
 		canvas2.setSize((int)(img.getWidth()*0.4), (int)(img.getHeight()*0.4));
