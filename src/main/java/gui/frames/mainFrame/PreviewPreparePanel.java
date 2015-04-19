@@ -34,11 +34,11 @@ public class PreviewPreparePanel extends JPanel {
 		layout = new SpringLayout();
 		setLayout(layout);
 
-		Dimension dime = new Dimension(350, 190);
+		Dimension dime = new Dimension(350, 200);
 		setSize(dime);
 		setPreferredSize(dime);
 		setBorder(BorderFactory.createTitledBorder(//
-				BorderFactory.createEtchedBorder(), "load model"));
+				BorderFactory.createEtchedBorder(), "preview image"));
 
 		init();
 	}
