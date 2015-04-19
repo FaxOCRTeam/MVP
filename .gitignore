@@ -6,3 +6,21 @@ bin/*
 /*.jpg
 >>>>>>> 6ad5d681d191a57283c3bcd722bc6ee529118abb
 /target/
+
+*.jpg
+
+*.xml
+
+*.iml
+
+.idea/.name
+
+*.properties
+
+new model
+
+*.properties
+
+*.properties
+
+src/main/resources/configs/file_loader_config.properties
