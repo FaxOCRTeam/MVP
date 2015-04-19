@@ -25,6 +25,7 @@ import javax.swing.JPanel;
 
 public class FormPanel extends JPanel implements FormPanelInterface {
 
+	
 	private static final long serialVersionUID = -3544461806228328538L;
 
 	FormPanel thisObj;
