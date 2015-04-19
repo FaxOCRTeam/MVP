@@ -39,6 +39,8 @@ public class ModelGeneraterFrame extends SavableFrame{
 		setVisible(true);
 
 		init();
+		
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
 
 	private void init() {
