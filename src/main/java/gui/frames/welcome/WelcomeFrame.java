@@ -33,7 +33,9 @@ public class WelcomeFrame extends JFrame {
 
 		setVisible(true);
 		setResizable(false);
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
+		//setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 
 	
