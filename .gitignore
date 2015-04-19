@@ -24,3 +24,9 @@ new model
 *.properties
 
 src/main/resources/configs/file_loader_config.properties
+
+src/main/resources/configs/file_loader_config.properties
+
+*.properties
+
+*.properties
