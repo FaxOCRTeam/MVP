@@ -2,24 +2,24 @@ package services.dao.Fax2EMR.model;
 
 
 public class Fax2EMRLaboratoryReport {
-	Integer id;
-	String Patient_name;
-	String Phone_number;
-	String Patient_ID;
-	String Physician;
-	String Sex;
-	String Age;
-	String Date_of_birth;
-	String Sodium;
-	String Potassium;
-	String Chloride;
-	String Carbon_dioxide;
-	String Calcium;
-	String Alkaline_phosphatase;
-	String AST;
-	String ALT;
-	String Bilirubin_total;
-	String Glucose;
+	public Integer id;
+	public String Patient_name;
+	public String Phone_number;
+	public String Patient_ID;
+	public String Physician;
+	public String Sex;
+	public String Age;
+	public String Date_of_birth;
+	public String Sodium;
+	public String Potassium;
+	public String Chloride;
+	public String Carbon_dioxide;
+	public String Calcium;
+	public String Alkaline_phosphatase;
+	public String AST;
+	public String ALT;
+	public String Bilirubin_total;
+	public String Glucose;
 	public Integer getId() {
 		return this.id;
 	}
