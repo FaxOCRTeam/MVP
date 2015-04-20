@@ -27,8 +27,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
-import org.bytedeco.javacpp.opencv_core.IplImage;
-
 import api.DBModelRegester;
 
 import com.mysql.jdbc.StringUtils;
@@ -39,8 +37,7 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 		ControlPanelInterface, MainCoordinateInterface {
 
 	private static final long serialVersionUID = -4096249866634543665L;
-	double scale = 1.0;
-	
+
 	List<ModelModificationInterface> mmNotifierList = new ArrayList<ModelModificationInterface>();
 
 	FormPanelInterface formPanel;
@@ -65,28 +62,6 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 	}
 
 	public void init(SpringLayout springLayout) {
-		
-		JButton deskewButton  =new JButton("deskew form");
-		deskewButton.setToolTipText("Deskew a sample form in left panel");
-		deskewButton.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				if(formPanel.getImage() == null)
-					JOptionPane.showMessageDialog(thisObj, "No image loaded");
-				else{
-					
-					IplImage image = IplImage.createFrom(formPanel.getImage());
-					formPanel.deskew(image);
-				}
-				
-				
-			}
-		});
-		
-		
-		
-		
 		JButton loadButton = new JButton("load form");
 		loadButton.setToolTipText("Load a sample form to segment");
 		loadButton.addActionListener(new ActionListener() {
@@ -131,27 +106,6 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 			}
 		});
 		
-<<<<<<< HEAD
-		final JButton zoomIn = new JButton("zoom in");
-		zoomIn.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        scale = 1.1;
-        zoomIn.setEnabled(scale < 2.0);
-        formPanel.resizeImage(scale);
-      }
-    });	
-		
-		final JButton zoomOut = new JButton("zoom out");
-		zoomOut.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        scale = 0.9;
-        zoomOut.setEnabled(scale > 0.1);
-        formPanel.resizeImage(scale);
-      }
-    });
-=======
 		JButton zoomInButton = new JButton("+");
 		zoomInButton.setToolTipText("Zoom in the image in left panel");
 		JButton zoomOutButton = new JButton("-");
@@ -168,7 +122,6 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 				formPanel.zoomOut();
 			}
 		});
->>>>>>> refs/heads/master
 		
 		JPanel coordinatesPanel = new JPanel();
 		SpringLayout csl = new SpringLayout();
@@ -253,19 +206,10 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 		add(cancelButton);
 		add(coordinatesPanel);
 		add(saveButton);
-<<<<<<< HEAD
-		add(zoomIn);
-		add(zoomOut);
-
-		springLayout.putConstraint(SpringLayout.WEST, loadButton, 5, SpringLayout.WEST, this);
-=======
 		add(zoomInButton);
 		add(zoomOutButton);
-		add(deskewButton);
-		
-		
-		
->>>>>>> refs/heads/master
+
+		springLayout.putConstraint(SpringLayout.WEST, loadButton, 5, SpringLayout.WEST, this);
 		springLayout
 				.putConstraint(SpringLayout.NORTH, loadButton, 5, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, cancelButton, 5, SpringLayout.EAST,
@@ -275,13 +219,8 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 
 		springLayout.putConstraint(SpringLayout.WEST, coordinatesPanel, 5, SpringLayout.WEST,
 				this);
-		
-		
-		springLayout.putConstraint(SpringLayout.NORTH, deskewButton, 5, SpringLayout.SOUTH, loadButton);
-		
 		springLayout.putConstraint(SpringLayout.NORTH, coordinatesPanel, 5,
-				SpringLayout.SOUTH, deskewButton);
-	
+				SpringLayout.SOUTH, loadButton);
 
 		springLayout.putConstraint(SpringLayout.WEST, zoomInButton, 5, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, zoomInButton, 5, SpringLayout.SOUTH,
@@ -294,18 +233,6 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 		springLayout.putConstraint(SpringLayout.WEST, saveButton, 5, SpringLayout.EAST, zoomOutButton);
 		springLayout.putConstraint(SpringLayout.NORTH, saveButton, 5, SpringLayout.SOUTH,
 				coordinatesPanel);
-<<<<<<< HEAD
-		springLayout.putConstraint(SpringLayout.WEST, zoomIn, 5, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.NORTH, zoomIn, 5, SpringLayout.SOUTH,
-		        saveButton);
-		springLayout.putConstraint(SpringLayout.WEST, zoomOut, 5, SpringLayout.EAST,
-		        zoomIn);
-    springLayout.putConstraint(SpringLayout.NORTH, zoomOut, 35, SpringLayout.SOUTH,
-        coordinatesPanel);
-=======
-		
-
->>>>>>> refs/heads/master
 	}
 
 	@Override
