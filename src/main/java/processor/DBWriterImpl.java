@@ -22,6 +22,8 @@ public class DBWriterImpl implements DBWriter {
 		tableMapMapping.put("patientinformation".toLowerCase(), new Class[] { Fax2EMRPatientInformation.class, Fax2EMRPatientInformationDAO.class });
 		tableMapMapping.put("Test_Form".toLowerCase(), new Class[] { Fax2EMRTestForm.class, Fax2EMRTestFormDAO.class });
 		tableMapMapping.put("testform".toLowerCase(), new Class[] { Fax2EMRTestForm.class, Fax2EMRTestFormDAO.class });
+		tableMapMapping.put("Laboratory_Report".toLowerCase(), new Class[] { Fax2EMRTestForm.class, Fax2EMRTestFormDAO.class });
+		tableMapMapping.put("laboratoryreport".toLowerCase(), new Class[] { Fax2EMRTestForm.class, Fax2EMRTestFormDAO.class });
 	}
 
 	@SuppressWarnings("unchecked")

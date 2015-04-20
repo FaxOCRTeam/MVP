@@ -24,14 +24,14 @@ public class FileLoadingPanel extends JPanel {
 
 	FileLoadingPanel thisObj;
 	DefaultListModel<String> listModel = null;
-	
+	JList<String> list;
 	JButton processButton;
 	MainFrame parent;
 	
 	public FileLoadingPanel(MainFrame mainFrame) {
 		thisObj = this;
 		parent = mainFrame;
-		Dimension dimension = new Dimension(410, 490);
+		Dimension dimension = new Dimension(350, 200);
 		setPreferredSize(dimension);
 		setSize(dimension);
 		setVisible(true);
@@ -49,7 +49,7 @@ public class FileLoadingPanel extends JPanel {
 		Dimension listDim = new Dimension(this.getWidth()-30, this.getHeight()-70);
 		listModel = new DefaultListModel<String>();
 		
-		JList<String> list = new JList<String>(listModel);
+		list = new JList<String>(listModel);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setLayoutOrientation(JList.VERTICAL);
 		list.setVisibleRowCount(-1);
@@ -82,7 +82,19 @@ public class FileLoadingPanel extends JPanel {
 		});
 		add(addButton);
 		layout.putConstraint(SpringLayout.NORTH, addButton, 5, SpringLayout.SOUTH, listScroller);
-		layout.putConstraint(SpringLayout.EAST, addButton, -5, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.WEST, addButton, 5, SpringLayout.WEST, this);
+		
+		JButton deleteButton = new JButton("delete");
+		deleteButton.setToolTipText("remove selected image from the list");
+		deleteButton.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				listModel.removeElementAt(list.getSelectedIndex());
+			}
+		});
+		add(deleteButton);
+		layout.putConstraint(SpringLayout.NORTH, deleteButton, 5, SpringLayout.SOUTH, listScroller);
+		layout.putConstraint(SpringLayout.WEST, deleteButton, -5, SpringLayout.EAST, addButton);
 		
 		processButton = new JButton("process");
 		processButton.setToolTipText("Process the selected form of image segmentation, preprocessing and OCR; Save the results into database");
@@ -97,8 +109,7 @@ public class FileLoadingPanel extends JPanel {
 			}
 		});
 		add(processButton);
-		
 		layout.putConstraint(SpringLayout.NORTH, processButton, 5, SpringLayout.SOUTH, listScroller);
-		layout.putConstraint(SpringLayout.EAST, processButton, -5, SpringLayout.WEST, addButton);
+		layout.putConstraint(SpringLayout.EAST, processButton, -5, SpringLayout.EAST, this);
 	}
 }

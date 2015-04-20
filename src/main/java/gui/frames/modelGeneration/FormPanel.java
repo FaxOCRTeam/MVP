@@ -28,7 +28,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -42,6 +44,7 @@ import com.recognition.software.jdeskew.ImageDeskew;
 
 public class FormPanel extends JPanel implements FormPanelInterface {
 
+	
 	private static final long serialVersionUID = -3544461806228328538L;
 
 	FormPanel thisObj;
@@ -358,23 +361,28 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 	}
 
 	// @Override
+	Map<Double, BufferedImage> scalingCache = new HashMap<Double, BufferedImage>();
 	private void resizeImage() {
 		if(null == originImage) {
 			return;
 		}
-		int newImageWidth = (int) (originImage.getWidth() * scale);
-		int newImageHeight = (int) (originImage.getHeight() * scale);
-
 		updateScaledSelection();
-
-		if (newImageWidth > 0 && newImageHeight > 0) {
-			Image newImage = originImage.getScaledInstance(newImageWidth, newImageHeight,
-					Image.SCALE_SMOOTH);
-			image = toBufferedImage(newImage);
-			repaint();
-		} else {
-			System.out.println("Cannot zoom any more!!");
+		
+		BufferedImage scaledImage = scalingCache.get(scale);
+		if(scaledImage == null) {
+			int newImageWidth = (int) (originImage.getWidth() * scale);
+			int newImageHeight = (int) (originImage.getHeight() * scale);
+			if (newImageWidth > 0 && newImageHeight > 0) {
+				Image newImage = originImage.getScaledInstance(newImageWidth, newImageHeight,
+						Image.SCALE_SMOOTH);
+				scaledImage = toBufferedImage(newImage);
+				scalingCache.put(scale, scaledImage);
+			} else {
+				System.out.println("Cannot zoom any more!!");
+			}
 		}
+		image = scaledImage;
+		repaint();
 		updateResizingRect();
 	}
 

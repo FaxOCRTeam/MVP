@@ -35,7 +35,7 @@ public class MainFrame extends JFrame {
 
 	public MainFrame() {
 		setTitle(title);
-		Dimension dimension = new Dimension(800, 570);
+		Dimension dimension = new Dimension(400, 500);
 		setSize(dimension);
 		setPreferredSize(dimension);
 
@@ -45,10 +45,12 @@ public class MainFrame extends JFrame {
 		pack();
 		setResizable(false);
 		setVisible(true);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		//setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
 
 	private void initMenu() {
+		
 		bar = new JMenuBar();
 		bar.setPreferredSize(new Dimension((int) getSize().getWidth(), 23));
 		JMenu modelMenu = new JMenu("model");
@@ -82,24 +84,25 @@ public class MainFrame extends JFrame {
 		bar.add(configMenu);
 
 		add(bar);
+		
 		validate();
 	}
 
 	private void init() {
 		SpringLayout layout = new SpringLayout();
 		setLayout(layout);
-
+		
 		flpanel = new FileLoadingPanel(this);
 		add(flpanel);
 
-		layout.putConstraint(SpringLayout.NORTH, flpanel, 5, SpringLayout.SOUTH, bar);
-		layout.putConstraint(SpringLayout.EAST, flpanel, -25, SpringLayout.EAST, this);
-
+		layout.putConstraint(SpringLayout.NORTH, flpanel, 250, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.WEST, flpanel, 25, SpringLayout.WEST, this);
+		
 		previewPanel = new PreviewPreparePanel();
 		add(previewPanel);
 
-		layout.putConstraint(SpringLayout.NORTH, previewPanel, 5, SpringLayout.SOUTH, bar);
-		layout.putConstraint(SpringLayout.WEST, previewPanel, 5, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.NORTH, previewPanel, 35, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.WEST, previewPanel, 25, SpringLayout.WEST, this);
 	}
 
 	public void processPicture(String picFilePath) {
