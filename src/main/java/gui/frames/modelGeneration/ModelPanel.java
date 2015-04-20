@@ -3,20 +3,14 @@ package gui.frames.modelGeneration;
 import gui.interfaces.DisplayCoordinatesInterface;
 import gui.interfaces.MainCoordinateInterface;
 import gui.interfaces.ModelModificationInterface;
+import gui.interfaces.SavableFrame;
 import gui.models.FormField;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,15 +37,16 @@ public class ModelPanel extends JPanel implements ModelModificationInterface {
 	List<DisplayCoordinatesInterface> displayNotifier = new ArrayList<DisplayCoordinatesInterface>();
 	MainCoordinateInterface mainCoordinate = null;
 
-	ModelGeneraterFrame parentFrame = null;
+	SavableFrame parentFrame = null;
 	boolean changed = false;
 
-	public ModelPanel(ModelGeneraterFrame parentFrame) {
+	public ModelPanel(SavableFrame parentFrame) {
 		this.parentFrame = parentFrame;
 
 		formData = new ArrayList<FormField>();
 
 		modelDisplayPanel = new JPanel();
+		modelDisplayPanel.setPreferredSize(new Dimension(210, 1000));
 		modelDisplaySpringLayout = new SpringLayout();
 		modelDisplayPanel.setLayout(modelDisplaySpringLayout);
 
@@ -77,14 +72,15 @@ public class ModelPanel extends JPanel implements ModelModificationInterface {
 		sl.putConstraint(SpringLayout.WEST, panel1, 5, SpringLayout.WEST, this);
 
 		JButton saveButton = new JButton("export model");
+		saveButton.setToolTipText("Export current model into local file");
 		saveButton.addActionListener(exportAxtion);
 		JButton importButton = new JButton("import model");
+		importButton.setToolTipText("Import a existed segmentation model");
 		importButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (changed) {
-					int selection = JOptionPane
-							.showOptionDialog(
+					int selection = JOptionPane.showOptionDialog(
 									parentFrame, //
 									"There's unsaved change in model, do you want to export the model now?", //
 									"unsaved change in model", //
@@ -97,7 +93,8 @@ public class ModelPanel extends JPanel implements ModelModificationInterface {
 					else if (selection == -1 || selection == 2)
 						return;
 				}
-				List<File> chooseFile = FileChoosingUtils.chooseFile("model", FileChoosingUtils.OPEN_DIALOG);
+				List<File> chooseFile = FileChoosingUtils.chooseFile("model",
+						FileChoosingUtils.OPEN_DIALOG);
 				if (null != chooseFile && chooseFile.size() > 0) {
 					loadFromFile(chooseFile.get(0));
 					_regenerateColumnDisplay();
@@ -156,7 +153,7 @@ public class ModelPanel extends JPanel implements ModelModificationInterface {
 		// ffPanel.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
 		ffPanel.setBorder(BorderFactory.createTitledBorder(//
-				BorderFactory.createEtchedBorder(), ff.getName()));
+				BorderFactory.createEtchedBorder(), ff.getField()));
 		// Add labels to demo field.
 		JLabel[] infoLabels = new JLabel[ff.getRectConfig().length];
 		for (int i = 0; i < ff.getRectConfig().length; i++) {
@@ -174,6 +171,7 @@ public class ModelPanel extends JPanel implements ModelModificationInterface {
 		}
 		// Add button
 		JButton loadButton = new JButton("load");
+		loadButton.setToolTipText("Load and preview this segmentation in image left panel");
 		loadButton.setActionCommand("" + index);
 		loadButton.addActionListener(new ActionListener() {
 			@Override
@@ -181,8 +179,7 @@ public class ModelPanel extends JPanel implements ModelModificationInterface {
 				int index = Integer.parseInt(e.getActionCommand());
 				mainCoordinate.saveCoordinates();
 				for (DisplayCoordinatesInterface dci : displayNotifier) {
-					dci.setCoordinatesAndName(formData.get(index).getRectConfig(), //
-							formData.get(index).getName(), true);
+					dci.setCoordinatesAndName(formData.get(index), true);
 				}
 				formData.remove(index);
 				_regenerateColumnDisplay();
@@ -193,6 +190,7 @@ public class ModelPanel extends JPanel implements ModelModificationInterface {
 		});
 
 		JButton deleteButton = new JButton("delete");
+		deleteButton.setToolTipText("Delete this segmentation");
 		deleteButton.setActionCommand("" + index);
 		deleteButton.addActionListener(new ActionListener() {
 			@Override
@@ -234,17 +232,7 @@ public class ModelPanel extends JPanel implements ModelModificationInterface {
 	}
 
 	public void saveToModelFile(File f) {
-		PrintWriter writer = null;
-		try {
-			writer = new PrintWriter(f);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		for (FormField ff : formData) {
-			writer.println(ff.toString());
-		}
-		writer.close();
-
+		FormField.saveModel(f, formData);
 	}
 
 	public void loadFromFile(File f) {
@@ -253,27 +241,7 @@ public class ModelPanel extends JPanel implements ModelModificationInterface {
 		else if (formData.size() > 0)
 			formData.clear();
 
-		BufferedReader reader = null;
-		try {
-			reader = new BufferedReader(new InputStreamReader(new FileInputStream(f), "utf-8"));
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		String line = null;
-		try {
-			while ((line = reader.readLine()) != null) {
-				formData.add(FormField.parseObj(line));
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		try {
-			reader.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		formData.addAll(FormField.loadModel(f));
 	}
 
 	public void addCoordinatesNotifier(DisplayCoordinatesInterface dci) {
@@ -287,7 +255,8 @@ public class ModelPanel extends JPanel implements ModelModificationInterface {
 	ActionListener exportAxtion = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			List<File> chooseFile = FileChoosingUtils.chooseFile("model", FileChoosingUtils.SAVE_DIALOG);
+			List<File> chooseFile = FileChoosingUtils.chooseFile("model",
+					FileChoosingUtils.SAVE_DIALOG);
 			if (null != chooseFile && chooseFile.size() > 0) {
 				saveToModelFile(chooseFile.get(0));
 			} else {

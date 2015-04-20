@@ -45,12 +45,14 @@ public class SpaceRemover {
 //					"./src/binaryImage.jpg", binaryImage);
 			cvErode(binaryImage, binaryImage, null, 1);
 			cvDilate(binaryImage, binaryImage, null, 1);
-			spaceRemove(binaryImage,i);
+			spaceRemove(binaryImage);
 		}
 		  
 	}
-
-	public static void spaceRemove(IplImage image, int count) {
+	public static int abc = 0;
+	public static double SPACE_IN_WORD_THRE = 0.55;
+	
+	public static ArrayList<IplImage> spaceRemove(IplImage image) {
 		CvMat imgMat = image.asCvMat();
 		int imgCols = imgMat.cols();
 		int imgRows = imgMat.rows();
@@ -62,6 +64,9 @@ public class SpaceRemover {
 		
 		ArrayList<Spaces> spaceAndWidth = new ArrayList<Spaces>();
 		ArrayList<Integer> wordLen = new ArrayList<Integer>();
+		ArrayList<IplImage> returnlist = new ArrayList<IplImage>();
+
+	//	org.bytedeco.javacpp.opencv_highgui.cvSaveImage("./test1.jpg",image);
 		int startOfSpace = 0, widthOfSpace = 0;
 		int currentCharStart = 0, currentCharWidth = 0;
 		for (int i = 0; i < imgCols; i++) {
@@ -106,44 +111,77 @@ public class SpaceRemover {
 		Collections.sort(spaceAndWidth,Collections.reverseOrder());
 		Collections.sort(wordLen);
 		//System.out.println(count);
+		if(wordLen.size()==0){
+			returnlist.add(image);
+			return returnlist;
+		}
 		int charMedian = wordLen.get(wordLen.size()/2);
 		//System.out.println(charMedian);
 		Iterator<Spaces> itr = spaceAndWidth.iterator();
 		ArrayList<Spaces> spaceBetWords = new ArrayList<Spaces>();
 		while (itr.hasNext()){
 			Spaces spc = itr.next();
-			if(spc.getWidth() < charMedian * 0.5 )
+			if(spc.getWidth() < charMedian * SPACE_IN_WORD_THRE )
 				break;
 			spaceBetWords.add(new Spaces(spc.getWidth(),spc.getStart()));
 		}
 		Collections.sort(spaceBetWords);
-		Iterator<Spaces> itsp = spaceBetWords.iterator();
+		//Iterator<Spaces> itsp = spaceBetWords.iterator();
 		int wordStart = 0;
 		int pos = 1;
-		while(itsp.hasNext()){
-			Spaces oneSpace = itsp.next();
+		int smallestSpace = spaceAndWidth.get(spaceAndWidth.size()-1).width;
+		for(int i=0; i< spaceBetWords.size();i++){
+			Spaces oneSpace = spaceBetWords.get(i);
 			if(oneSpace.getWidth() == 0){
 				continue;
 			}
 			IplImage clImage = cvCloneImage(image);
 			IplImage blobImage;
-			
-			cvCopy(clImage, ori);			
-			cvSetImageROI(ori, cvRect(wordStart,0,oneSpace.getWidth() - wordStart,imgRows));
-			wordStart = oneSpace.getWidth() + oneSpace.getStart();
+			cvCopy(clImage, ori);
+			if(i == spaceBetWords.size()-1){
+				cvSetImageROI(ori, cvRect(wordStart,0,oneSpace.getWidth() + smallestSpace * 2 - wordStart,imgRows));
+				wordStart = oneSpace.getWidth() + oneSpace.getStart() - smallestSpace;
+			}
+			else{
+				cvSetImageROI(ori, cvRect(wordStart,0,oneSpace.getWidth() + smallestSpace * 2 - wordStart,imgRows));
+				wordStart = oneSpace.getWidth() + oneSpace.getStart() - smallestSpace;
+			}
 			blobImage = cvCreateImage(cvGetSize(ori), ori.depth(),
 					ori.nChannels());
 			cvCopy(ori, blobImage);
 			cvResetImageROI(ori);
-
+			returnlist.add(blobImage);
 			//File output = new File("./src/subimage_"+ pos +"of image"+count+".jpg");
-			File dir = new File("./output/image" + count );
+			File dir = new File("./output/image/"+abc);
+			
 			if(!dir.exists()){
 				dir.mkdirs();
 			}
 			org.bytedeco.javacpp.opencv_highgui.cvSaveImage(dir.toString()+"/"+ pos + ".jpg",blobImage);
-			pos ++;
+			pos ++;	
 		}
+		if(wordStart + wordLen.get(wordLen.size()-1) < imgCols ){
+			int width = imgCols - wordStart;
+			IplImage clImage = cvCloneImage(image);
+			IplImage blobImage;
+			cvCopy(clImage, ori);
+			cvSetImageROI(ori, cvRect(wordStart,0,width,imgRows));
+			wordStart = width + wordStart - smallestSpace;
+			blobImage = cvCreateImage(cvGetSize(ori), ori.depth(),
+					ori.nChannels());
+			cvCopy(ori, blobImage);
+			cvResetImageROI(ori);
+			returnlist.add(blobImage);
+			//File output = new File("./src/subimage_"+ pos +"of image"+count+".jpg");
+			File dir = new File("./output/image/"+abc);
+			if(!dir.exists()){
+				dir.mkdirs();
+			}
+			org.bytedeco.javacpp.opencv_highgui.cvSaveImage(dir.toString()+"/"+ pos + ".jpg",blobImage);
+			pos ++;	
+		}
+		abc++;
+		return returnlist;
 	}
 	
 }

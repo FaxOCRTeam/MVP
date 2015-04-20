@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
@@ -23,13 +24,20 @@ public class FileLoadingPanel extends JPanel {
 
 	FileLoadingPanel thisObj;
 	DefaultListModel<String> listModel = null;
-
-	public FileLoadingPanel() {
+	JList<String> list;
+	JButton processButton;
+	MainFrame parent;
+	
+	public FileLoadingPanel(MainFrame mainFrame) {
 		thisObj = this;
-		Dimension dimension = new Dimension(310, 460);
+		parent = mainFrame;
+		Dimension dimension = new Dimension(350, 200);
 		setPreferredSize(dimension);
 		setSize(dimension);
 		setVisible(true);
+		
+		setBorder(BorderFactory.createTitledBorder(//
+				BorderFactory.createEtchedBorder(), "load file"));
 		
 		init();
 	}
@@ -38,10 +46,10 @@ public class FileLoadingPanel extends JPanel {
 		SpringLayout layout = new SpringLayout();
 		setLayout(layout);
 
-		Dimension listDim = new Dimension(300, 400);
+		Dimension listDim = new Dimension(this.getWidth()-30, this.getHeight()-70);
 		listModel = new DefaultListModel<String>();
 		
-		JList<String> list = new JList<String>(listModel);
+		list = new JList<String>(listModel);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setLayoutOrientation(JList.VERTICAL);
 		list.setVisibleRowCount(-1);
@@ -56,13 +64,14 @@ public class FileLoadingPanel extends JPanel {
 		layout.putConstraint(SpringLayout.EAST, listScroller, -5, SpringLayout.EAST, this);
 
 		JButton addButton = new JButton("add");
+		addButton.setToolTipText("Add a new form image to process (*.tif, *.fig, *.png, *.bmp)");
 		addButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				List<File> chooseFile = FileChoosingUtils.chooseFile("sampleForm", FileChoosingUtils.OPEN_DIALOG_MUlTIPLE);
 				if (null != chooseFile && chooseFile.size() > 0) {
 					for (File f : chooseFile) {
-						listModel.addElement(f.getName());
+						listModel.addElement(f.getAbsolutePath());
 					}
 				} else {
 					JOptionPane.showMessageDialog(thisObj, "No file chosen");
@@ -73,6 +82,34 @@ public class FileLoadingPanel extends JPanel {
 		});
 		add(addButton);
 		layout.putConstraint(SpringLayout.NORTH, addButton, 5, SpringLayout.SOUTH, listScroller);
-		layout.putConstraint(SpringLayout.EAST, addButton, -5, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.WEST, addButton, 5, SpringLayout.WEST, this);
+		
+		JButton deleteButton = new JButton("delete");
+		deleteButton.setToolTipText("remove selected image from the list");
+		deleteButton.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				listModel.removeElementAt(list.getSelectedIndex());
+			}
+		});
+		add(deleteButton);
+		layout.putConstraint(SpringLayout.NORTH, deleteButton, 5, SpringLayout.SOUTH, listScroller);
+		layout.putConstraint(SpringLayout.WEST, deleteButton, -5, SpringLayout.EAST, addButton);
+		
+		processButton = new JButton("process");
+		processButton.setToolTipText("Process the selected form of image segmentation, preprocessing and OCR; Save the results into database");
+//		processButton.setEnabled(false);
+		processButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				while(listModel.size() > 0) {
+					parent.processPicture(listModel.get(0));
+					listModel.remove(0);
+				}
+			}
+		});
+		add(processButton);
+		layout.putConstraint(SpringLayout.NORTH, processButton, 5, SpringLayout.SOUTH, listScroller);
+		layout.putConstraint(SpringLayout.EAST, processButton, -5, SpringLayout.EAST, this);
 	}
 }

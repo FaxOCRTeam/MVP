@@ -1,8 +1,17 @@
 package gui.frames.modelGeneration;
 
+import static org.bytedeco.javacpp.opencv_core.CV_32FC1;
+import static org.bytedeco.javacpp.opencv_core.IPL_DEPTH_8U;
+import static org.bytedeco.javacpp.opencv_core.cvCreateMat;
+import static org.bytedeco.javacpp.opencv_core.cvNot;
+import static org.bytedeco.javacpp.opencv_core.cvScalarAll;
+import static org.bytedeco.javacpp.opencv_core.cvSetZero;
+import static org.bytedeco.javacpp.opencv_imgproc.CV_INTER_LINEAR;
+import static org.bytedeco.javacpp.opencv_imgproc.CV_WARP_FILL_OUTLIERS;
+import static org.bytedeco.javacpp.opencv_imgproc.cv2DRotationMatrix;
+import static org.bytedeco.javacpp.opencv_imgproc.cvWarpAffine;
 import gui.interfaces.DisplayCoordinatesInterface;
 import gui.interfaces.FormPanelInterface;
-import gui.interfaces.ModelModificationInterface;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -18,28 +27,40 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+
+import org.bytedeco.javacpp.opencv_core.CvMat;
+import org.bytedeco.javacpp.opencv_core.CvPoint2D32f;
+import org.bytedeco.javacpp.opencv_core.CvScalar;
+import org.bytedeco.javacpp.opencv_core.IplImage;
+
+import com.recognition.software.jdeskew.ImageDeskew;
 
 public class FormPanel extends JPanel implements FormPanelInterface {
 
+	
 	private static final long serialVersionUID = -3544461806228328538L;
 
 	FormPanel thisObj;
 	Rectangle rect;
+	Rectangle originalRect;
 	Rectangle[] resizingRect;
 
 	Point _mouseStart;
 	Rectangle _rectStart;
 
 	BufferedImage image;
+	BufferedImage originImage;
+
+	double scale = 1.0;
 
 	List<DisplayCoordinatesInterface> coNotifierList = new ArrayList<DisplayCoordinatesInterface>();
 
@@ -50,6 +71,7 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 	}
 
 	Status status;
+
 
 	public FormPanel() {
 		// setPreferredSize(new Dimension(1000,1000));
@@ -132,14 +154,13 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 							rect.setSize((int) (rect.getWidth()),
 									(int) (e.getY() - rect.getY()));
 						}
-
 					} else if (status == Status.relocating) {
 						rect.setBounds((int) (_rectStart.getX() + (mouseDeltaX)),//
 								(int) (_rectStart.getY() + (mouseDeltaY)), //
 								(int) rect.getWidth(), (int) rect.getHeight());
 					}
-					updateResizingRect();
 				}
+				updateResizingRect();
 				notifyRect();
 				super.mouseDragged(e);
 				repaint();
@@ -175,8 +196,27 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 			}
 		});
 	}
-
+	
+	private void updateOriginalSelection() {
+		originalRect = new Rectangle((int) Math.ceil(rect.getX() / scale), //
+				(int) Math.ceil(rect.getY() / scale), //
+				(int) Math.ceil(rect.getWidth() / scale), //
+				(int) Math.ceil(rect.getHeight() / scale));
+	}
+	
+	private void updateScaledSelection() {
+		if(null == originalRect)
+			return;
+		rect = new Rectangle((int) Math.ceil(originalRect.getX() * scale), //
+				(int) Math.ceil(originalRect.getY() * scale), //
+				(int) Math.ceil(originalRect.getWidth() * scale), //
+				(int) Math.ceil(originalRect.getHeight() * scale));
+	}
+	
 	private void updateResizingRect() {
+		if(null == rect)
+			return;
+		updateOriginalSelection();
 		if (null == resizingRect) {
 			resizingRect = new Rectangle[8];
 			for (int i = 0; i < resizingRect.length; i++)
@@ -220,12 +260,12 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 	}
 
 	private void notifyRect() {
-		int[] rectCoordinates = new int[] { (int) rect.getX(), (int) rect.getY(), //
-				(int) rect.getWidth(), (int) rect.getHeight() };
+		int[] rectCoordinates = new int[] { (int) originalRect.getX(),
+				(int) originalRect.getY(), //
+				(int) originalRect.getWidth(), (int) originalRect.getHeight() };
 		for (DisplayCoordinatesInterface dci : coNotifierList) {
 			dci.setCoordinates(rectCoordinates);
 		}
-
 	}
 
 	@Override
@@ -260,6 +300,11 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		/**
+		 * not safe, change to new instance
+		 */
+		originImage = image;
+
 		Dimension dimension = new Dimension(image.getWidth(), image.getHeight());
 		this.setSize(dimension);
 		this.setPreferredSize(dimension);
@@ -269,6 +314,7 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 
 	@Override
 	public void cancelSelection() {
+		originalRect = null;
 		rect = null;
 		resizingRect = null;
 		status = Status.silence;
@@ -284,13 +330,15 @@ public class FormPanel extends JPanel implements FormPanelInterface {
 
 	@Override
 	public void setSelection(int[] selection) {
-		rect = new Rectangle(selection[0], selection[1], selection[2], selection[3]);
+		originalRect = new Rectangle(selection[0], selection[1], selection[2], selection[3]);
+		updateScaledSelection();
 		updateResizingRect();
 		notifyRect();
 		repaint();
 
 	}
 
+<<<<<<< HEAD
   @Override
   public void resizeImage(double scale) {
     repaint();
@@ -326,4 +374,100 @@ public class FormPanel extends JPanel implements FormPanelInterface {
     return bimage;
   }
 
+=======
+	@Override
+	public void zoomOut() {
+		scale *= 0.8;
+		if (scale <= 0.2) {
+			scale = 0.2;
+		}
+		resizeImage();
+
+	}
+
+	@Override
+	public void zoomIn() {
+		scale /= 0.8;
+		if (scale >= 2) {
+			scale = 2;
+		}
+		resizeImage();
+	}
+
+	@Override
+	public void originZoom() {
+		scale = 1.0;
+		resizeImage();
+	}
+
+	// @Override
+	Map<Double, BufferedImage> scalingCache = new HashMap<Double, BufferedImage>();
+	private void resizeImage() {
+		if(null == originImage) {
+			return;
+		}
+		updateScaledSelection();
+		
+		BufferedImage scaledImage = scalingCache.get(scale);
+		if(scaledImage == null) {
+			int newImageWidth = (int) (originImage.getWidth() * scale);
+			int newImageHeight = (int) (originImage.getHeight() * scale);
+			if (newImageWidth > 0 && newImageHeight > 0) {
+				Image newImage = originImage.getScaledInstance(newImageWidth, newImageHeight,
+						Image.SCALE_SMOOTH);
+				scaledImage = toBufferedImage(newImage);
+				scalingCache.put(scale, scaledImage);
+			} else {
+				System.out.println("Cannot zoom any more!!");
+			}
+		}
+		image = scaledImage;
+		repaint();
+		updateResizingRect();
+	}
+
+	public static BufferedImage toBufferedImage(Image img) {
+		if (img instanceof BufferedImage) {
+			return (BufferedImage) img;
+		}
+		// Create a buffered image with transparency
+		BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null),
+				BufferedImage.TYPE_INT_ARGB);
+		// Draw the image on to the buffered image
+		Graphics2D bGr = bimage.createGraphics();
+		bGr.drawImage(img, 0, 0, null);
+		bGr.dispose();
+		// Return the buffered image
+		return bimage;
+	}
+	
+	@Override
+	public BufferedImage getImage(){
+		
+		return image;
+	}
+	
+	@Override
+	public void deskew(IplImage Ipl){
+		BufferedImage bImg = Ipl.getBufferedImage();
+		IplImage ret = IplImage.create(Ipl.width(),Ipl.height(), IPL_DEPTH_8U, 1);
+		cvSetZero(ret);
+		cvNot(ret,ret);
+		ImageDeskew deskew = new ImageDeskew(bImg);
+		double angle = deskew.getSkewAngle();
+		
+		CvPoint2D32f my_center = new CvPoint2D32f();
+		my_center.put((double)(Ipl.width() / 2), (double)(Ipl.height() / 2));
+		int flags = CV_INTER_LINEAR + CV_WARP_FILL_OUTLIERS;
+		CvScalar fillval = cvScalarAll(255);
+		CvMat map_matrix = cvCreateMat(2, 3, CV_32FC1);
+		cv2DRotationMatrix(my_center, angle, 1, map_matrix);
+		cvWarpAffine(Ipl, ret, map_matrix, flags, fillval);
+		image = ret.getBufferedImage();
+		repaint();
+		
+	}
+	
+	
+>>>>>>> refs/heads/master
 }

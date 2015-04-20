@@ -12,7 +12,7 @@ public class DAOStructureBuilder {
 	
 	public static void main(String[] args) {
 		List<DBConfig> configList = new ArrayList<DAOStructureBuilder.DBConfig>();
-		configList.add(new DBConfig("fax2emr", "Fax2EMR", new String[]{"patient_information"}));
+		configList.add(new DBConfig("fax2emr", "Fax2EMR", new String[]{"test_form"}));
 		
 //		JavaModelFileBuilder builder = new JavaModelFileBuilder("D:\\Users\\yxy\\DataUpdate\\DAOGenerator\\src", "services.dao");
 		JavaModelFileBuilder builder = new JavaModelFileBuilder();

@@ -1,88 +1,121 @@
 package gui.frames.modelGeneration;
 
+import gui.interfaces.SavableFrame;
+
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SpringLayout;
 
-public class ModelGeneraterFrame extends JFrame {
+public class ModelGeneraterFrame extends SavableFrame{
 	private static final long serialVersionUID = 5866100335982142250L;
-
+	static final int scrollbarWidth = 24;
+	static final int scrollbarHeight = 47;
 	public final String title = "Model Generator";
-
+	Dimension frameDimension;
+	JScrollPane scrollPane;
+	private FormPanel selectionPanel;
+	
+	
+	
 	public ModelGeneraterFrame() {
 		setTitle(title);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		Dimension dimension = new Dimension(800, 700);
-		setSize(dimension);
-		setPreferredSize(dimension);
+		frameDimension = new Dimension(900, 700);
+		setSize(frameDimension);
+		setPreferredSize(frameDimension);
 		setLayout(new GridLayout(1, 2));
 		pack();
 		setVisible(true);
 
 		init();
+		
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
 
 	private void init() {
 		initPanels();
+		initActions();
 	}
 
 	private void initPanels() {
-		setLayout(new GridBagLayout());// set LayoutManager
-		FormPanel selectionPanel = new FormPanel();
+		SpringLayout layout = new SpringLayout();
+		setLayout(layout);// set LayoutManager
+		selectionPanel = new FormPanel();
 
-		JScrollPane panel1 = new JScrollPane(selectionPanel);
-		panel1.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		panel1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		panel1.setBounds(50, 30, 300, 50);
+		scrollPane = new JScrollPane(selectionPanel);
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+//		scrollPane.setBounds(50, 30, 300, 50);
 
-		panel1.setBorder(BorderFactory.createLineBorder(Color.gray));
+		scrollPane.setBorder(BorderFactory.createLineBorder(Color.gray));
 		// panel1.add(scrollPane);
-		GridBagConstraints gbc1 = getDefaultGBC();
-		gbc1.weightx = 70;
-		gbc1.gridheight = 2;
-		add(panel1, gbc1);
+		add(scrollPane);
 
-		ControlPanel panel2 = new ControlPanel(selectionPanel);
-		panel2.setBorder(BorderFactory.createLineBorder(Color.blue));
-		GridBagConstraints gbc2 = getDefaultGBC();
-		gbc2.gridx = 1;
-		gbc2.weightx = 30;
-		gbc2.weighty = 40;
-		add(panel2, gbc2);
-		selectionPanel.addCoordinatesNotifier(panel2);
-
-		ModelPanel panel3 = new ModelPanel(this);
-		panel3.setBorder(BorderFactory.createLineBorder(Color.red));
-		GridBagConstraints gbc3 = getDefaultGBC();
-		gbc3.gridx = 1;
-		gbc3.gridy = 1;
-		gbc3.weighty = 60;
-		add(panel3, gbc3);
-		panel3.setMainCoordiante(panel2);
-		panel3.addCoordinatesNotifier(panel2);
-
-		panel2.addModelAddNotifier(panel3);
+		JPanel rightPanel = new JPanel();
+		Dimension rpDimension = new Dimension(240, 600);
+		rightPanel.setPreferredSize(rpDimension);
+		rightPanel.setBorder(BorderFactory.createLineBorder(Color.gray));
+		initSubRightPanel(rightPanel);
+		add(rightPanel);
+		
+		
+		layout.putConstraint(SpringLayout.NORTH, scrollPane, 5, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.SOUTH, scrollPane, -45, SpringLayout.SOUTH, this);
+		layout.putConstraint(SpringLayout.NORTH, rightPanel, 5, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.SOUTH, rightPanel, -45, SpringLayout.SOUTH, this);
+		
+		layout.putConstraint(SpringLayout.WEST, scrollPane, 5, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.EAST, rightPanel, -22, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.EAST, scrollPane, -5, SpringLayout.WEST, rightPanel);
+		
+		
+		
+		validate();
 		pack();
-
+		repaint();
 	}
 
-	private GridBagConstraints getDefaultGBC() {
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.gridwidth = 1;
-		gbc.gridheight = 1;
-		gbc.fill = GridBagConstraints.BOTH;
-		gbc.anchor = GridBagConstraints.NORTHWEST;
-		return gbc;
-	}
+	void initSubRightPanel(JPanel rightPanel) {
+		SpringLayout layout = new SpringLayout();
+		rightPanel.setLayout(layout);
+		ControlPanel controlPanel_TR = new ControlPanel(selectionPanel);
+		controlPanel_TR.setBorder(BorderFactory.createLineBorder(Color.blue));
+		Dimension trDim = new Dimension(rightPanel.getWidth()-5, 280);
+		controlPanel_TR.setPreferredSize(trDim);
+		controlPanel_TR.setSize(trDim);
+		rightPanel.add(controlPanel_TR);
+		selectionPanel.addCoordinatesNotifier(controlPanel_TR);
 
+		ModelPanel modelPanel_BR = new ModelPanel(this);
+		modelPanel_BR.setBorder(BorderFactory.createLineBorder(Color.red));
+		rightPanel.add(modelPanel_BR);
+		modelPanel_BR.setMainCoordiante(controlPanel_TR);
+		modelPanel_BR.addCoordinatesNotifier(controlPanel_TR);
+		controlPanel_TR.addModelAddNotifier(modelPanel_BR);
+		
+		layout.putConstraint(SpringLayout.NORTH, controlPanel_TR, 1, SpringLayout.NORTH, rightPanel);
+		layout.putConstraint(SpringLayout.NORTH, modelPanel_BR, 5, SpringLayout.SOUTH, controlPanel_TR);
+		layout.putConstraint(SpringLayout.WEST, controlPanel_TR, 1, SpringLayout.WEST, rightPanel);
+		layout.putConstraint(SpringLayout.WEST, modelPanel_BR, 1, SpringLayout.WEST, rightPanel);
+		layout.putConstraint(SpringLayout.EAST, controlPanel_TR, -3, SpringLayout.EAST, rightPanel);
+		layout.putConstraint(SpringLayout.EAST, modelPanel_BR, -3, SpringLayout.EAST, rightPanel);
+		layout.putConstraint(SpringLayout.SOUTH, modelPanel_BR, -5, SpringLayout.SOUTH, rightPanel);
+		
+		rightPanel.validate();
+		rightPanel.repaint();
+	}
+	
 	public void resetTitle(boolean withStar) {
 		if (withStar)
 			setTitle(title + "*");
@@ -92,6 +125,18 @@ public class ModelGeneraterFrame extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		ModelGeneraterFrame frame = new ModelGeneraterFrame();
+		new ModelGeneraterFrame();
 	}
-}
+
+	void initActions() {
+		addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(ComponentEvent e) {
+				setPreferredSize(e.getComponent().getSize());
+				validate();
+				repaint();
+			}
+		});
+	}
+
+ }
