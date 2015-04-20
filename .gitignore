@@ -7,7 +7,6 @@ bin/*
 >>>>>>> 6ad5d681d191a57283c3bcd722bc6ee529118abb
 /target/
 
-*.jpg
 
 *.xml
 
@@ -17,13 +16,12 @@ bin/*
 
 *.properties
 
-src/main/resources/configs/
+src/main/resources/configs/*
+src/*.jpg
 
-input/
+output/*
 
-output/
-
-out/
+out/*
 
 new model
 
@@ -31,3 +29,4 @@ new model
 
 src/main/resources/configs/file_loader_config.properties
 
+src/main/resources/configs/file_loader_config.properties
