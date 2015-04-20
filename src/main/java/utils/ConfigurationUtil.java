@@ -77,10 +77,12 @@ public class ConfigurationUtil {
 		propertiesFileMap.put(null, defaultConfig);
 		final String fileLoaderPath = "src/main/resources/configs/file_loader_config.properties"; 
 		final String dbConfigPath = "src/main/resources/daogenerator_config.properties";
+		final String emailWatchDogConfigPath = "src/main/resources/configs/email_watchdog_configs.properties";
 		
 		if (!defaultConfig.isInitalized()) {
 			defaultConfig.update("file_loader_config", fileLoaderPath);
 			defaultConfig.update("dao_config", dbConfigPath);
+			defaultConfig.update("email_watchdog_config", emailWatchDogConfigPath);
 		}
 		if (StringUtils.isEmpty(defaultConfig.get("file_loader_config")))
 			defaultConfig.update("file_loader_config", fileLoaderPath);
@@ -89,6 +91,10 @@ public class ConfigurationUtil {
 		if (StringUtils.isEmpty(defaultConfig.get("dao_config")))
 			defaultConfig.update("dao_config", dbConfigPath);
 		open(get(null, "dao_config"), false, "dao");
+		
+		if (StringUtils.isEmpty(defaultConfig.get("email_watchdog_config")))
+			defaultConfig.update("email_watchdog_config", emailWatchDogConfigPath);
+		open(get(null, "email_watchdog_config"), false, "watchdog");
 	}
 
 	// public static String get(String columnKey) {
