@@ -1,4 +1,11 @@
 target/*
 .DS_Store
 bin/*
+<<<<<<< HEAD
+=======
+/*.jpg
+>>>>>>> 6ad5d681d191a57283c3bcd722bc6ee529118abb
+/target/
+
+>>>>>>> freddie
 *.jpg
