@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import services.dao.Fax2EMR.model.Fax2EMRLaboratoryReport;
 import services.dao.Fax2EMR.model.Fax2EMRPatientInformation;
 import services.dao.Fax2EMR.model.Fax2EMRTestForm;
 
@@ -26,6 +27,7 @@ public class DBModelRegester {
 		shortNameMap = new HashMap<String, Class<?>>();
 		regester(Fax2EMRPatientInformation.class);
 		regester(Fax2EMRTestForm.class);
+		regester(Fax2EMRLaboratoryReport.class);
 	}
 	
 	static void regester(Class<?> dbClass) {

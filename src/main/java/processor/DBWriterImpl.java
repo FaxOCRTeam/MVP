@@ -7,8 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import services.dao.Fax2EMR.dao.Fax2EMRLaboratoryReportDAO;
 import services.dao.Fax2EMR.dao.Fax2EMRPatientInformationDAO;
 import services.dao.Fax2EMR.dao.Fax2EMRTestFormDAO;
+import services.dao.Fax2EMR.model.Fax2EMRLaboratoryReport;
 import services.dao.Fax2EMR.model.Fax2EMRPatientInformation;
 import services.dao.Fax2EMR.model.Fax2EMRTestForm;
 import dataModel.Field;
@@ -22,6 +24,8 @@ public class DBWriterImpl implements DBWriter {
 		tableMapMapping.put("patientinformation".toLowerCase(), new Class[] { Fax2EMRPatientInformation.class, Fax2EMRPatientInformationDAO.class });
 		tableMapMapping.put("Test_Form".toLowerCase(), new Class[] { Fax2EMRTestForm.class, Fax2EMRTestFormDAO.class });
 		tableMapMapping.put("testform".toLowerCase(), new Class[] { Fax2EMRTestForm.class, Fax2EMRTestFormDAO.class });
+		tableMapMapping.put("Laboratory_Report".toLowerCase(), new Class[] { Fax2EMRLaboratoryReport.class, Fax2EMRLaboratoryReportDAO.class });
+		tableMapMapping.put("laboratoryreport".toLowerCase(), new Class[] { Fax2EMRLaboratoryReport.class, Fax2EMRLaboratoryReportDAO.class });
 	}
 
 	@SuppressWarnings("unchecked")

@@ -31,12 +31,7 @@ import org.bytedeco.javacv.CanvasFrame;
 import com.recognition.software.jdeskew.ImageDeskew;
 
 public class ImagePreprocessor {
-	// Original IplImage from FileImageReader
-	private IplImage oriIplImage;
-	
-	public ImagePreprocessor(IplImage image){
-		oriIplImage = image;
-	}
+
 	
 	public IplImage deskew(IplImage image){
 		BufferedImage bImg = image.getBufferedImage();
