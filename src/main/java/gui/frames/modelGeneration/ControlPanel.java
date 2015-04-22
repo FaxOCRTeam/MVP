@@ -247,10 +247,10 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 				this);
 		
 		
-		springLayout.putConstraint(SpringLayout.NORTH, deskewButton, 5, SpringLayout.SOUTH, loadButton);
+		//springLayout.putConstraint(SpringLayout.NORTH, deskewButton, 5, SpringLayout.SOUTH, loadButton);
 		
-		springLayout.putConstraint(SpringLayout.NORTH, coordinatesPanel, 5,
-				SpringLayout.SOUTH, deskewButton);
+		//springLayout.putConstraint(SpringLayout.NORTH, coordinatesPanel, 5,
+			//	SpringLayout.SOUTH, deskewButton);
 	
 
 		springLayout.putConstraint(SpringLayout.WEST, zoomInButton, 5, SpringLayout.WEST, this);
