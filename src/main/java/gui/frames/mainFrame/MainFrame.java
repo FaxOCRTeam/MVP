@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,7 @@ import net.sourceforge.tess4j.TesseractException;
 import processor.ContentProcessor;
 import processor.DBWriterImpl;
 import processor.ImageProcessor;
+import utils.Template_matching;
 import dataModel.ConfigField;
 import dataModel.Field;
 
@@ -41,16 +43,16 @@ public class MainFrame extends JFrame {
 
 		initMenu();
 		init();
-		
+
 		pack();
 		setResizable(false);
 		setVisible(true);
-		//setDefaultCloseOperation(EXIT_ON_CLOSE);
+		// setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
 
 	private void initMenu() {
-		
+
 		bar = new JMenuBar();
 		bar.setPreferredSize(new Dimension((int) getSize().getWidth(), 23));
 		JMenu modelMenu = new JMenu("model");
@@ -84,20 +86,20 @@ public class MainFrame extends JFrame {
 		bar.add(configMenu);
 
 		add(bar);
-		
+
 		validate();
 	}
 
 	private void init() {
 		SpringLayout layout = new SpringLayout();
 		setLayout(layout);
-		
+
 		flpanel = new FileLoadingPanel(this);
 		add(flpanel);
 
 		layout.putConstraint(SpringLayout.NORTH, flpanel, 250, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.WEST, flpanel, 25, SpringLayout.WEST, this);
-		
+
 		previewPanel = new PreviewPreparePanel();
 		add(previewPanel);
 
@@ -106,10 +108,20 @@ public class MainFrame extends JFrame {
 	}
 
 	public void processPicture(String picFilePath) {
-		if (null == previewPanel.getModelFile())
-			return;
-
-		List<FormField> model = FormField.loadModel(previewPanel.getModelFile());
+		List<FormField> model = null;
+		if(null!= previewPanel.getModelFile()){
+			model = FormField.loadModel(previewPanel.getModelFile());
+		}
+		else{
+			File model_path = Template_matching.decide_template(picFilePath);
+			if(null == model_path){
+				System.out.println("Can't find exist model");
+				//Do someting to notify user here;
+				return;
+			}
+			model = FormField.loadModel(model_path);
+		}
+		
 		List<ConfigField> transformModel = new ArrayList<ConfigField>();
 		for (FormField ff : model) {
 			transformModel.add(ff.toConfigField());
@@ -122,8 +134,8 @@ public class MainFrame extends JFrame {
 		} catch (TesseractException e) {
 			e.printStackTrace();
 		}
-//		DBWriterImpl dbWriter = new DBWriterImpl();
-//		dbWriter.writeToDB(process);
+		 DBWriterImpl dbWriter = new DBWriterImpl();
+		 dbWriter.writeToDB(process);
 		System.out.print(process);
 	}
 
