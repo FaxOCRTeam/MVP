@@ -28,7 +28,7 @@ public class LineSeperator {
 	public static void main(String[] args){
 		LineSeperator ls = new LineSeperator();
 		String dir = "./src/input/";
-		System.out.print(dir);
+//		System.out.print(dir);
 		//String dir = "./src/input1/";
 		for (int i=1; i<2; i++){
 			String file = dir + "image" + i + ".jpg";

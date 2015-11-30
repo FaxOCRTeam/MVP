@@ -107,12 +107,12 @@ public class ModelPanel extends JPanel implements ModelModificationInterface {
 		});
 
 		add(saveButton);
-		sl.putConstraint(SpringLayout.NORTH, saveButton, 5, SpringLayout.SOUTH, panel1);
-		sl.putConstraint(SpringLayout.WEST, saveButton, 5, SpringLayout.WEST, this);
+		sl.putConstraint(SpringLayout.NORTH, saveButton, -3, SpringLayout.SOUTH, panel1);
+		sl.putConstraint(SpringLayout.WEST, saveButton, -2, SpringLayout.WEST, this);
 
 		add(importButton);
-		sl.putConstraint(SpringLayout.NORTH, importButton, 5, SpringLayout.SOUTH, panel1);
-		sl.putConstraint(SpringLayout.WEST, importButton, 5, SpringLayout.EAST, saveButton);
+		sl.putConstraint(SpringLayout.NORTH, importButton, -3, SpringLayout.SOUTH, panel1);
+		sl.putConstraint(SpringLayout.WEST, importButton, -5, SpringLayout.EAST, saveButton);
 	}
 
 	@Override

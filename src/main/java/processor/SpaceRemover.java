@@ -28,7 +28,7 @@ import static org.bytedeco.javacpp.opencv_imgproc.cvThreshold;
 public class SpaceRemover {
 	public static void main(String[] args) {
 		String dir = "./src/input/";
-		System.out.print(dir);
+//		System.out.print(dir);
 		//String dir = "./src/input1/";
 		for (int i=1; i<16; i++){
 			String file = dir + "image" + i + ".jpg";
@@ -86,7 +86,7 @@ public class SpaceRemover {
 							spaceAndWidth.add(new Spaces(startOfSpace,widthOfSpace));
 				}
 				else if(i == imgCols-1){
-					System.out.println(areaOfWord[i]);
+//					System.out.println(areaOfWord[i]);
 					widthOfSpace = i - startOfSpace;
 					if(widthOfSpace != 0)
 						spaceAndWidth.add(new Spaces(startOfSpace,widthOfSpace));

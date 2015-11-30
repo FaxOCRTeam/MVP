@@ -65,23 +65,23 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 
 	public void init(SpringLayout springLayout) {
 		
-		JButton deskewButton  =new JButton("deskew form");
-		deskewButton.setToolTipText("Deskew a sample form in left panel");
-		deskewButton.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				if(formPanel.getImage() == null)
-					JOptionPane.showMessageDialog(thisObj, "No image loaded");
-				else{
-					
-					IplImage image = IplImage.createFrom(formPanel.getImage());
-					formPanel.deskew(image);
-				}
-				
-				
-			}
-		});
+//		JButton deskewButton  =new JButton("deskew form");
+//		deskewButton.setToolTipText("Deskew a sample form in left panel");
+//		deskewButton.addActionListener(new ActionListener(){
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				
+//				if(formPanel.getImage() == null)
+//					JOptionPane.showMessageDialog(thisObj, "No image loaded");
+//				else{
+//					
+//					IplImage image = IplImage.createFrom(formPanel.getImage());
+//					formPanel.deskew(image);
+//				}
+//				
+//				
+//			}
+//		});
 		
 		
 		
@@ -215,7 +215,7 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 
 		csl.putConstraint(SpringLayout.WEST, tableLabel, 5, SpringLayout.WEST,
 				coordinatesPanel);
-		csl.putConstraint(SpringLayout.EAST, tableBox, -5, SpringLayout.EAST, coordinatesPanel);
+		csl.putConstraint(SpringLayout.EAST, tableBox, 20, SpringLayout.EAST, coordinatesPanel);
 		csl.putConstraint(SpringLayout.NORTH, tableLabel, 5, SpringLayout.SOUTH,
 				titleLabels[3]);
 		csl.putConstraint(SpringLayout.NORTH, tableBox, 5, SpringLayout.SOUTH, titleLabels[3]);
@@ -232,7 +232,7 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 		add(saveButton);
 		add(zoomInButton);
 		add(zoomOutButton);
-		add(deskewButton);
+//		add(deskewButton);
 		
 		
 		
@@ -245,12 +245,14 @@ public class ControlPanel extends JPanel implements DisplayCoordinatesInterface,
 
 		springLayout.putConstraint(SpringLayout.WEST, coordinatesPanel, 5, SpringLayout.WEST,
 				this);
+		springLayout.putConstraint(SpringLayout.NORTH, coordinatesPanel, 40, SpringLayout.NORTH,
+				this);
 		
 		
-		//springLayout.putConstraint(SpringLayout.NORTH, deskewButton, 5, SpringLayout.SOUTH, loadButton);
-		
-		//springLayout.putConstraint(SpringLayout.NORTH, coordinatesPanel, 5,
-			//	SpringLayout.SOUTH, deskewButton);
+//		springLayout.putConstraint(SpringLayout.NORTH, deskewButton, 5, SpringLayout.SOUTH, loadButton);
+//		
+//		springLayout.putConstraint(SpringLayout.NORTH, coordinatesPanel, 5,
+//				SpringLayout.SOUTH, deskewButton);
 	
 
 		springLayout.putConstraint(SpringLayout.WEST, zoomInButton, 5, SpringLayout.WEST, this);

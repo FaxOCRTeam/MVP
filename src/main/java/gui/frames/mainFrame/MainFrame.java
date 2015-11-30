@@ -119,6 +119,8 @@ public class MainFrame extends JFrame {
 				//Do someting to notify user here;
 				return;
 			}
+			else
+				System.out.println("Choose: " + model_path.getName());
 			model = FormField.loadModel(model_path);
 		}
 		
@@ -136,7 +138,7 @@ public class MainFrame extends JFrame {
 		}
 		 DBWriterImpl dbWriter = new DBWriterImpl();
 		 dbWriter.writeToDB(process);
-		System.out.print(process);
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 	}
 
 	public boolean modelReady() {
