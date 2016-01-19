@@ -4,6 +4,7 @@ import static org.bytedeco.javacpp.opencv_core.IPL_DEPTH_8U;
 
 
 
+
 import static org.bytedeco.javacpp.opencv_core.cvCloneImage;
 import static org.bytedeco.javacpp.opencv_core.cvCreateImage;
 import static org.bytedeco.javacpp.opencv_core.cvGetSize;
@@ -26,6 +27,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import org.bytedeco.javacpp.opencv_core.CvPoint2D32f;
+import org.bytedeco.javacpp.opencv_core.IplConvKernel;
 import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacv.CanvasFrame;
 
@@ -81,26 +83,26 @@ public class ImagePreprocessor {
 		return ret.getBufferedImage();
 	}
 	
-	public IplImage erodeAndDilateImage(IplImage image){
-		int ErodeCount = 0;//1;
-		int DilateCount = 0;//1;
-		int threshold = 150;
-		
+	public IplImage erodeAndDilateImage(IplImage image, int ErodeCount, int DilateCount){
+		int threshold = 255;
 		IplImage rawImage = cvCloneImage(image);
 		IplImage GrayImage = cvCreateImage(cvGetSize(rawImage), IPL_DEPTH_8U, 1);
-		cvCvtColor(rawImage, GrayImage, CV_BGR2GRAY);
-		
+		if (rawImage.nChannels() != 1)
+			cvCvtColor(rawImage, GrayImage, CV_BGR2GRAY);
+		else
+			GrayImage = rawImage;
 		IplImage BWImage = cvCreateImage(cvGetSize(GrayImage), IPL_DEPTH_8U, 1);
 		//cvThreshold(GrayImage, BWImage, 100, 255, CV_THRESH_BINARY);
-		cvAdaptiveThreshold(GrayImage, BWImage, threshold, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 51, 20);
-		
+		cvAdaptiveThreshold(GrayImage, BWImage, threshold, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 17,30);
+		IplConvKernel mat= new IplConvKernel();
+		mat = mat.create(7, 7, 3, 3, 0, null);
 		IplImage WorkingImage = cvCreateImage(cvGetSize(BWImage), IPL_DEPTH_8U, 1);
 
-		cvErode(BWImage, WorkingImage, null, ErodeCount);
-		cvDilate(WorkingImage, WorkingImage, null, DilateCount);
-
-		cvDilate(WorkingImage, WorkingImage, null, DilateCount);
-		cvErode(BWImage, WorkingImage, null, ErodeCount);
+//		cvErode(BWImage, WorkingImage, mat, ErodeCount);
+//		cvDilate(WorkingImage, WorkingImage, mat, DilateCount);
+//
+		cvDilate(WorkingImage, WorkingImage, mat, DilateCount);
+		cvErode(BWImage, WorkingImage, mat, ErodeCount);
 		return WorkingImage;
 	}
 
